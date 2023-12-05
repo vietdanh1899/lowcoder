@@ -1,0 +1,8 @@
+.idea/
+logs/
+stacks/
+client/.yarn/cache/*.zip
+server/node-service/.yarn/cache/*.zip
+.metadata/
+.DS_Store
+/client/node_modules
