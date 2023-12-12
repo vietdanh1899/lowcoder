@@ -18,6 +18,7 @@ import { millisecondsControl } from "../../controls/millisecondControl";
 import { trans } from "i18n";
 import { CompAction, customAction, isMyCustomAction } from "lowcoder-core";
 import { messageInstance } from "lowcoder-design";
+import { message } from "antd";
 
 const SuccessMessageAction = new MultiCompBuilder(
   {
@@ -109,14 +110,14 @@ const QueryNotificationTmpControl = new MultiCompBuilder(
       props.fail.forEach((item) => {
         const props = (item.getView() as any)({ data: result.data });
         if (props.condition && props.text) {
-          messageInstance.error(props.text, duration);
+          message.error(props.text, duration);
           hasNoticed = true;
         }
       });
 
       // Execute system notification if triggered manually without custom notification and query fails
       if (!result.success && !hasNoticed) {
-        hasNoticed = !!messageInstance.error(
+        hasNoticed = !!message.error(
           trans("query.failMessageWithName", {
             name,
             result: JSON.stringify(pick(result, ["code", "message"])),
@@ -131,7 +132,7 @@ const QueryNotificationTmpControl = new MultiCompBuilder(
 
       // Execute system notification when triggered manually and without custom notification and query is successful
       if (result.success && !hasNoticed) {
-        messageInstance.success(trans("query.successMessageWithName", { name }), duration);
+        message.success(trans("query.successMessageWithName", { name }), duration);
       }
     }
   }

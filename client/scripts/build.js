@@ -7,7 +7,7 @@ import axios from "axios";
 import { buildVars } from "lowcoder-dev-utils/buildVars.js";
 import { currentDirName, readJson } from "lowcoder-dev-utils/util.js";
 
-const builtinPlugins = ["lowcoder-comps"];
+const builtinPlugins = [];
 const curDirName = currentDirName(import.meta.url);
 
 async function downloadFile(url, dest) {

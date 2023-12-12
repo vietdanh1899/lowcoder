@@ -3069,6 +3069,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@r2wc/core@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "@r2wc/core@npm:1.0.1"
+  checksum: 0c71090e887cc9e295efe5ed2c038d937be870dfd2c409b5100cd91a662e5ac0ba938687aa33bdf98a874b4056a8af26f66357a8f8ac8a371334da99cb4d8400
+  languageName: node
+  linkType: hard
+
+"@r2wc/react-to-web-component@npm:^1":
+  version: 1.0.0
+  resolution: "@r2wc/react-to-web-component@npm:1.0.0"
+  dependencies:
+    "@r2wc/core": ^1.0.0
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0
+    react-dom: ^16.0.0 || ^17.0.0
+  checksum: 85455f59ba20e9de6070afca26920c30be3ef44b292fe1373265963c6ded01a0ba3b8555648b158bb733d84143aacb49dd11c430a98b74dd90c698b37575da00
+  languageName: node
+  linkType: hard
+
 "@rc-component/color-picker@npm:~1.4.0":
   version: 1.4.1
   resolution: "@rc-component/color-picker@npm:1.4.1"
@@ -11946,6 +11965,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lowcoder-sdk@workspace:packages/lowcoder-sdk"
   dependencies:
+    "@r2wc/react-to-web-component": ^1
     "@rollup/plugin-commonjs": ^22.0.2
     "@rollup/plugin-json": ^5.0.1
     "@rollup/plugin-node-resolve": ^14.1.0

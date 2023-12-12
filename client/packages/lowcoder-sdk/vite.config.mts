@@ -32,7 +32,7 @@ export const viteConfig: UserConfig = {
   build: {
     lib: {
       formats: ["es"],
-      entry: "./src/index.ts",
+      entry: "./src/index.tsx",
       name: "Lowcoder",
       fileName: "lowcoder-sdk",
     },

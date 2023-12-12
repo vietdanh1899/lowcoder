@@ -24,7 +24,7 @@
     }
   },
   "scripts": {
-    "build": "vite build",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "start": "vite"
   },
   "devDependencies": {
@@ -55,5 +55,8 @@
   "keywords": [
     "lowcoder"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@r2wc/react-to-web-component": "^1"
+  }
 }
