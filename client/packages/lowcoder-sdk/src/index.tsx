@@ -1,19 +1,26 @@
 import r2wc from '@r2wc/react-to-web-component';
-import { LowcoderAppView, EventTriggerHandler, OutputChangeHandler } from 'lowcoder';
+import { LowcoderAppView } from 'lowcoder';
 
 type AppViewProp = {
   appId: string;
   baseUrl: string;
   input: Record<string, any>;
-  onEventTriggered: EventTriggerHandler;
-  onOutputChange: OutputChangeHandler<any>;
+  eventTriggerName: string;
+  outputEventName: string;
 }
 
-export function ReactDemoApp({ appId, baseUrl, input, onEventTriggered, onOutputChange }: AppViewProp) {
+export function ReactDemoApp({ appId, baseUrl, input, eventTriggerName, outputEventName }: AppViewProp) {
   if (!appId || !baseUrl) {
     return null;
   }
-  
+
+  const emitEvent = (eventName: string, payload: any) => {
+    const event = new CustomEvent(eventName, {
+      detail: payload,
+    });
+
+    document.dispatchEvent(event);
+  }
 
   return (
     <div>
@@ -21,11 +28,15 @@ export function ReactDemoApp({ appId, baseUrl, input, onEventTriggered, onOutput
         appId={appId}
         baseUrl={baseUrl}
         moduleInputs={input}
-        onModuleEventTriggered={onEventTriggered}
-        onModuleOutputChange={onOutputChange}
+        onModuleEventTriggered={(name) => {
+          emitEvent(eventTriggerName, name);
+        }}
+        onModuleOutputChange={(output) => {
+          emitEvent(outputEventName, output);
+        }}
       />
     </div>
   );
 }
 
-customElements.define("screen-renderer", r2wc(ReactDemoApp, { props: { appId: "string", baseUrl: "string", input: "json", onEventTriggered: "function", onOutputChange: "function" } }));
+customElements.define("screen-renderer", r2wc(ReactDemoApp, { props: { appId: "string", baseUrl: "string", input: "json", eventTriggerName: "string", outputEventName: "string" } }));

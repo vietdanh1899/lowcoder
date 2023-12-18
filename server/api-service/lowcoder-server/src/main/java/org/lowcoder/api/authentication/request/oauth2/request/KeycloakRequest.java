@@ -105,7 +105,7 @@ public class KeycloakRequest extends AbstractOauth2Request<Oauth2KeycloakAuthCon
         return WebClientBuildHelper.builder()
                 .systemProxy()
                 .build()
-                .post()
+                .get()
                 .uri(config.replaceAuthUrlClientIdPlaceholder(source.userInfo()))
                 .header("Authorization", "Bearer " + authToken.getAccessToken())
                 .exchangeToMono(response -> response.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {

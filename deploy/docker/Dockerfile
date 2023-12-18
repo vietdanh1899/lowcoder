@@ -123,19 +123,19 @@ CMD [ "/bin/sh", "/lowcoder/node-service/entrypoint.sh" ]
 ##
 ## Build lowcoder client application
 ##
-FROM node:20.2-slim AS build-client
-COPY ./client /lowcoder-client
-WORKDIR /lowcoder-client
-RUN yarn --immutable
+# FROM node:20.2-slim AS build-client
+# COPY ./client /lowcoder-client
+# WORKDIR /lowcoder-client
+# RUN yarn --immutable
 
-# curl is required for yarn build to succeed, because it calls it while building client
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
+# # curl is required for yarn build to succeed, because it calls it while building client
+# RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 
-ARG REACT_APP_COMMIT_ID=test
-ARG REACT_APP_ENV=production
-ARG REACT_APP_EDITION=community
-ARG REACT_APP_DISABLE_JS_SANDBOX=true
-RUN yarn build
+# ARG REACT_APP_COMMIT_ID=test
+# ARG REACT_APP_ENV=production
+# ARG REACT_APP_EDITION=community
+# ARG REACT_APP_DISABLE_JS_SANDBOX=true
+# RUN yarn build
 
 
 ##
@@ -153,7 +153,7 @@ RUN usermod --login lowcoder --uid 9001 nginx \
   && rm -f /etc/nginx/nginx.conf
 
 # Copy lowcoder client data
-COPY --chown=lowcoder:lowcoder --from=build-client /lowcoder-client/packages/lowcoder/build/ /lowcoder/client
+COPY --chown=lowcoder:lowcoder /client/packages/lowcoder/build/ /lowcoder/client
 
 # Copy additional nginx init scripts
 COPY deploy/docker/frontend/00-change-nginx-user.sh /docker-entrypoint.d/00-change-nginx-user.sh

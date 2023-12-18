@@ -6,3 +6,4 @@ server/node-service/.yarn/cache/*.zip
 .metadata/
 .DS_Store
 /client/node_modules
+client/packages/lowcoder/vite.config.mts.timestamp-*
