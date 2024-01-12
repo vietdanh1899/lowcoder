@@ -40,7 +40,7 @@ import { HeaderStartDropdown } from "./headerStartDropdown";
 import { AppPermissionDialog } from "../../components/PermissionDialog/AppPermissionDialog";
 import { getBrandingConfig } from "../../redux/selectors/configSelectors";
 import { messageInstance } from "lowcoder-design";
-import { EditorContext } from  "../../comps/editorState";
+import { EditorContext } from "../../comps/editorState";
 
 
 const StyledLink = styled.a`
@@ -75,7 +75,7 @@ const LayoutIcon = styled(Layout)`
 const LeftIcon = styled(Left)`
   ${IconCss}
 `;
-const MiddleIcon = styled(Middle)<{ $show: boolean }>`
+const MiddleIcon = styled(Middle) <{ $show: boolean }>`
   ${IconCss}
   & g line {
     stroke: ${(props) => (props.$show ? "#dddddd" : "#dddddd65")};
@@ -198,7 +198,6 @@ const PackUpBtn = styled(TacoButton)`
   width: 28px;
   height: 28px;
   border-radius: 0 4px 4px 0;
-  margin-right: 24px;
   margin-left: 1px;
 
   svg {
@@ -305,18 +304,17 @@ export default function Header(props: HeaderProps) {
     { label: trans("header.editorMode_logic"), key: "editorModeSelector_logic", value: "logic" },
     { label: trans("header.editorMode_both"), key: "editorModeSelector_both", value: "both" },
   ];
-  
+
   const onEditorStateValueChange = ({ target: { value } }: RadioChangeEvent) => {
     toggleEditorModeStatus(value);
     editorState.setEditorModeStatus(value);
   };
-  
+
   const headerStart = (
     <>
-      <StyledLink onClick={() => history.push(ALL_APPLICATIONS_URL)}>
-        {/* {REACT_APP_LOWCODER_SHOW_BRAND === 'true' ? REACT_APP_LOWCODER_CUSTOM_LOGO_SQUARE !== "" ? <img src={REACT_APP_LOWCODER_CUSTOM_LOGO_SQUARE } height={24} width={24} alt="logo" /> :<LogoIcon /> :  <LogoHome />} */}
+      {/* <StyledLink onClick={() => history.push(ALL_APPLICATIONS_URL)}>
         <LogoHome />
-      </StyledLink>
+      </StyledLink> */}
       {editName ? (
         <Wrapper>
           <EditText
@@ -350,7 +348,7 @@ export default function Header(props: HeaderProps) {
   // key={option.key}
 
   const headerMiddle = (
-    <> 
+    <>
       <Radio.Group onChange={onEditorStateValueChange} value={props.editorModeStatus} optionType="button" buttonStyle="solid" size="small">
         {editorModeOptions.map((option) => (
           <Radio.Button key={option.key} value={option.value}>
@@ -451,7 +449,7 @@ export default function Header(props: HeaderProps) {
         </PackUpBtn>
       </Dropdown>
 
-      <HeaderProfile user={user} />
+      {/* <HeaderProfile user={user} /> */}
     </>
   );
 
