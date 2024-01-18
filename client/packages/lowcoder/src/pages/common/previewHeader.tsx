@@ -134,9 +134,9 @@ export const PreviewHeader = () => {
 
   const headerStart = (
     <>
-      <StyledLink onClick={() => history.push(ALL_APPLICATIONS_URL)}>
+      {/* <StyledLink onClick={() => history.push(ALL_APPLICATIONS_URL)}>
         <LogoIcon branding={true} />
-      </StyledLink>
+      </StyledLink> */}
       <HeaderFont bgColor={brandingConfig?.headerColor ?? "#2c2c2c"}>
         {application && application.name}
       </HeaderFont>
@@ -179,7 +179,7 @@ export const PreviewHeader = () => {
           {trans("header.clone")}
         </CloneBtn>
       )}
-      <HeaderProfile user={user} />
+      {/* <HeaderProfile user={user} /> */}
     </Wrapper>
   );
   return (
