@@ -8,6 +8,7 @@ import { buildVars } from "./src/dev-utils/buildVars";
 import { globalDepPlugin } from "./src/dev-utils/globalDepPlguin";
 import dynamicImport from 'vite-plugin-dynamic-import';
 import { visualizer } from "rollup-plugin-visualizer";
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 const isVisualizerEnabled = !!process.env.ENABLE_VISUALIZER;
 
@@ -36,12 +37,12 @@ export const viteConfig: UserConfig = {
   build: {
     lib: {
       formats: ["es"],
-      entry: "./src/index.ts",
+      entry: "./src/index.tsx",
       name: "Lowcoder",
       fileName: "lowcoder-sdk",
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", '**/*.test.tsx'],
       output: {
         chunkFileNames: "[hash].js",
       },
@@ -91,6 +92,7 @@ export const viteConfig: UserConfig = {
         },
       },
     }),
+    libInjectCss(),
     viteTsconfigPaths({
       projects: [
         "../lowcoder/tsconfig.json",

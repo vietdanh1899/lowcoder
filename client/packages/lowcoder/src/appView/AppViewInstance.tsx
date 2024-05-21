@@ -16,6 +16,7 @@ import Flex from "antd/es/flex";
 import { TacoButton } from "components/button";
 import { DatasourceApi } from "@lowcoder-ee/api/datasourceApi";
 import { registryDataSourcePlugin } from "@lowcoder-ee/constants/queryConstants";
+import {ModuleLoading} from "@lowcoder-ee/components/ModuleLoading";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -103,7 +104,7 @@ export class AppViewInstance<I = any, O = any> {
             };
           }
         });
-      
+
       await DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
         res.data.data.forEach((i) => {
           registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
@@ -166,6 +167,12 @@ export class AppViewInstance<I = any, O = any> {
   }
 
   private async render() {
+    const statusOrValue = await Promise.race([this.dataPromise, 'pending']);
+    if (statusOrValue === 'pending') {
+      // Not yet finished
+      this.root.render(<ModuleLoading/>);
+    }
+
     const data = await this.dataPromise;
     const loginUrl = this.options.orgId
       ? `${this.options.webUrl}/org/${this.options.orgId}/auth/login`

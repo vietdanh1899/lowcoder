@@ -63,7 +63,7 @@ export function getGridItemPadding(compType: UICompType) {
   if (compType === "module") {
     return [0, 0];
   }
-  return [8, 4];
+  return [GRID_ITEM_BORDER_WIDTH, GRID_ITEM_BORDER_WIDTH];
 }
 
 function getLineStyle(

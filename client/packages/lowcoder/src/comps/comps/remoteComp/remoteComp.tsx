@@ -27,7 +27,7 @@ const ViewLoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: transparent;
   height: 100%;
 `;
 

@@ -1071,7 +1071,7 @@ const LayoutContainer = styled.div<{
   $radius?: string;
 }>`
   border-radius: ${(props) => props.$radius ?? "4px"};
-  background-color: ${(props) => props.$bgColor ?? "#f5f5f6"};
+  background-color: ${(props) => props.$bgColor ?? "transparent"};
   /* height: 100%; */
   height: ${(props) => (props.$autoHeight ? "auto" : "100%")};
 

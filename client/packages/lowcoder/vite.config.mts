@@ -133,6 +133,11 @@ export const viteConfig: UserConfig = {
         parserOpts: {
           plugins: ["decorators-legacy"],
         },
+        plugins: [
+          [
+            "babel-plugin-styled-components"
+          ]
+        ]
       },
     }),
     viteTsconfigPaths({
