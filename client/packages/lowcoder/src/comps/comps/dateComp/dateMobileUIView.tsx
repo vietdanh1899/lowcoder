@@ -81,7 +81,7 @@ export const DateMobileUIView = (props: DataUIViewProps) => (
     <DateItem>
       {props.value
         ? props.value.format(props.format || (props.showTime ? DATE_TIME_FORMAT : DATE_FORMAT))
-        : trans("date.placeholder")}
+        : props.placeholder ?? trans("date.placeholder")}
     </DateItem>
     {props.suffixIcon}
   </MobileView>

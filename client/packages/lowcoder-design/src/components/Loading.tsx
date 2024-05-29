@@ -95,5 +95,5 @@ export const LightLoading = (props: LoadingProps) => {
 
 // loading when bg-color is white
 export const WhiteLoading = (props: LoadingProps) => {
-  return <Loading backgroundColor="#ffffff" color="#3377FF" size={props.size} {...props} />;
+  return <Loading backgroundColor="transparent" color="#3377FF" size={props.size} {...props} />;
 };
