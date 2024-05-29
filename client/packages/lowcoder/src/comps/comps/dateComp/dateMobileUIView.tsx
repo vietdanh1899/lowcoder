@@ -22,8 +22,8 @@ const handleClick = async (
 ) => {
   const MobileDatePicker = (await import("antd-mobile/es/components/date-picker")).default;
 
-  const min = dayjs(params.minDate, DateParser);
-  const max = dayjs(params.maxDate, DateParser);
+  const min = dayjs(params.minDate, DateParser, true);
+  const max = dayjs(params.maxDate, DateParser, true);
 
   const { disabledHours, disabledMinutes, disabledSeconds } = params.disabledTime();
 
