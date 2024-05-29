@@ -17,6 +17,9 @@ import { TacoButton } from "components/button";
 import { DatasourceApi } from "@lowcoder-ee/api/datasourceApi";
 import { registryDataSourcePlugin } from "@lowcoder-ee/constants/queryConstants";
 import {ModuleLoading} from "@lowcoder-ee/components/ModuleLoading";
+import Api from "@lowcoder-ee/api/api";
+import {db} from "@lowcoder-ee/appView/db";
+import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -83,27 +86,29 @@ export class AppViewInstance<I = any, O = any> {
     });
 
     if (!appDsl) {
-      const http = axios.create({ baseURL: baseUrl, withCredentials: true });
-      const data: ApplicationResp = await http
-        .get(`/api/v1/applications/${this.appId}/view`)
-        .then((i) => i.data)
-        .catch((e) => {
-          if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
-            saveAuthSearchParams({
-              [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
-              [AuthSearchParams.loginType]: null,
-            })
+      const dataRes: Promise<ApplicationDetail> = Api
+          .get(`/applications/${this.appId}/view`)
+          .then((i) => {
+            db.apps.put(i.data.data);
+            return i.data.data;
+          })
+          .catch((e) => {
+            if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
+              saveAuthSearchParams({
+                [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
+                [AuthSearchParams.loginType]: null,
+              })
 
-            this.authorizedUser = false;
-            return {
-              data: {
-                orgCommonSettings: undefined,
-                applicationDSL: {},
-                moduleDSL: {},
-              }
-            };
-          }
-        });
+              this.authorizedUser = false;
+              return {
+                data: {
+                  orgCommonSettings: undefined, applicationDSL: {}, moduleDSL: {},
+                }
+              };
+            }
+          });
+
+      const data: ApplicationDetail = await db.apps.get({"applicationInfoView.applicationId": this.appId}) ?? await dataRes;
 
       await DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
         res.data.data.forEach((i) => {
@@ -112,11 +117,11 @@ export class AppViewInstance<I = any, O = any> {
       });
 
       setGlobalSettings({
-        orgCommonSettings: data.data.orgCommonSettings,
+        orgCommonSettings: data.orgCommonSettings,
       });
 
-      finalAppDsl = data.data.applicationDSL;
-      finalModuleDslMap = data.data.moduleDSL;
+      finalAppDsl = data.applicationDSL;
+      finalModuleDslMap = data.moduleDSL;
     }
 
     if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
