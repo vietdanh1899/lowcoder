@@ -112,6 +112,7 @@ export type UICompType =
   | "navigation"
   | "iframe"
   | "custom"
+  | "reactCustom"
   | "jsonExplorer"
   | "jsonEditor"
   | "shape"

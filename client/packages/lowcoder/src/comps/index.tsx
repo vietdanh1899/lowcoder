@@ -1650,6 +1650,21 @@ export var uiCompMap: Registry = {
       h: 40,
     },
   },
+  reactCustom: {
+    name: "React Custom Component",
+    enName: "React Custom Component",
+    description: trans("uiComp.customCompDesc"),
+    icon: CustomCompIcon,
+    categories: ["integration"],
+    keywords: trans("uiComp.customCompKeywords"),
+    lazyLoad: true,
+    compName: "CustomReactComp",
+    compPath: "comps/customReactComp/customReactComp",
+    layoutInfo: {
+      w: 5,
+      h: 5,
+    },
+  },
   module: {
     name: trans("uiComp.moduleCompName"),
     enName: "Module",

@@ -120,6 +120,7 @@ export const CompStateIcon: {
   container: <ContainerCompIconSmall />,
   controlButton: <IconButtonCompIconSmall />,
   custom: <CustomCompIconSmall />,
+  reactCustom: <CustomCompIconSmall />,
   date: <DateCompIconSmall />,
   dateRange: <DateRangeCompIconSmall />,
   divider: <DividerCompIconSmall />,
