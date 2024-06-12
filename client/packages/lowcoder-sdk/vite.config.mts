@@ -92,7 +92,7 @@ export const viteConfig: UserConfig = {
         },
       },
     }),
-    // libInjectCss(),
+    libInjectCss(),
     viteTsconfigPaths({
       projects: [
         "../lowcoder/tsconfig.json",

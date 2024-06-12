@@ -6,6 +6,7 @@ import type {
   OutputChangeHandler,
 } from "./AppViewInstance";
 import { bootstrapAppAt } from "./bootstrapAt";
+import {createRoot, Root} from "react-dom/client";
 
 export interface LowcoderAppViewProps<I, O> extends AppViewInstanceOptions<I> {
   appId: string;
@@ -22,6 +23,7 @@ function LowcoderAppViewBase<I = any, O = any>(
 
   const [instance, setInstance] = useState<AppViewInstance | undefined>();
   const nodeRef = useRef<HTMLDivElement>(null);
+  const [root, setRoot] = useState<Root>();
 
   useImperativeHandle(ref, () => instance, [instance]);
 
@@ -30,7 +32,12 @@ function LowcoderAppViewBase<I = any, O = any>(
     if (!node) {
       return;
     }
-    bootstrapAppAt<I>(appId, node, options).then(setInstance);
+    if (!root) {
+      const tempRoot = createRoot(node);
+      setRoot(tempRoot);
+      bootstrapAppAt<I>(appId, node, tempRoot, options).then(setInstance);
+    }
+    else bootstrapAppAt<I>(appId, node, root, options).then(setInstance);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appId]);
 
