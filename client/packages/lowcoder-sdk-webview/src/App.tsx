@@ -57,8 +57,7 @@ function App() {
         appDsl={appDsl}
         moduleDslMap={moduleDslMap}
     /> : <div>
-        < h2> No event has occurred yet</h2>
-        < h3>click to see sample change</h3>
+        < h2>Loading ...</h2>
     </div>);
 }
 

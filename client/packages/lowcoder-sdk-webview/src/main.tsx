@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from 'react-dom/client'
-import "lowcoder-sdk/dist/style.css";
 import App from "./App";
 
 const apiKey = new URL(location.href).searchParams.get("LOWCODER_API_KEY");
