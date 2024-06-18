@@ -11,7 +11,7 @@ import { handlePromiseAndDispatch } from "util/promiseUtils";
 import { HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState } from "react";
 import { setFieldsNoTypeCheck } from "util/objectUtils";
 import { AppSettingsComp } from "./appSettingsComp";
-import { PreloadComp } from "./preLoadComp";
+import {PreloadComp, PreloadIdContext} from "./preLoadComp";
 import { TemporaryStateListComp } from "./temporaryStateComp";
 import { TransformerListComp } from "./transformerListComp";
 import UIComp from "./uiComp";
@@ -130,7 +130,9 @@ function RootView(props: RootViewProps) {
               <div key={key}>{comp.children.queries.children[key].getView()}</div>
             ))}
             <Suspense fallback={!readOnly || isUserViewMode ? SuspenseFallback : null}>
-              <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload} />
+              <PreloadIdContext.Provider value={divProps.id}>
+                <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload}/>
+              </PreloadIdContext.Provider>
             </Suspense>
           </EditorContext.Provider>
         </ThemeContext.Provider>

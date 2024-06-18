@@ -14,7 +14,7 @@ import SimpleStringControl from "comps/controls/simpleStringControl";
 import { MultiCompBuilder, withPropertyViewFn } from "comps/generators";
 import { list } from "comps/generators/list";
 import { BaseSection, CustomModal, PlusIcon, ScrollBar } from "lowcoder-design";
-import React, { useContext, useEffect, useState } from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import { ExternalEditorContext } from "util/context/ExternalEditorContext";
 import { runScriptInHost } from "util/commonUtils";
@@ -345,3 +345,5 @@ export class PreloadComp extends PreloadCompBase {
     );
   }
 }
+
+export const PreloadIdContext = createContext<string | undefined>("");

@@ -14,7 +14,7 @@ import { Layers } from "constants/Layers";
 import { HintPlaceHolder, Modal, Section, sectionNames } from "lowcoder-design";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
-import { CSSProperties, useCallback } from "react";
+import {CSSProperties, useCallback, useContext} from "react";
 import { ResizeHandle } from "react-resizable";
 import styled, { css } from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -22,6 +22,7 @@ import { isNumeric } from "util/stringUtils";
 import { NameConfig, withExposingConfigs } from "../generators/withExposing";
 import { BoolControl } from "comps/controls/boolControl";
 import { withDefault } from "comps/generators";
+import {PreloadIdContext} from "@lowcoder-ee/comps/comps/preLoadComp";
 
 const EventOptions = [
   { label: trans("modalComp.close"), value: "close", description: trans("modalComp.closeDesc") },
@@ -143,6 +144,19 @@ let TmpModalComp = (function () {
           paddingValues = extractedValues;
         } 
       }
+
+      const preloadId = useContext(PreloadIdContext);
+      const getContainer = useCallback(() => {
+        const editorCanvas = document.querySelector(`#${CanvasContainerID}`) ?? document.body;
+        let portalContainer = editorCanvas.querySelector(`:scope > #${preloadId}`)
+        if (portalContainer) return portalContainer as HTMLElement
+
+        portalContainer = document.createElement('div')
+        portalContainer.setAttribute("id", preloadId ?? "")
+        editorCanvas.appendChild(portalContainer)
+        return portalContainer as HTMLElement;
+      }, [preloadId]);
+
       return (
         <BackgroundColorContext.Provider value={props.style.background}>
           <ModalWrapper>
@@ -153,7 +167,7 @@ let TmpModalComp = (function () {
               open={props.visible.value}
               maskClosable={props.maskClosable}
               focusTriggerAfterClose={false}
-              getContainer={() => document.querySelector(`#${CanvasContainerID}`) || document.body}
+              getContainer={getContainer}
               footer={null}
               styles={{body: bodyStyle}}
               title={props.title}
