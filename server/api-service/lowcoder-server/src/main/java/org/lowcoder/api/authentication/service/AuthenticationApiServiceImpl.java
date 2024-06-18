@@ -80,6 +80,11 @@ public class AuthenticationApiServiceImpl implements AuthenticationApiService {
         return authenticate(authId, source, new OAuth2RequestContext(orgId, code, redirectUrl));
     }
 
+    @Override
+    public Mono<AuthUser> authenticateByAccessToken(String authId, String source, String code, String redirectUrl, String orgId) {
+        return authenticate(authId, source, new OAuth2RequestContext(orgId, code, redirectUrl, true));
+    }
+
     protected Mono<AuthUser> authenticate(String authId, @Deprecated String source, AuthRequestContext context) {
         return Mono.defer(() -> {
                     if (StringUtils.isNotBlank(authId)) {

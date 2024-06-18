@@ -32,6 +32,8 @@ public class KeycloakRequest extends AbstractOauth2Request<Oauth2KeycloakAuthCon
 
     @Override
     protected Mono<AuthToken> getAuthToken(OAuth2RequestContext context) {
+        if (context.getIsAccessToken()) return Mono.just(AuthToken.builder().accessToken(context.getCode()).build());
+
         URI uri;
         try {
             uri = new URIBuilder(config.replaceAuthUrlClientIdPlaceholder(source.accessToken())).build();
