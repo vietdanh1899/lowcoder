@@ -50,6 +50,8 @@ const LabelViewWrapper = styled.div<{ $style: any, inputFieldStyle: any,$animati
     return (
       props.$style && {
         ...props.$style,
+        width: widthCalculator(props.$style ? props.$style?.margin : "0px"),
+        height: heightCalculator(props.$style ? props.$style?.margin : "0px"),
         borderRadius: props.$style.radius,
         rotate: props.$style.rotation,
         boxShadow: `${props.$style.boxShadow} ${props.$style.boxShadowColor}`,
@@ -60,7 +62,6 @@ const LabelViewWrapper = styled.div<{ $style: any, inputFieldStyle: any,$animati
   ${(props) => props.$animationStyle && props.$animationStyle}
   display: flex;
   flex-direction: column;
-  height: 100%;
   border: ${(props)=>{return props.$style.borderWidth}} ${(props)=>{return props.$style.borderStyle}} ${(props)=>{return props.$style.border}} !important;
 `;
 
