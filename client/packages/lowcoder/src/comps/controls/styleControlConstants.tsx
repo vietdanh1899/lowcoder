@@ -229,7 +229,7 @@ export const defaultTheme: ThemeDetail = {
   primary: "#3377FF",
   textDark: "#222222",
   textLight: "#FFFFFF",
-  canvas: "transparent",
+  canvas: "#F5F5F6",
   primarySurface: "#FFFFFF",
   borderRadius: "4px",
   margin: "3px",

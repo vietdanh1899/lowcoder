@@ -56,11 +56,11 @@ export default function ColorPicker(props: ColorConfigProps) {
   const varName = `(${colorKey})`;
 
   const colorInputBlur = () => {
-    if (!color || !isValidColor(color)) {
+    if (!color || !CSS.supports('color', color)) {
       setColor(defaultColor);
     } else {
-      setColor(toHex(color));
-      configChange({ colorKey, color: toHex(color) });
+      setColor(isValidColor(color) ? toHex(color) : color);
+      configChange({ colorKey, color: isValidColor(color) ? toHex(color) : color });
     }
   };
 
@@ -124,7 +124,7 @@ export default function ColorPicker(props: ColorConfigProps) {
   /////////////////////
 
   useEffect(() => {
-    if (color && isValidColor(color)) {
+    if (color && CSS.supports('color', color)) {
       configChangeWithDebounce({ colorKey, color });
     }
   }, [color]);
