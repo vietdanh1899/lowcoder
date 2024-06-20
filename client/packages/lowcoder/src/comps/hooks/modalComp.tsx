@@ -145,17 +145,7 @@ let TmpModalComp = (function () {
         } 
       }
 
-      const preloadId = useContext(PreloadIdContext);
-      const getContainer = useCallback(() => {
-        const editorCanvas = document.querySelector(`#${CanvasContainerID}`) ?? document.body;
-        let portalContainer = editorCanvas.querySelector(`:scope > #${preloadId}`)
-        if (portalContainer) return portalContainer as HTMLElement
-
-        portalContainer = document.createElement('div')
-        portalContainer.setAttribute("id", preloadId ?? "")
-        editorCanvas.appendChild(portalContainer)
-        return portalContainer as HTMLElement;
-      }, [preloadId]);
+      const getContainer = useModalContainer();
 
       return (
         <BackgroundColorContext.Provider value={props.style.background}>
@@ -262,3 +252,18 @@ TmpModalComp = withMethodExposing(TmpModalComp, [
 export const ModalComp = withExposingConfigs(TmpModalComp, [
   new NameConfig("visible", trans("modalComp.visibleDesc")),
 ]);
+
+export const useModalContainer = () => {
+  const preloadId = useContext(PreloadIdContext);
+
+  return useCallback(() => {
+    const editorCanvas = document.querySelector(`#${CanvasContainerID}`) ?? document.body;
+    let portalContainer = editorCanvas.querySelector(`:scope > #${preloadId}`)
+    if (portalContainer) return portalContainer as HTMLElement
+
+    portalContainer = document.createElement('div')
+    portalContainer.setAttribute("id", preloadId ?? "")
+    editorCanvas.appendChild(portalContainer)
+    return portalContainer as HTMLElement;
+  }, [preloadId]);
+}

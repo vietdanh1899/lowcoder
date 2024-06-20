@@ -3,6 +3,7 @@ import "../../lowcoder/src/index.less";
 import "virtual:globals";
 import * as sdk from "../../lowcoder";
 import {LowcoderAppView} from "../../lowcoder";
+import "antd-mobile/es/global/global.css";
 import ReactDOM from 'react-dom/client'
 
 export * from "../../lowcoder";
