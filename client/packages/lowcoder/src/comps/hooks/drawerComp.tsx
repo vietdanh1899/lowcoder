@@ -13,7 +13,6 @@ import { DrawerStyle } from "comps/controls/styleControlConstants";
 import { withDefault } from "comps/generators";
 import { withMethodExposing } from "comps/generators/withMethodExposing";
 import { BackgroundColorContext } from "comps/utils/backgroundColorContext";
-import { CanvasContainerID } from "constants/domLocators";
 import { Layers } from "constants/Layers";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
@@ -25,6 +24,7 @@ import { useUserViewMode } from "util/hooks";
 import { isNumeric } from "util/stringUtils";
 import { NameConfig, withExposingConfigs } from "../generators/withExposing";
 import { title } from "process";
+import {useModalContainer} from "@lowcoder-ee/comps/hooks/modalComp";
 
 const EventOptions = [closeEvent] as const;
 
@@ -115,6 +115,7 @@ let TmpDrawerComp = (function () {
         },
         [dispatch, isTopBom]
       );
+      const getContainer = useModalContainer();
       return (
         <BackgroundColorContext.Provider value={props.style.background}>
           <DrawerWrapper>
@@ -137,7 +138,7 @@ let TmpDrawerComp = (function () {
               closable={false}
               placement={props.placement}
               open={props.visible.value}
-              getContainer={() => document.querySelector(`#${CanvasContainerID}`) || document.body}
+              getContainer={getContainer}
               footer={null}
               width={transToPxSize(props.width || DEFAULT_SIZE)}
               height={!props.autoHeight ? transToPxSize(props.height || DEFAULT_SIZE) : ""}
