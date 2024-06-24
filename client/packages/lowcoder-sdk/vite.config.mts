@@ -8,7 +8,6 @@ import { buildVars } from "./src/dev-utils/buildVars";
 import { globalDepPlugin } from "./src/dev-utils/globalDepPlguin";
 import dynamicImport from 'vite-plugin-dynamic-import';
 import { visualizer } from "rollup-plugin-visualizer";
-import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 const isVisualizerEnabled = !!process.env.ENABLE_VISUALIZER;
 
@@ -92,7 +91,6 @@ export const viteConfig: UserConfig = {
         },
       },
     }),
-    libInjectCss(),
     viteTsconfigPaths({
       projects: [
         "../lowcoder/tsconfig.json",

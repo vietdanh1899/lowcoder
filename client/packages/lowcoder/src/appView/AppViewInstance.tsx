@@ -110,7 +110,7 @@ export class AppViewInstance<I = any, O = any> {
 
       const data: ApplicationDetail = await db.apps.get({"applicationInfoView.applicationId": this.appId}) ?? await dataRes;
 
-      await DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
+      DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
         res.data.data.forEach((i) => {
           registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
         });

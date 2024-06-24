@@ -9,7 +9,6 @@ import { Provider } from "react-redux";
 import { Route, Router } from "react-router";
 import { reduxStore } from "redux/store/store";
 import { ExternalEditorContext } from "util/context/ExternalEditorContext";
-import {ConfigProvider} from "antd";
 
 const browserHistory = createBrowserHistory();
 
@@ -90,21 +89,23 @@ export function AppView(props: AppViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moduleInputs]);
 
-  return (<ConfigProvider theme={{hashed: false, cssVar: true}}>
-      <App>
-        <GlobalInstances/>
-        <Provider store={reduxStore}>
-          <ExternalEditorContext.Provider
-            value={{
-              applicationId: appId, appType: 1, readOnly: true, hideHeader: true,
-            }}
-          >
-            <Router history={browserHistory}>
-              <Route path="/" render={() => comp?.getView()}/>
-            </Router>
-          </ExternalEditorContext.Provider>
-        </Provider>
-      </App>
-    </ConfigProvider>
+  return (
+    <App>
+      <GlobalInstances />
+      <Provider store={reduxStore}>
+        <ExternalEditorContext.Provider
+          value={{
+            applicationId: appId,
+            appType: 1,
+            readOnly: true,
+            hideHeader: true,
+          }}
+        >
+          <Router history={browserHistory}>
+            <Route path="/" render={() => comp?.getView()} />
+          </Router>
+        </ExternalEditorContext.Provider>
+      </Provider>
+    </App>
   );
 }

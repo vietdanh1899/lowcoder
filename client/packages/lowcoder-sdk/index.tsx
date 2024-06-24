@@ -5,7 +5,7 @@ import { AppViewInstance, bootstrapAppAt, LowcoderAppView } from "./src";
 
 const url = new URL(location.href);
 // const appId = url.searchParams.get("appId");
-const baseUrl = url.searchParams.get("baseUrl") || "https://screenbuilder.xrcommunity.org/";
+const baseUrl = url.searchParams.get("baseUrl") || "https://screenbuilder.smartcity-cloud.org/";
 
 function ReactDemoApp() {
   const ref = useRef<AppViewInstance | null>(null);

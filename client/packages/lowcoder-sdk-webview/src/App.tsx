@@ -25,8 +25,11 @@ function App() {
         const url = new URL(location.href);
         const appIdQuery = url.searchParams.get("appId");
         const moduleInputsQuery = url.searchParams.get("moduleInputs");
-        const baseUrlQuery = url.searchParams.get("baseUrl") || "https://screenbuilder.xrcommunity.org";
-        const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.xrcommunity.org"
+
+
+
+        const baseUrlQuery = url.searchParams.get("baseUrl") || "https://screenbuilder.smartcity-cloud.org/prod";
+        const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.smartcity-cloud.org"
         if (appIdQuery) setAppId(appIdQuery);
         if (moduleInputsQuery) setInput(JSON.parse(atob(moduleInputsQuery)));
         if (baseUrlQuery) setBaseUrl(baseUrlQuery);
