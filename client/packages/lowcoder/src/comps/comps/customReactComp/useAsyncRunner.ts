@@ -1,8 +1,16 @@
-import React, {createElement, ReactElement, useEffect, useRef, useState,} from 'react'
-import {Runner, UseRunnerProps, UseRunnerReturn} from 'react-runner'
+import React, {FunctionComponent, ReactElement, useEffect, useRef, useState,} from 'react'
+import {generateElement, RunnerOptions} from './react-runner'
 
 import {withFiles} from './utils/withFiles'
+export type UseRunnerProps = RunnerOptions & {
+  /** whether to cache previous element when error occurs with current code */
+  disableCache?: boolean
+}
 
+export type UseRunnerReturn = {
+  element: ReactElement | FunctionComponent | null
+  error: string | null
+}
 const esmCDN = import.meta.env.VITE_ESM_CDN
 const esmCDNQuery = import.meta.env.VITE_ESM_CDN_QUERY
 const cssCDN = import.meta.env.VITE_CSS_CDN
@@ -72,7 +80,7 @@ export type UseAsyncRunnerReturn = UseRunnerReturn & {
 export const useAsyncRunner = ({
                                  files, scope, disableCache, resolveImports = defaultImportsRevolvor,
                                }: UseAsyncRunnerProps): UseAsyncRunnerReturn => {
-  const elementRef = useRef<ReactElement | null>(null)
+  const elementRef = useRef<ReactElement | FunctionComponent | null>(null)
   const styleSheetsRef = useRef<CSSStyleSheet[]>([])
   const scopeRef = useRef(scope)
   scopeRef.current = scope
@@ -114,7 +122,7 @@ export const useAsyncRunner = ({
           }
         })
         if (controller.signal.aborted) return
-        const element = createElement(Runner, {
+        const element = generateElement( {
           code, scope: withFiles({
             ...scopeRef.current, import: {
               react: React, ...Object.keys(cssFiles).reduce((acc, name) => {

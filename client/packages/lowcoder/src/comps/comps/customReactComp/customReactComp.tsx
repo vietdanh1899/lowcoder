@@ -4,7 +4,7 @@ import {jsonObjectStateControl} from "comps/controls/codeStateControl";
 import {UICompBuilder, withDefault} from "comps/generators";
 import {NameConfig, NameConfigHidden, withExposingConfigs} from "comps/generators/withExposing";
 import {Section, sectionNames} from "lowcoder-design";
-import React, {ReactElement, useContext, useMemo, useState} from "react";
+import React, {createElement, FunctionComponent, ReactElement, useContext, useMemo, useState} from "react";
 import styled from "styled-components";
 import {getPromiseAfterDispatch} from "util/promiseUtils";
 import {hiddenPropertyView} from "comps/utils/propertyUtils";
@@ -18,7 +18,6 @@ import {useAsyncRunner} from './useAsyncRunner'
 import ReactDOM from "react-dom";
 import {createRoot} from "react-dom/client";
 import {JSONObject, JSONValue} from "lowcoder-sdk";
-import {useDeepCompareMemo} from "use-deep-compare";
 import _ from "lodash";
 import * as Axios from "axios";
 
@@ -30,25 +29,30 @@ const defaultModel = {
   text: trans("customComp.text")
 };
 
-const defaultCode = `import {Button} from 'antd'
-import {model, updateModel} from 'lowcoder'
-import styled from 'styled-components'
+const defaultCode = `import { Button } from "antd";
+import { updateModel, runQuery } from "lowcoder";
+import styled from "styled-components";
 
 const Wrapper = styled.div\`
 height: 100%;
 width: 100%;
 \`;
 
-export default function App() {
+export default function App({ model, input }) {
   return (
-  <>
-  <Wrapper>
-    <Button onClick={() => updateModel({text: "New Text"})}>Update Text</Button>
-    <div>{model.text}</div>
-    </Wrapper>
-  </>
-  )
-}`;
+    <>
+      <Wrapper>
+        <Button onClick={() => updateModel({ text: "New Text" })}>
+          Update model text
+        </Button>
+        <Button onClick={() => runQuery(input.query)}>Run Query</Button>
+        <div>Model text: {model.text}</div>
+        <div>Input name: {input.name}</div>
+      </Wrapper>
+    </>
+  );
+}
+`;
 
 type IProps = {
   input: JSONValue;
@@ -116,7 +120,7 @@ function InnerCustomComponent(props: IProps) {
   const {input, model: initialModel, code, onModelChange, dispatch} = props;
   const [model, setModel] = useState(initialModel);
 
-  const scope = useDeepCompareMemo(() => {
+  const scope = useMemo(() => {
     const updateModel = (data: any) => {
       setModel({
         ...model, ...data,
@@ -141,10 +145,10 @@ function InnerCustomComponent(props: IProps) {
           ...ReactDOM, render: (element: ReactElement) => createRoot(document.getElementById('root')!)
             .render(element)
         },
-        lowcoder: {input, model, runQuery, updateModel},
+        lowcoder: {runQuery, updateModel},
       },
     };
-  }, [input, model]);
+  }, []);
 
   const files = useMemo(() => ({"App.tsx": code}), [code]);
 
@@ -161,7 +165,9 @@ function InnerCustomComponent(props: IProps) {
       {isLoading && <div className="PreviewLoading"></div>}
       <div className="PreviewElementContainer">
         <div className="PreviewElement">
-          <>{element}</>
+          <>{(typeof element === 'function') ? createElement(element as FunctionComponent, {
+            input, model
+          } as any) : element}</>
         </div>
       </div>
       {error && <pre className="PreviewError">{error}</pre>}
