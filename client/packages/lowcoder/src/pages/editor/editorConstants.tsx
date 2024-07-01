@@ -121,6 +121,7 @@ export const CompStateIcon: {
   controlButton: <IconButtonCompIconSmall />,
   custom: <CustomCompIconSmall />,
   reactCustom: <CustomCompIconSmall />,
+  dynamicModule: <CustomCompIconSmall />,
   date: <DateCompIconSmall />,
   dateRange: <DateRangeCompIconSmall />,
   divider: <DividerCompIconSmall />,

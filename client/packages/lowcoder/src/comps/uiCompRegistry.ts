@@ -113,6 +113,7 @@ export type UICompType =
   | "iframe"
   | "custom"
   | "reactCustom"
+  | "dynamicModule"
   | "jsonExplorer"
   | "jsonEditor"
   | "shape"

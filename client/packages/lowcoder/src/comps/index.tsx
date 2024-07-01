@@ -1665,6 +1665,21 @@ export var uiCompMap: Registry = {
       h: 5,
     },
   },
+  dynamicModule: {
+    name: "Dynamic Module Component",
+    enName: "Dynamic Module Component",
+    description: "Dynamic Module Component",
+    icon: CustomCompIcon,
+    categories: ["integration"],
+    keywords: trans("uiComp.customCompKeywords"),
+    lazyLoad: true,
+    compName: "DynamicModuleComp",
+    compPath: "comps/dynamicModuleComp/dynamicModuleComp",
+    layoutInfo: {
+      w: 5,
+      h: 5,
+    },
+  },
   module: {
     name: trans("uiComp.moduleCompName"),
     enName: "Module",
