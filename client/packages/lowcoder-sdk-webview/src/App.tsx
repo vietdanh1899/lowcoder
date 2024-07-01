@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {LowcoderAppView} from "lowcoder-sdk";
+import "lowcoder-sdk/dist/style.css";
 
 declare global {
     interface Window {

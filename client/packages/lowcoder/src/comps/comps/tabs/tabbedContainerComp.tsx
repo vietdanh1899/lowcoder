@@ -155,7 +155,7 @@ const StyledTabs = styled(Tabs)<{
 
   .ant-tabs-nav {
     display: ${(props) => (props.$showHeader ? "block" : "none")};
-    padding: 0 ${(props) => (props.$isMobile ? 16 : 24)}px;
+    padding: 0 ${(props) => (props.$isMobile ? 0 : 24)}px;
     background: white;
     margin: 0px;
   }
