@@ -36,12 +36,12 @@ export const viteConfig: UserConfig = {
   build: {
     lib: {
       formats: ["es"],
-      entry: "./src/index.tsx",
+      entry: "./src/index.ts",
       name: "Lowcoder",
       fileName: "lowcoder-sdk",
     },
     rollupOptions: {
-      external: ["react", "react-dom", '**/*.test.tsx'],
+      external: ["react", "react-dom"],
       output: {
         chunkFileNames: "[hash].js",
       },

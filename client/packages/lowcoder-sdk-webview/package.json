@@ -1,11 +1,27 @@
 {
-  "name": "lowcoder-webview",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@vietdanh1899/lowcoder-sdk",
+  "version": "2.4.10",
   "type": "module",
+  "files": [
+    "src",
+    "dist",
+    "tsconfig.json"
+  ],
+  "main": "./dist/lowcoder-sdk.js",
+  "module": "./dist/lowcoder-sdk.js",
+  "exports": {
+    ".": {
+      "import": "./dist/lowcoder-sdk.js",
+      "require": "./dist/lowcoder-sdk.js"
+    },
+    "./dist/style.css": {
+      "import": "./dist/style.css"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "vite build -c vite-lib.config.js",
     "lint": "eslint ../../../../../../AppData/Local/Temp/Rar$DRa31808.9162 --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
