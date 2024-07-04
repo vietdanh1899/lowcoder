@@ -107,7 +107,11 @@ export const viteConfig: UserConfig = {
         ref: true,
       },
     }),
-    dynamicImport(),
+    dynamicImport({
+      onFiles(files) {
+        return files.filter((file) => !file.includes('test'))
+      }
+    }),
     isVisualizerEnabled && visualizer({
       template: "treemap", // or sunburst
       open: true,
