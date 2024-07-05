@@ -16,10 +16,10 @@ import Flex from "antd/es/flex";
 import { TacoButton } from "components/button";
 import { DatasourceApi } from "@lowcoder-ee/api/datasourceApi";
 import { registryDataSourcePlugin } from "@lowcoder-ee/constants/queryConstants";
-import {ModuleLoading} from "@lowcoder-ee/components/ModuleLoading";
 import Api from "@lowcoder-ee/api/api";
 import {db} from "@lowcoder-ee/appView/db";
 import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
+import {WhiteLoading} from "components/Loading";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -175,7 +175,7 @@ export class AppViewInstance<I = any, O = any> {
     const statusOrValue = await Promise.race([this.dataPromise, 'pending']);
     if (statusOrValue === 'pending') {
       // Not yet finished
-      this.root.render(<ModuleLoading/>);
+      this.root.render(<WhiteLoading/>);
     }
 
     const data = await this.dataPromise;

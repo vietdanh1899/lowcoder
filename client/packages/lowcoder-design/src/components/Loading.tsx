@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { CSSProperties } from "react";
+import { Skeleton } from 'antd';
 
 type LoadingContainerProps = {
   $backgroundColor: string;
@@ -95,5 +96,5 @@ export const LightLoading = (props: LoadingProps) => {
 
 // loading when bg-color is white
 export const WhiteLoading = (props: LoadingProps) => {
-  return <Loading backgroundColor="transparent" color="#3377FF" size={props.size} {...props} />;
+  return <Skeleton active size={props.size} {...props} />;
 };
