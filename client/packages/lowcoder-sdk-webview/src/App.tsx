@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {LowcoderAppView} from "lowcoder-sdk";
 import "lowcoder-sdk/dist/style.css";
+import "./lara-light-blue.css";
 
 declare global {
     interface Window {
