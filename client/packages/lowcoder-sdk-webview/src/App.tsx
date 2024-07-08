@@ -10,6 +10,10 @@ declare global {
     }
 }
 
+const loader = document.querySelector(".skeleton-container");
+
+const hideLoader = () => loader?.classList.add("loader-hide");
+
 function App() {
     const [appId, setAppId] = useState<string>('');
     const [baseUrl, setBaseUrl] = useState<string | undefined>('');
@@ -22,6 +26,10 @@ function App() {
         console.debug('event', message)
         window.flutter_inappwebview?.callHandler('MessageInvoker', message);
     }
+
+    useEffect(() => {
+        hideLoader();
+    }, []);
 
     useEffect(() => {
         const url = new URL(location.href);

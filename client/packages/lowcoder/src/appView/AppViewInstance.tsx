@@ -1,5 +1,3 @@
-import type { ApplicationResp } from "api/applicationApi";
-import axios from "axios";
 import type { RootComp } from "comps/comps/rootComp";
 import { setGlobalSettings } from "comps/utils/globalSettings";
 import { sdkConfig } from "constants/sdkConfig";
@@ -186,7 +184,7 @@ export class AppViewInstance<I = any, O = any> {
     this.root.render(
       this.authorizedUser ? (
         <StyleSheetManager target={this.node as HTMLElement}>
-          <Suspense fallback={null}>
+          <Suspense fallback={<WhiteLoading/>}>
             <AppView
               appId={this.appId}
               dsl={data.appDsl}
