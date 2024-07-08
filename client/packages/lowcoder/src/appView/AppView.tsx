@@ -34,6 +34,8 @@ interface AppViewProps {
   onCompChange?: (comp: RootComp | null) => void;
 }
 
+const hideLoader = () => document.querySelector(".skeleton-container")?.classList.add("loader-hide");
+
 export function AppView(props: AppViewProps) {
   const { dsl, moduleDsl, appId, moduleInputs, onCompChange, onModuleEventTriggered } = props;
 
@@ -88,6 +90,10 @@ export function AppView(props: AppViewProps) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moduleInputs]);
+
+  useEffect(() => {
+    hideLoader();
+  }, []);
 
   return (
     <App>
