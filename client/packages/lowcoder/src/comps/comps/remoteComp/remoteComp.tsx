@@ -4,7 +4,6 @@ import { withExposingConfigs } from "comps/generators/withExposing";
 import { GreyTextColor } from "constants/style";
 import log from "loglevel";
 import { Comp, CompAction, CompParams, customAction, isCustomAction } from "lowcoder-core";
-import { WhiteLoading } from "lowcoder-design";
 import { useState } from "react";
 import { useMount } from "react-use";
 import styled from "styled-components";
@@ -78,7 +77,7 @@ function RemoteCompView(props: React.PropsWithChildren<RemoteCompViewProps>) {
 
   return (
     <ViewLoadingWrapper>
-      <WhiteLoading />
+      <Skeleton.Button active block shape="round"/>
     </ViewLoadingWrapper>
   );
 }

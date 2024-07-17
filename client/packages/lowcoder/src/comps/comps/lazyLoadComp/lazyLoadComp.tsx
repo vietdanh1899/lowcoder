@@ -4,11 +4,10 @@ import { withExposingConfigs } from "comps/generators/withExposing";
 import { GreyTextColor } from "constants/style";
 import log from "loglevel";
 import { Comp, CompAction, CompConstructor, CompParams, customAction, isCustomAction } from "lowcoder-core";
-import { WhiteLoading } from "lowcoder-design";
 import { useState } from "react";
 import { useMount } from "react-use";
 import styled from "styled-components";
-import { RemoteCompInfo, RemoteCompLoader } from "types/remoteComp";
+import { RemoteCompInfo } from "types/remoteComp";
 import { withErrorBoundary } from "comps/generators/withErrorBoundary";
 
 const ViewError = styled.div`
@@ -77,7 +76,7 @@ function LazyCompView(props: React.PropsWithChildren<LazyCompViewProps>) {
 
   return (
     <ViewLoadingWrapper>
-      <WhiteLoading />
+      <Skeleton.Button active block shape="round"/>
     </ViewLoadingWrapper>
   );
 }

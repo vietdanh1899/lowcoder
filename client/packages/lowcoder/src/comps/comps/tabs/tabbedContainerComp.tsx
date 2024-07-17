@@ -31,10 +31,10 @@ import { trans } from "i18n";
 import { BoolCodeControl, NumberControl } from "comps/controls/codeControl";
 import { DisabledContext } from "comps/generators/uiCompBuilder";
 import { EditorContext } from "comps/editorState";
-import { checkIsMobile } from "util/commonUtils";
 import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { BoolControl } from "comps/controls/boolControl";
 import { PositionControl } from "comps/controls/dropdownControl";
+import {useScreenInfo} from "@lowcoder-ee/comps/hooks/screenInfoComp";
 
 const EVENT_OPTIONS = [
   {
@@ -154,8 +154,8 @@ const StyledTabs = styled(Tabs)<{
   }
 
   .ant-tabs-nav {
-    display: ${(props) => (props.$showHeader ? "block" : "none")};
-    padding: 0 ${(props) => (props.$isMobile ? 0 : 24)}px;
+    display: ${(props) => (props.$showHeader ? "flex" : "none")};
+    padding: 0 ${(props) => (props.$isMobile ? 8 : 24)}px;
     background: white;
     margin: 0px;
   }
@@ -210,9 +210,7 @@ const TabbedContainer = (props: TabbedContainerProps) => {
     []
   );
 
-  const editorState = useContext(EditorContext);
-  const maxWidth = editorState.getAppSettings().maxWidth;
-  const isMobile = checkIsMobile(maxWidth);
+  const {isMobile} = useScreenInfo();
   const showHeader = props.showHeader.valueOf();
   const paddingWidth = isMobile ? 8 : 0;
 
@@ -235,7 +233,6 @@ const TabbedContainer = (props: TabbedContainerProps) => {
     return {
       label,
       key: tab.key,
-      forceRender: true,
       children: (
         <BackgroundColorContext.Provider value={bodyStyle.background}>
           <ScrollBar style={{ height: props.autoHeight ? "100%" : "auto", margin: "0px", padding: "0px" }} hideScrollbar={!props.scrollbars}>

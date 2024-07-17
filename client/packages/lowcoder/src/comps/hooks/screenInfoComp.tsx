@@ -13,7 +13,7 @@ type ScreenInfo = {
   width?: number; height?: number; deviceType?: ScreenType; isDesktop?: boolean; isTablet?: boolean; isMobile?: boolean;
 }
 
-function useScreenInfo() {
+export function useScreenInfo() {
   const updateScreenInfo = useCallback(() => {
     setScreenInfo(getScreenInfo());
   }, [])
