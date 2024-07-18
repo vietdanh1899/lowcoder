@@ -37,7 +37,8 @@ if (!apiProxyTarget && isDev) {
 const proxyConfig: ServerOptions["proxy"] = {
   "/api": {
     target: apiProxyTarget,
-    changeOrigin: false,
+    changeOrigin: true,
+    secure: false
   },
 };
 

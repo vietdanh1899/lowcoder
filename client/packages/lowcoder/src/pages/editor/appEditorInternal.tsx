@@ -24,6 +24,7 @@ import { useUserViewMode } from "../../util/hooks";
 import { QueryApi } from "api/queryApi";
 import { RootCompInstanceType } from "./useRootCompInstance";
 import { getCurrentUser } from "redux/selectors/usersSelectors";
+import {getGlobalSettings, OrgCommonSettingsContext} from "lowcoder-sdk";
 
 /**
  * FIXME: optimize the logic of saving comps
@@ -120,9 +121,11 @@ export function AppEditorInternalView(props: AppEditorInternalViewProps) {
     <EditorSkeletonView />
   ) : (
     <ConfigProvider locale={getAntdLocale(currentUser.uiLanguage)}>
-      <ExternalEditorContext.Provider value={externalEditorState}>
-        {compInstance?.comp?.getView()}
-      </ExternalEditorContext.Provider>
+      <OrgCommonSettingsContext.Provider value={getGlobalSettings().orgCommonSettings}>
+        <ExternalEditorContext.Provider value={externalEditorState}>
+          {compInstance?.comp?.getView()}
+        </ExternalEditorContext.Provider>
+      </OrgCommonSettingsContext.Provider>
     </ConfigProvider>
   );
 }

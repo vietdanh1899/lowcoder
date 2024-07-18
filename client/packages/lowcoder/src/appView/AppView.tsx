@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import { Route, Router } from "react-router";
 import { reduxStore } from "redux/store/store";
 import { ExternalEditorContext } from "util/context/ExternalEditorContext";
+import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
+import {OrgCommonSettingsContext} from "lowcoder-sdk";
 
 const browserHistory = createBrowserHistory();
 
@@ -32,6 +34,7 @@ interface AppViewProps {
   moduleInputs?: Record<string | number, { name: string; value: any }>;
   onModuleEventTriggered?: (eventName: string) => void;
   onCompChange?: (comp: RootComp | null) => void;
+  orgCommonSettings?: CommonSettingResponseData;
 }
 
 const hideLoader = () => document.querySelector(".skeleton-container")?.classList.add("loader-hide");
@@ -107,9 +110,11 @@ export function AppView(props: AppViewProps) {
             hideHeader: true,
           }}
         >
-          <Router history={browserHistory}>
-            <Route path="/" render={() => comp?.getView()} />
-          </Router>
+          <OrgCommonSettingsContext.Provider value={props.orgCommonSettings}>
+            <Router history={browserHistory}>
+              <Route path="/" render={() => comp?.getView()} />
+            </Router>
+          </OrgCommonSettingsContext.Provider>
         </ExternalEditorContext.Provider>
       </Provider>
     </App>

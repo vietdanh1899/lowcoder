@@ -20,7 +20,7 @@ import { ModuleLayoutCompName } from "constants/compConstants";
 import { defaultTheme as localDefaultTheme } from "comps/controls/styleControlConstants";
 import { ModuleLoading } from "components/ModuleLoading";
 import EditorSkeletonView from "pages/editor/editorSkeletonView";
-import { getGlobalSettings } from "comps/utils/globalSettings";
+import { OrgCommonSettingsContext } from "comps/utils/globalSettings";
 import { getCurrentTheme } from "comps/utils/themeUtil";
 import { DataChangeResponderListComp } from "./dataChangeResponderComp";
 import { FolderListComp } from "./folderListComp";
@@ -63,7 +63,7 @@ function RootView(props: RootViewProps) {
   const { readOnly } = useContext(ExternalEditorContext);
   const isUserViewMode = useUserViewMode();
   const appThemeId = comp.children.settings.getView().themeId;
-  const { orgCommonSettings } = getGlobalSettings();
+  const orgCommonSettings  = useContext(OrgCommonSettingsContext);
   const themeList = orgCommonSettings?.themeList || [];
 
   const theme =

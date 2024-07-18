@@ -18,6 +18,7 @@ import Api from "@lowcoder-ee/api/api";
 import {db} from "@lowcoder-ee/appView/db";
 import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
 import {WhiteLoading} from "components/Loading";
+import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -48,7 +49,7 @@ export class AppViewInstance<I = any, O = any> {
   private comp: RootComp | null = null;
   private prevOutputs: any = null;
   private events = new Map<keyof EventHandlerMap, EventHandlerMap<O>[keyof EventHandlerMap]>();
-  private dataPromise: Promise<{ appDsl: any; moduleDslMap: any }>;
+  private dataPromise: Promise<{ appDsl: any; moduleDslMap: any, orgCommonSettings?: CommonSettingResponseData }>;
   private options: AppViewInstanceOptions = {
     baseUrl: "https://api-service.lowcoder.cloud",
     webUrl: "https://app.lowcoder.cloud",
@@ -77,6 +78,7 @@ export class AppViewInstance<I = any, O = any> {
 
     let finalAppDsl = appDsl;
     let finalModuleDslMap = moduleDslMap;
+    let orgCommonSettings;
 
     setGlobalSettings({
       isViewMode: true,
@@ -120,6 +122,7 @@ export class AppViewInstance<I = any, O = any> {
 
       finalAppDsl = data.applicationDSL;
       finalModuleDslMap = data.moduleDSL;
+      orgCommonSettings = data.orgCommonSettings;
     }
 
     if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
@@ -143,6 +146,7 @@ export class AppViewInstance<I = any, O = any> {
     return {
       appDsl: finalAppDsl,
       moduleDslMap: finalModuleDslMap,
+      orgCommonSettings: orgCommonSettings
     };
   }
 
@@ -186,6 +190,7 @@ export class AppViewInstance<I = any, O = any> {
         <StyleSheetManager target={this.node as HTMLElement}>
           <Suspense fallback={<WhiteLoading/>}>
             <AppView
+              orgCommonSettings={data.orgCommonSettings}
               appId={this.appId}
               dsl={data.appDsl}
               moduleDsl={data.moduleDslMap}
