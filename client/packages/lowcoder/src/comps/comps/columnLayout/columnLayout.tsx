@@ -65,13 +65,17 @@ const ContainWrapper = styled.div<{
   margin: ${(props) => props.$style?.margin};
   padding: ${(props) => props.$style?.padding};
   ${props => props.$style && getBackgroundStyle(props.$style)}
+    height: 100%;
 `;
 
 const ColWrapper = styled(Col)<{
+  $itemCss: string,
+  $background: string,
   $style: ResponsiveLayoutColStyleType | undefined,
   $minWidth?: string,
   $matchColumnsHeight: boolean,
 }>`
+  ${props => props.$itemCss};
   > div {
     height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'auto'};
     border-radius: ${(props) => props.$style?.radius};
@@ -84,7 +88,7 @@ const ColWrapper = styled(Col)<{
   }
 `;
 
-const childrenMap = { 
+const childrenMap = {
   disabled: BoolCodeControl,
   columns: ColumnOptionControl,
   containers: withDefault(sameTypeMap(SimpleContainerComp), {
@@ -125,7 +129,7 @@ const ColumnContainer = (props: ColumnContainerProps) => {
 
 const ColumnLayout = (props: ColumnLayoutProps) => {
   let {
-    columns, 
+    columns,
     containers,
     dispatch,
     matchColumnsHeight,
@@ -157,6 +161,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
               if(!containers[id]) return null
               const containerProps = containers[id].children;
               const noOfColumns = columns.length;
+              const itemCss = String(column.itemCss);
               return (
                 <BackgroundColorContext.Provider value={props.columnStyle.background}>
                   <ColWrapper
@@ -164,6 +169,8 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                     $style={props.columnStyle}
                     $minWidth={column.minWidth}
                     $matchColumnsHeight={matchColumnsHeight}
+                    $itemCss={itemCss}
+                    $background={column.background}
                   >
                     <ColumnContainer
                       layout={containerProps.layout.getView()}

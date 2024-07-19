@@ -44,5 +44,6 @@ declare var REACT_APP_SERVER_IPS: string;
 declare var REACT_APP_BUNDLE_TYPE: "sdk" | "app";
 declare var REACT_APP_DISABLE_JS_SANDBOX: string;
 declare var REACT_APP_BUNDLE_BUILTIN_PLUGIN: string;
+declare var REACT_APP_MOBILE: string;
 
 // declare module "weixin-js-sdk";

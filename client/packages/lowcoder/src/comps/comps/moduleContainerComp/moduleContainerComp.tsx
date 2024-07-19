@@ -34,7 +34,7 @@ function ModuleContainerView(props: ContainerBaseProps) {
       onRowCountChange={rowHeightChangeRef.current}
       {...otherProps}
       emptyRows={5}
-      overflow="hidden"
+      overflow="auto"
       containerPadding={readOnly ? [0, 0] : [4, 4]}
       hintPlaceholder={HintPlaceHolder}
       $bordered={!readOnly}

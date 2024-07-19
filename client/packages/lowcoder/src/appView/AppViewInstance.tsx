@@ -1,9 +1,7 @@
-import type { ApplicationResp } from "api/applicationApi";
-import axios from "axios";
 import type { RootComp } from "comps/comps/rootComp";
 import { setGlobalSettings } from "comps/utils/globalSettings";
 import { sdkConfig } from "constants/sdkConfig";
-import { get, set, isEqual } from "lodash";
+import { get, set, isEqual, cloneDeep } from "lodash";
 import type { Root } from "react-dom/client";
 import { StyleSheetManager } from "styled-components";
 import type { ModuleDSL, ModuleDSLIoInput } from "types/dsl";
@@ -16,6 +14,12 @@ import Flex from "antd/es/flex";
 import { TacoButton } from "components/button";
 import { DatasourceApi } from "@lowcoder-ee/api/datasourceApi";
 import { registryDataSourcePlugin } from "@lowcoder-ee/constants/queryConstants";
+import Api from "@lowcoder-ee/api/api";
+import {db} from "@lowcoder-ee/appView/db";
+import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
+import {WhiteLoading} from "components/Loading";
+import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
+import {dequal} from "dequal";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -46,7 +50,7 @@ export class AppViewInstance<I = any, O = any> {
   private comp: RootComp | null = null;
   private prevOutputs: any = null;
   private events = new Map<keyof EventHandlerMap, EventHandlerMap<O>[keyof EventHandlerMap]>();
-  private dataPromise: Promise<{ appDsl: any; moduleDslMap: any }>;
+  private dataPromise: Promise<{ appDsl: any; moduleDslMap: any, orgCommonSettings?: CommonSettingResponseData }>;
   private options: AppViewInstanceOptions = {
     baseUrl: "https://api-service.lowcoder.cloud",
     webUrl: "https://app.lowcoder.cloud",
@@ -70,11 +74,12 @@ export class AppViewInstance<I = any, O = any> {
     return dsl?.ui?.compType === "module";
   }
 
-  private async loadData() {
+  private async loadData(dataReload?: ApplicationDetail) {
     const { baseUrl, appDsl, moduleDslMap, webUrl } = this.options;
 
     let finalAppDsl = appDsl;
     let finalModuleDslMap = moduleDslMap;
+    let orgCommonSettings;
 
     setGlobalSettings({
       isViewMode: true,
@@ -82,43 +87,62 @@ export class AppViewInstance<I = any, O = any> {
     });
 
     if (!appDsl) {
-      const http = axios.create({ baseURL: baseUrl, withCredentials: true });
-      const data: ApplicationResp = await http
-        .get(`/api/applications/${this.appId}/view`)
-        .then((i) => i.data)
-        .catch((e) => {
-          if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
-            saveAuthSearchParams({
-              [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
-              [AuthSearchParams.loginType]: null,
-            })
+      let data: ApplicationDetail = dataReload!;
 
-            this.authorizedUser = false;
-            return {
-              data: {
-                orgCommonSettings: undefined,
-                applicationDSL: {},
-                moduleDSL: {},
-              }
-            };
-          }
+      if (!dataReload) {
+        const dataRes: Promise<ApplicationDetail> = Api
+          .get(`/applications/${this.appId}/view`)
+          .then((i) => i.data.data)
+          .catch((e) => {
+            if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
+              saveAuthSearchParams({
+                [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
+                [AuthSearchParams.loginType]: null,
+              })
+
+              this.authorizedUser = false;
+              return {
+                data: {
+                  orgCommonSettings: undefined, applicationDSL: {}, moduleDSL: {},
+                }
+              };
+            }
+          });
+
+        const cacheViewPromise = db.apps.get({"applicationInfoView.applicationId": this.appId});
+
+        Promise.all([dataRes, cacheViewPromise]).then(async ([newView, oldView]) => {
+          if (oldView && !dequal(newView, oldView)) {
+            await db.apps.put(newView);
+            if (REACT_APP_MOBILE) {
+              window.location.reload();
+            } else {
+              this.dataPromise = this.loadData(newView);
+              await this.dataPromise;
+              await this.render();
+            }
+          } else if (!oldView) db.apps.put(newView);
         });
-      
-      await DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
-        res.data.data.forEach((i) => {
-          registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
+
+        data = cloneDeep(await cacheViewPromise ?? await dataRes);
+
+        DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
+          res.data.data.forEach((i) => {
+            registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
+          });
         });
-      });
+      }
 
       setGlobalSettings({
-        orgCommonSettings: data.data.orgCommonSettings,
+        orgCommonSettings: data.orgCommonSettings,
       });
 
-      finalAppDsl = data.data.applicationDSL;
-      finalModuleDslMap = data.data.moduleDSL;
+      finalAppDsl = data.applicationDSL;
+      finalModuleDslMap = data.moduleDSL;
+      orgCommonSettings = data.orgCommonSettings;
     }
 
-    if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
+    if (!dataReload && this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
       const inputsPath = "ui.comp.io.inputs";
       const nextInputs = get(finalAppDsl, inputsPath, []).map((i: ModuleDSLIoInput) => {
         const inputValue = this.options.moduleInputs[i.name];
@@ -139,6 +163,7 @@ export class AppViewInstance<I = any, O = any> {
     return {
       appDsl: finalAppDsl,
       moduleDslMap: finalModuleDslMap,
+      orgCommonSettings: orgCommonSettings
     };
   }
 
@@ -166,6 +191,12 @@ export class AppViewInstance<I = any, O = any> {
   }
 
   private async render() {
+    const statusOrValue = await Promise.race([this.dataPromise, 'pending']);
+    if (statusOrValue === 'pending') {
+      // Not yet finished
+      this.root.render(<WhiteLoading/>);
+    }
+
     const data = await this.dataPromise;
     const loginUrl = this.options.orgId
       ? `${this.options.webUrl}/org/${this.options.orgId}/auth/login`
@@ -174,8 +205,9 @@ export class AppViewInstance<I = any, O = any> {
     this.root.render(
       this.authorizedUser ? (
         <StyleSheetManager target={this.node as HTMLElement}>
-          <Suspense fallback={null}>
+          <Suspense fallback={<WhiteLoading/>}>
             <AppView
+              orgCommonSettings={data.orgCommonSettings}
               appId={this.appId}
               dsl={data.appDsl}
               moduleDsl={data.moduleDslMap}

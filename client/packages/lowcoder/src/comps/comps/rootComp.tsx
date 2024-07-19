@@ -11,7 +11,7 @@ import { handlePromiseAndDispatch } from "util/promiseUtils";
 import { HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState } from "react";
 import { setFieldsNoTypeCheck } from "util/objectUtils";
 import { AppSettingsComp } from "./appSettingsComp";
-import { PreloadComp } from "./preLoadComp";
+import {PreloadComp, PreloadIdContext} from "./preLoadComp";
 import { TemporaryStateListComp } from "./temporaryStateComp";
 import { TransformerListComp } from "./transformerListComp";
 import UIComp from "./uiComp";
@@ -20,7 +20,7 @@ import { ModuleLayoutCompName } from "constants/compConstants";
 import { defaultTheme as localDefaultTheme } from "constants/themeConstants";
 import { ModuleLoading } from "components/ModuleLoading";
 import EditorSkeletonView from "pages/editor/editorSkeletonView";
-import { getGlobalSettings } from "comps/utils/globalSettings";
+import { OrgCommonSettingsContext } from "comps/utils/globalSettings";
 import { getCurrentTheme } from "comps/utils/themeUtil";
 import { DataChangeResponderListComp } from "./dataChangeResponderComp";
 import { FolderListComp } from "./folderListComp";
@@ -65,7 +65,7 @@ const RootView = React.memo((props: RootViewProps) => {
   const { readOnly } = useContext(ExternalEditorContext);
   const isUserViewMode = useUserViewMode();
   const appThemeId = comp.children.settings.getView().themeId;
-  const { orgCommonSettings } = getGlobalSettings();
+  const orgCommonSettings  = useContext(OrgCommonSettingsContext);
   const themeList = orgCommonSettings?.themeList || [];
   const selectedTheme = getCurrentTheme(themeList, appThemeId);
 
@@ -138,7 +138,9 @@ const RootView = React.memo((props: RootViewProps) => {
               <div key={key}>{comp.children.queries.children[key].getView()}</div>
             ))}
             <Suspense fallback={!readOnly || isUserViewMode ? SuspenseFallback : null}>
-              <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload} />
+              <PreloadIdContext.Provider value={divProps.id}>
+                <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload}/>
+              </PreloadIdContext.Provider>
             </Suspense>
           </EditorContext.Provider>
         </ThemeContext.Provider>

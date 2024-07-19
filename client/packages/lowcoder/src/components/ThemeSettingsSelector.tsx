@@ -5,8 +5,8 @@ import { isValidColor, isValidGradient, toHex } from "components/colorSelect/col
 import { ColorSelect } from "components/colorSelect";
 import { TacoInput } from "components/tacoInput";
 import { Slider, Switch } from "antd";
-import { 
-  ExpandIcon, 
+import {
+  ExpandIcon,
   CompressIcon,
   BorderRadiusIcon,
   BorderWidthIcon,
@@ -19,7 +19,7 @@ export type configChangeParams = {
   color?: string;
   radius?: string;
   chart?: string;
-  margin?: string;  
+  margin?: string;
   padding?: string;
   borderStyle?: string;
   borderColor?: string;
@@ -46,7 +46,7 @@ type ColorConfigProps = {
   name?: string;
   desc?: string;
   color?: string;
-  
+
   configChange: (params: configChangeParams) => void;
   showVarName?: boolean;
   radius?: string;
@@ -54,7 +54,7 @@ type ColorConfigProps = {
   borderWidth?: string;
   borderColor?: string;
   fontFamily?: string;
-  margin?: string;  
+  margin?: string;
   padding?: string;
   showComponentLoadingIndicators?: boolean;
   showDataLoadingIndicators?: boolean;
@@ -79,7 +79,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
     radius: defaultRadius,
     configChange,
     showVarName = true,
-    margin: defaultMargin,  
+    margin: defaultMargin,
     padding: defaultPadding,
     borderStyle: defaultBorderStyle,
     borderWidth: defaultBorderWidth,
@@ -102,7 +102,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
   const configChangeWithDebounce = _.debounce(configChange, 0);
   const [color, setColor] = useState(defaultColor);
   const [radius, setRadius] = useState(defaultRadius);
-  const [margin, setMargin] = useState(defaultMargin);  
+  const [margin, setMargin] = useState(defaultMargin);
   const [padding, setPadding] = useState(defaultPadding);
   const [borderStyle, setBorderStyle] = useState(defaultBorderStyle);
   const [borderWidth, setBorderWidth] = useState(defaultBorderWidth);
@@ -110,16 +110,16 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
   const [fontFamily, setFontFamily] = useState(defaultFontFamily);
   const [showComponentLoaders, setComponentLoaders] = useState(defaultShowComponentLoaders);
   const [showDataLoaders, setDataLoaders] = useState(defaultShowDataLoaders);
-  const [gridColumns, setGridColumns] = useState(defaultGridColumns); 
-  const [gridRowHeight, setGridRowHeight] = useState(defaultGridRowHeight); 
-  const [gridRowCount, setGridRowCount] = useState(defaultGridRowCount); 
-  const [gridPaddingX, setGridPaddingX] = useState(defaultGridPaddingX); 
-  const [gridPaddingY, setGridPaddingY] = useState(defaultGridPaddingY); 
-  const [gridBgImage, setGridBgImage] = useState(defaultGridBgImage); 
-  const [gridBgImageRepeat, setGridBgImageRepeat] = useState(defaultGridBgImageRepeat); 
-  const [gridBgImageSize, setGridBgImageSize] = useState(defaultGridBgImageSize); 
-  const [gridBgImagePosition, setGridBgImagePosition] = useState(defaultGridBgImagePosition); 
-  const [gridBgImageOrigin, setGridBgImageOrigin] = useState(defaultGridBgImageOrigin); 
+  const [gridColumns, setGridColumns] = useState(defaultGridColumns);
+  const [gridRowHeight, setGridRowHeight] = useState(defaultGridRowHeight);
+  const [gridRowCount, setGridRowCount] = useState(defaultGridRowCount);
+  const [gridPaddingX, setGridPaddingX] = useState(defaultGridPaddingX);
+  const [gridPaddingY, setGridPaddingY] = useState(defaultGridPaddingY);
+  const [gridBgImage, setGridBgImage] = useState(defaultGridBgImage);
+  const [gridBgImageRepeat, setGridBgImageRepeat] = useState(defaultGridBgImageRepeat);
+  const [gridBgImageSize, setGridBgImageSize] = useState(defaultGridBgImageSize);
+  const [gridBgImagePosition, setGridBgImagePosition] = useState(defaultGridBgImagePosition);
+  const [gridBgImageOrigin, setGridBgImageOrigin] = useState(defaultGridBgImageOrigin);
 
   const varName = `(${themeSettingKey})`;
 
@@ -150,34 +150,34 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
     configChange({ themeSettingKey, radius: result });
   };
 
-  const marginInputBlur = (margin: string) => {  
-    let result = "";  
-    if (!margin || Number(margin) === 0) {  
-      result = "0";  
-    } else if (/^[0-9]+$/.test(margin)) {  
-      result = Number(margin) + "px";  
-    } else if (/^[0-9]+(px|%)$/.test(margin)) {  
-      result = margin;  
-    } else {  
-      result = "3px";  
-    }  
-    setMargin(result);  
-    configChange({ themeSettingKey, margin: result });  
+  const marginInputBlur = (margin: string) => {
+    let result = "";
+    if (!margin || Number(margin) === 0) {
+      result = "0";
+    } else if (/^[0-9]+$/.test(margin)) {
+      result = Number(margin) + "px";
+    } else if (/^[0-9]+(px|%)$/.test(margin)) {
+      result = margin;
+    } else {
+      result = "3px";
+    }
+    setMargin(result);
+    configChange({ themeSettingKey, margin: result });
   };
 
-  const paddingInputBlur = (padding: string) => {  
-    let result = "";  
-    if (!padding || Number(padding) === 0) {  
-      result = "0";  
-    } else if (/^[0-9]+$/.test(padding)) {  
-      result = Number(padding) + "px";  
-    } else if (/^[0-9]+(px|%)$/.test(padding)) {  
-      result = padding;  
-    } else {  
-      result = "3px";  
+  const paddingInputBlur = (padding: string) => {
+    let result = "";
+    if (!padding || Number(padding) === 0) {
+      result = "0";
+    } else if (/^[0-9]+$/.test(padding)) {
+      result = Number(padding) + "px";
+    } else if (/^[0-9]+(px|%)$/.test(padding)) {
+      result = padding;
+    } else {
+      result = "3px";
     }
 
-    setPadding(result);  
+    setPadding(result);
     configChange({ themeSettingKey, padding: result });
   };
 
@@ -193,16 +193,16 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
   };
 
   const borderWidthInputBlur = (borderWidth: string) => {
-    let result = "";  
-    if (!borderWidth || Number(borderWidth) === 0) {  
-      result = "0";  
-    } else if (/^[0-9]+$/.test(borderWidth)) {  
-      result = Number(borderWidth) + "px";  
-    } else if (/^[0-9]+(px|%)$/.test(borderWidth)) {  
-      result = borderWidth;  
-    } else {  
-      result = "1px";  
-    }  
+    let result = "";
+    if (!borderWidth || Number(borderWidth) === 0) {
+      result = "0";
+    } else if (/^[0-9]+$/.test(borderWidth)) {
+      result = Number(borderWidth) + "px";
+    } else if (/^[0-9]+(px|%)$/.test(borderWidth)) {
+      result = borderWidth;
+    } else {
+      result = "1px";
+    }
     setBorderWidth(borderWidth);
     configChange({ themeSettingKey, borderWidth: result });
   };
@@ -239,29 +239,29 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
     configChange({ themeSettingKey, gridColumns: result });
   };
 
-  const gridRowCountInputBlur = (value: string) => {  
+  const gridRowCountInputBlur = (value: string) => {
     let result = Infinity;
     if (value !== '') {
       result = Number(value);
     }
 
-    setGridRowCount(result);  
+    setGridRowCount(result);
     configChange({ themeSettingKey, gridRowCount: result });
   };
 
-  const gridPaddingInputBlur = (padding: string) => { 
-    let result = 20;  
-    if (padding !== '') {  
-      result = Number(padding);  
+  const gridPaddingInputBlur = (padding: string) => {
+    let result = 20;
+    if (padding !== '') {
+      result = Number(padding);
     }
 
     if (themeSettingKey === 'gridPaddingX') {
-      setGridPaddingX(result);  
+      setGridPaddingX(result);
       configChange({ themeSettingKey, gridPaddingX: result });
       return;
     }
     if (themeSettingKey === 'gridPaddingY') {
-      setGridPaddingY(result);  
+      setGridPaddingY(result);
       configChange({ themeSettingKey, gridPaddingY: result });
       return;
     }
@@ -293,7 +293,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
   }
 
   useEffect(() => {
-    if (color && (isValidColor(color) || isValidGradient(color))) {
+    if (color && (isValidColor(color) || isValidGradient(color) || CSS.supports('color', color))) {
       configChangeWithDebounce({ themeSettingKey, color });
     }
   }, [color]);
@@ -306,12 +306,12 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
     setRadius(defaultRadius);
   }, [defaultRadius]);
 
-  useEffect(() => {  
-    setMargin(defaultMargin);  
-  }, [defaultMargin]);  
+  useEffect(() => {
+    setMargin(defaultMargin);
+  }, [defaultMargin]);
 
-  useEffect(() => {  
-    setPadding(defaultPadding);  
+  useEffect(() => {
+    setPadding(defaultPadding);
   }, [defaultPadding]);
 
   useEffect(() => {
@@ -366,14 +366,14 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
           <div className="desc">{desc}</div>
         </div>
       )}
-      
-      {themeSettingKey !== "radius" &&  
-        themeSettingKey !== "margin" &&  
-        themeSettingKey !== "padding" && 
+
+      {themeSettingKey !== "radius" &&
+        themeSettingKey !== "margin" &&
+        themeSettingKey !== "padding" &&
         themeSettingKey !== "borderStyle" &&
         themeSettingKey !== "borderWidth" &&
-        themeSettingKey !== "fontFamily" && 
-        themeSettingKey !== "showComponentLoadingIndicators" && 
+        themeSettingKey !== "fontFamily" &&
+        themeSettingKey !== "showComponentLoadingIndicators" &&
         themeSettingKey !== "showDataLoadingIndicators" &&
         themeSettingKey !== "gridColumns" &&
         themeSettingKey !== "gridRowHeight" &&
@@ -467,41 +467,41 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
         </div>
       )}
 
-      {themeSettingKey === "margin" && (  
-        <div className="config-input">  
-          <Margin $margin={defaultMargin || "4px"}>  
-            <div>  
-              <ExpandIcon title="" />  
-            </div>  
-          </Margin>  
-          <TacoInput  
-            value={margin}  
-            onChange={(e) => setMargin(e.target.value)}  
-            onBlur={(e) => marginInputBlur(e.target.value)}  
-            onKeyUp={(e) =>  
-              e.nativeEvent.key === "Enter" &&  
-              marginInputBlur(e.currentTarget.value)  
-            }  
-          />  
+      {themeSettingKey === "margin" && (
+        <div className="config-input">
+          <Margin $margin={defaultMargin || "4px"}>
+            <div>
+              <ExpandIcon title="" />
+            </div>
+          </Margin>
+          <TacoInput
+            value={margin}
+            onChange={(e) => setMargin(e.target.value)}
+            onBlur={(e) => marginInputBlur(e.target.value)}
+            onKeyUp={(e) =>
+              e.nativeEvent.key === "Enter" &&
+              marginInputBlur(e.currentTarget.value)
+            }
+          />
         </div>
-      )}  
+      )}
 
-      {themeSettingKey === "padding" && (  
-        <div className="config-input">  
-          <Padding $padding={defaultPadding || "4px"}>  
-            <div>  
+      {themeSettingKey === "padding" && (
+        <div className="config-input">
+          <Padding $padding={defaultPadding || "4px"}>
+            <div>
               <CompressIcon title="" />
-            </div>  
-          </Padding>  
-          <TacoInput  
-            value={padding}  
-            onChange={(e) => setPadding(e.target.value)}  
-            onBlur={(e) => paddingInputBlur(e.target.value)}  
-            onKeyUp={(e) =>  
-              e.nativeEvent.key === "Enter" &&  
-              paddingInputBlur(e.currentTarget.value)  
-            }  
-          />  
+            </div>
+          </Padding>
+          <TacoInput
+            value={padding}
+            onChange={(e) => setPadding(e.target.value)}
+            onBlur={(e) => paddingInputBlur(e.target.value)}
+            onKeyUp={(e) =>
+              e.nativeEvent.key === "Enter" &&
+              paddingInputBlur(e.currentTarget.value)
+            }
+          />
         </div>
       )}
 
@@ -557,7 +557,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
             <div><TableCellsIcon title="" /></div>
           </GridColumns>
 
-          <Slider 
+          <Slider
             style={{ width: "90%", margin: "8px 5% 0 5%"}}
             min={8}  // Define the minimum value for the slider
             max={48} // Define the maximum value for the slider
@@ -574,7 +574,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
             <div><TableCellsIcon title="" /></div>
           </GridColumns>
 
-          <Slider 
+          <Slider
             style={{ width: "90%", margin: "8px 5% 0 5%"}}
             min={6}  // Define the minimum value for the slider
             max={20} // Define the maximum value for the slider
@@ -597,7 +597,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
             value={gridRowCount}
             onChange={(e) => {
               if (e.target.value === '') {
-                return setGridRowCount(Infinity);  
+                return setGridRowCount(Infinity);
               }
               setGridRowCount(Number(e.target.value))
             }}
@@ -621,7 +621,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
             value={gridPaddingX}
             onChange={(e) => {
               if (e.target.value === '') {
-                return setGridPaddingX(undefined);  
+                return setGridPaddingX(undefined);
               }
               setGridPaddingX(Number(e.target.value))
             }}
@@ -645,7 +645,7 @@ export default function ThemeSettingsSelector(props: ColorConfigProps) {
             value={gridPaddingY}
             onChange={(e) => {
               if (e.target.value === '') {
-                return setGridPaddingY(undefined); 
+                return setGridPaddingY(undefined);
               }
               setGridPaddingY(Number(e.target.value))
             }}

@@ -183,6 +183,7 @@ let TmpDrawerComp = (function () {
                 containerPadding={[DEFAULT_PADDING, DEFAULT_PADDING]}
                 hintPlaceholder={HintPlaceHolder}
                 bgColor={props.style.background}
+                overflow={'auto'}
               />
             </StyledDrawer>
           </DrawerWrapper>

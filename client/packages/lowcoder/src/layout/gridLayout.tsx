@@ -343,7 +343,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
   onLayoutMaybeChanged(newLayout: Layout, oldLayout?: Layout) {
     // log.debug("layout: layoutMayBeChanged. oldLayout: ", oldLayout, " newLayout: ", newLayout);
     if (!oldLayout) oldLayout = this.state.layout;
-    
+
     if (!_.isEqual(oldLayout, newLayout)) {
       this.props.onLayoutChange?.(newLayout);
     }
@@ -1064,7 +1064,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         >
           <div style={contentStyle}>
             {showGridLines && this.gridLines()}
-            {mounted && 
+            {mounted &&
               layouts.map((item) => {
                 const zIndex = item.pos !== undefined
                   ? (maxLayoutPos - item.pos) + 1
@@ -1088,7 +1088,7 @@ const LayoutContainer = styled.div<{
   $radius?: string;
 }>`
   border-radius: ${(props) => props.$radius ?? "4px"};
-  // background-color: ${(props) => props.$bgColor ?? "#f5f5f6"};
+  background-color: ${(props) => props.$bgColor ?? "transparent"};
   /* height: 100%; */
   height: ${(props) => (props.$autoHeight ? "auto" : "100%")};
 
