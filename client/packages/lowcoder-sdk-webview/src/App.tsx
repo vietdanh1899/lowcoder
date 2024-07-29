@@ -33,7 +33,13 @@ function App() {
         const baseUrlQuery = url.searchParams.get("baseUrl") || "https://screenbuilder.smartcity-cloud.org/prod";
         const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.smartcity-cloud.org"
         if (appIdQuery) setAppId(appIdQuery);
-        if (moduleInputsQuery) setInput(JSON.parse(atob(moduleInputsQuery)));
+        if (moduleInputsQuery) {
+            const parsedInput = JSON.parse(atob(moduleInputsQuery))
+            Object.entries(parsedInput).forEach(([key, value]) => {
+                if (typeof value != "string") parsedInput[key] = JSON.stringify(value)
+            });
+            setInput(parsedInput);
+        }
         if (baseUrlQuery) setBaseUrl(baseUrlQuery);
         if (webUrlQuery) setWebUrl(webUrlQuery);
 

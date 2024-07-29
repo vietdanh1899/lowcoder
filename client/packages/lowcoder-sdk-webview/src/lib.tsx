@@ -53,9 +53,12 @@ class WcScreenRenderer extends HTMLElement {
   }
 
   #render(): void {
-    let parsedInput = null;
+    let parsedInput: any = null;
     try {
       parsedInput = JSON.parse(this.input);
+      Object.entries(parsedInput).forEach(([key, value]) => {
+        if (typeof value != "string") parsedInput[key] = JSON.stringify(value)
+      });
     } catch (e) { /* empty */
     }
 
