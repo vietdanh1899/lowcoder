@@ -1,6 +1,6 @@
 {
   "name": "@vietdanh1899/lowcoder-sdk",
-  "version": "2.4.17",
+  "version": "2.4.18",
   "type": "module",
   "files": [
     "src",
@@ -26,6 +26,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "js-base64": "^3.7.7",
     "lowcoder-sdk": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

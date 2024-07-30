@@ -22,11 +22,12 @@ import {
   MethodConfigsType,
   withMethodExposing,
 } from "./withMethodExposing";
-import { Section } from "lowcoder-design";
+import {Section, WhiteLoading} from "lowcoder-design";
 import { trans } from "i18n";
 
 export type NewChildren<ChildrenCompMap extends Record<string, Comp<unknown>>> =
   ChildrenCompMap & {
+    isLoading: InstanceType<typeof BoolCodeControl>;
     hidden: InstanceType<typeof BoolCodeControl>;
     className: InstanceType<typeof StringControl>;
     dataTestId: InstanceType<typeof StringControl>;
@@ -65,6 +66,7 @@ export function ExtendedPropertyView<
     <>
       {props.children}
       <Section name={trans("prop.component")}>
+        {props.childrenMap.isLoading?.propertyView({ label: trans("prop.loading") })}
         {props.childrenMap.className?.propertyView({ label: trans("prop.className") })}
         {props.childrenMap.dataTestId?.propertyView({ label: trans("prop.dataTestId") })}
       </Section>
@@ -79,6 +81,7 @@ export function uiChildren<
 ): ToConstructor<NewChildren<ChildrenCompMap>> {
   return {
     ...childrenMap,
+    isLoading: BoolCodeControl,
     hidden: BoolCodeControl,
     className: StringControl,
     dataTestId: StringControl
@@ -333,7 +336,7 @@ function UIView(props: {
       }}
     >
       <HidableView hidden={childrenProps.hidden as boolean}>
-        {props.viewFn(childrenProps, comp.dispatch)}
+        {childrenProps.isLoading ? <WhiteLoading /> :props.viewFn(childrenProps, comp.dispatch)}
       </HidableView>
     </div>
   );

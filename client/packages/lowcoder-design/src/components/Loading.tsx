@@ -96,5 +96,7 @@ export const LightLoading = (props: LoadingProps) => {
 
 // loading when bg-color is white
 export const WhiteLoading = (props: LoadingProps) => {
-  return <Skeleton active size={props.size} {...props} />;
+  return (<div style={{display: "flex", alignItems: "center", height: "100%"}}>
+      <Skeleton.Button active block shape="round"/>
+    </div>)
 };
