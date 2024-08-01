@@ -1075,7 +1075,7 @@ const LayoutContainer = styled.div<{
   /* height: 100%; */
   height: ${(props) => (props.$autoHeight ? "auto" : "100%")};
 
-  ${(props) => `${props.$overflow} !important` || ""};
+  overflow: ${(props) => props.$overflow ? `${props.$overflow} !important` : "hidden !important"};
   ${(props) =>
     props.$autoHeight &&
     `::-webkit-scrollbar {
