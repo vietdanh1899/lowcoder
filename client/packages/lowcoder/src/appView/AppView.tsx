@@ -68,7 +68,7 @@ export function AppView(props: AppViewProps) {
     [appId]
   );
 
-  const [comp] = useCompInstance(params);
+  const [comp, _, initialized] = useCompInstance(params);
 
   useEffect(() => {
     onCompChange?.(comp);
@@ -92,7 +92,7 @@ export function AppView(props: AppViewProps) {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleInputs]);
+  }, [moduleInputs, initialized]);
 
   useEffect(() => {
     hideLoader();
