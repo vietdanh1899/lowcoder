@@ -66,13 +66,16 @@ const ContainWrapper = styled.div<{
 `;
 
 const ColWrapper = styled(Col)<{
+  $itemCss: string,
+  $background: string,
   $style: ResponsiveLayoutColStyleType | undefined,
   $minWidth?: string,
   $matchColumnsHeight: boolean,
 }>`
+  ${props => props.$itemCss};
   > div {
     height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'auto'};
-    background-color: ${(props) => props.$style?.background} !important;
+    background-color: ${(props) => props.$background || props.$style?.background} !important;
     border-radius: ${(props) => props.$style?.radius};
     border-width: ${(props) => props.$style?.borderWidth};
     border-color: ${(props) => props.$style?.border};
@@ -149,6 +152,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
             if(!containers[id]) return null
             const containerProps = containers[id].children;
             const noOfColumns = columns.length;
+            const itemCss = String(column.itemCss);
             return (
               <BackgroundColorContext.Provider value={props.columnStyle.background}>
                 <ColWrapper
@@ -156,6 +160,8 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                   $style={props.columnStyle}
                   $minWidth={column.minWidth}
                   $matchColumnsHeight={matchColumnsHeight}
+                  $itemCss={itemCss}
+                  $background={column.background}
                 >
                   <ColumnContainer
                     layout={containerProps.layout.getView()}
