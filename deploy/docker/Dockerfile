@@ -114,6 +114,7 @@ FROM node:20.2-slim AS build-client
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 
 # Build client
+ENV NODE_OPTIONS=--max-old-space-size=8192
 COPY ./client /lowcoder-client
 WORKDIR /lowcoder-client
 RUN yarn --immutable
