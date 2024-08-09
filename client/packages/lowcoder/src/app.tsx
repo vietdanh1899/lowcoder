@@ -66,7 +66,7 @@ const LazyDebugNewComp = React.lazy(() => import("./debugNew"));
 
 const Wrapper = (props: { children: React.ReactNode, language: string }) => (
   <ConfigProvider
-    theme={{ hashed: false, cssVar: true }}
+    theme={{ hashed: false }}
     locale={getAntdLocale(props.language)}
   >
     <App>

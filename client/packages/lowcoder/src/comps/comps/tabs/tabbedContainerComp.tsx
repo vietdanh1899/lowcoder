@@ -58,7 +58,7 @@ const childrenMap = {
   disabled: BoolCodeControl,
   showHeader: withDefault(BoolControl, true),
   style: withDefault(styleControl(TabContainerStyle),{borderWidth:'1px'}),
-  headerStyle: styleControl(ContainerHeaderStyle),
+  headerStyle: withDefault(styleControl(ContainerHeaderStyle), {containerHeaderPadding: '0 10px'}),
   bodyStyle: styleControl(TabBodyStyle),
   animationStyle: styleControl(AnimationStyle),
   tabsGutter: withDefault(NumberControl, 32),
@@ -97,7 +97,7 @@ const getStyle = (
 
       > .ant-tabs-nav {
         background-color: ${headerStyle.headerBackground || 'transparent'};
-        padding: ${headerStyle.containerHeaderPadding};
+        margin: ${headerStyle.containerHeaderPadding};
 
         .ant-tabs-tab {
           div {
@@ -140,32 +140,11 @@ const StyledTabs = styled(Tabs)<{
   $animationStyle:AnimationStyleType
 }>`
   &.ant-tabs {
-    height: 100%;
     ${props=>props.$animationStyle}
   }
 
-  .ant-tabs-content-animated {
-    transition-duration: 0ms;
-  }
-
-  .ant-tabs-content {
-    height: 100%;
-    // margin-top: -16px;
-  }
-
   .ant-tabs-nav {
-    display: ${(props) => (props.$showHeader ? "flex" : "none")};
-    padding: 0 ${(props) => (props.$isMobile ? 8 : 24)}px;
-    background: white;
-    margin: 0px;
-  }
-
-  .ant-tabs-tab + .ant-tabs-tab {
-    margin: 0 0 0 20px;
-  }
-
-  .ant-tabs-nav-operations {
-    margin-right: -24px;
+      display: ${(props) => (props.$showHeader ? "flex" : "none")};
   }
 
   ${(props) => props.$style && getStyle(
