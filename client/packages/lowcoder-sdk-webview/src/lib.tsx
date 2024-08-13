@@ -62,7 +62,7 @@ class WcScreenRenderer extends HTMLElement {
     } catch (e) { /* empty */
     }
 
-    this.root.render(<LowcoderAppView
+    if (this.appId) this.root.render(<LowcoderAppView
       appId={this.appId}
       baseUrl={this.baseUrl}
       moduleInputs={parsedInput}
