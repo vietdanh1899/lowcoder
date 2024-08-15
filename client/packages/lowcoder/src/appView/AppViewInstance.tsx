@@ -1,7 +1,7 @@
 import type { RootComp } from "comps/comps/rootComp";
 import { setGlobalSettings } from "comps/utils/globalSettings";
 import { sdkConfig } from "constants/sdkConfig";
-import { get, set, isEqual } from "lodash";
+import { get, set, isEqual, cloneDeep } from "lodash";
 import type { Root } from "react-dom/client";
 import { StyleSheetManager } from "styled-components";
 import type { ModuleDSL, ModuleDSLIoInput } from "types/dsl";
@@ -19,6 +19,9 @@ import {db} from "@lowcoder-ee/appView/db";
 import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
 import {WhiteLoading} from "components/Loading";
 import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
+import {dequal} from "dequal";
+import {Modal} from "antd";
+import {SyncOutlined} from "@ant-design/icons";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -73,7 +76,7 @@ export class AppViewInstance<I = any, O = any> {
     return dsl?.ui?.compType === "module";
   }
 
-  private async loadData() {
+  private async loadData(dataReload?: ApplicationDetail) {
     const { baseUrl, appDsl, moduleDslMap, webUrl } = this.options;
 
     let finalAppDsl = appDsl;
@@ -86,12 +89,12 @@ export class AppViewInstance<I = any, O = any> {
     });
 
     if (!appDsl) {
-      const dataRes: Promise<ApplicationDetail> = Api
+      let data: ApplicationDetail = dataReload!;
+
+      if (!dataReload) {
+        const dataRes: Promise<ApplicationDetail> = Api
           .get(`/applications/${this.appId}/view`)
-          .then((i) => {
-            db.apps.put(i.data.data);
-            return i.data.data;
-          })
+          .then((i) => i.data.data)
           .catch((e) => {
             if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
               saveAuthSearchParams({
@@ -108,13 +111,36 @@ export class AppViewInstance<I = any, O = any> {
             }
           });
 
-      const data: ApplicationDetail = await db.apps.get({"applicationInfoView.applicationId": this.appId}) ?? await dataRes;
+        const cacheViewPromise = db.apps.get({"applicationInfoView.applicationId": this.appId});
 
-      DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
-        res.data.data.forEach((i) => {
-          registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
+        Promise.all([dataRes, cacheViewPromise]).then(([newView, oldView]) => {
+          if (oldView && !dequal(newView, oldView)) {
+            Modal.confirm({
+              title: 'Cập nhật ứng dụng',
+              content: 'Ứng dụng đã có phiên bản mới, bạn có muốn cập nhật?',
+              okText: "Cập nhật",
+              cancelText: "Không",
+              icon: <SyncOutlined/>,
+              onOk: async () => {
+                await db.apps.put(newView);
+                this.dataPromise = this.loadData(newView);
+                await this.dataPromise;
+                await this.render();
+              },
+              onCancel() {
+              },
+            })
+          } else if (!oldView) db.apps.put(newView);
         });
-      });
+
+        data = cloneDeep(await cacheViewPromise ?? await dataRes);
+
+        DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
+          res.data.data.forEach((i) => {
+            registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
+          });
+        });
+      }
 
       setGlobalSettings({
         orgCommonSettings: data.orgCommonSettings,
@@ -125,7 +151,7 @@ export class AppViewInstance<I = any, O = any> {
       orgCommonSettings = data.orgCommonSettings;
     }
 
-    if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
+    if (!dataReload && this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
       const inputsPath = "ui.comp.io.inputs";
       const nextInputs = get(finalAppDsl, inputsPath, []).map((i: ModuleDSLIoInput) => {
         const inputValue = this.options.moduleInputs[i.name];

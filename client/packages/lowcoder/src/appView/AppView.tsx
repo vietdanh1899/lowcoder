@@ -65,7 +65,7 @@ export function AppView(props: AppViewProps) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [appId]
+    [appId, dsl]
   );
 
   const [comp, _, initialized] = useCompInstance(params);
