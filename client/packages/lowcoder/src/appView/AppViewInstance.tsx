@@ -20,8 +20,6 @@ import {ApplicationDetail} from "@lowcoder-ee/constants/applicationConstants";
 import {WhiteLoading} from "components/Loading";
 import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
 import {dequal} from "dequal";
-import {Modal} from "antd";
-import {SyncOutlined} from "@ant-design/icons";
 
 const AppView = lazy(
   () => import('./AppView')
@@ -113,23 +111,10 @@ export class AppViewInstance<I = any, O = any> {
 
         const cacheViewPromise = db.apps.get({"applicationInfoView.applicationId": this.appId});
 
-        Promise.all([dataRes, cacheViewPromise]).then(([newView, oldView]) => {
+        Promise.all([dataRes, cacheViewPromise]).then(async ([newView, oldView]) => {
           if (oldView && !dequal(newView, oldView)) {
-            Modal.confirm({
-              title: 'Cập nhật ứng dụng',
-              content: 'Ứng dụng đã có phiên bản mới, bạn có muốn cập nhật?',
-              okText: "Cập nhật",
-              cancelText: "Không",
-              icon: <SyncOutlined/>,
-              onOk: async () => {
-                await db.apps.put(newView);
-                this.dataPromise = this.loadData(newView);
-                await this.dataPromise;
-                await this.render();
-              },
-              onCancel() {
-              },
-            })
+            await db.apps.put(newView);
+            window.location.reload();
           } else if (!oldView) db.apps.put(newView);
         });
 
