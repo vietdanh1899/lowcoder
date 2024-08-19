@@ -31,7 +31,7 @@ function App() {
 
 
 
-        const baseUrlQuery = url.searchParams.get("baseUrl") || "https://screenbuilder.smartcity-cloud.org/prod";
+        const baseUrlQuery = url.searchParams.get("baseUrl") || "https://cityos-screenbuilder.ioc-cloud.com";
         const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.smartcity-cloud.org"
         if (appIdQuery) setAppId(appIdQuery);
         if (moduleInputsQuery) {
