@@ -37,7 +37,15 @@ interface AppViewProps {
   orgCommonSettings?: CommonSettingResponseData;
 }
 
-const hideLoader = () => document.querySelector(".skeleton-container")?.classList.add("loader-hide");
+const hideLoader = () => {
+  setTimeout(() => {
+    // @ts-ignore
+    window.flutter_inappwebview?.callHandler('MessageInvoker', {
+      type: "loadSuccess"
+    });
+  }, 2500);
+  document.querySelector(".skeleton-container")?.classList.add("loader-hide");
+}
 
 export function AppView(props: AppViewProps) {
   const { dsl, moduleDsl, appId, moduleInputs, onCompChange, onModuleEventTriggered } = props;

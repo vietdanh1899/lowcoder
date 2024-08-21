@@ -6,6 +6,7 @@ export default defineConfig({
   publicDir: false,
   base: '',
   plugins: [react()],
+  define: { 'process.env.NODE_ENV': '"production"' },
   build: {
     lib: {
       formats: ["es"],
@@ -14,7 +15,7 @@ export default defineConfig({
       fileName: "lowcoder-sdk",
     },
     rollupOptions: {
-      external: ["react", "react-dom", '**/*.test.tsx'],
+      external: ['**/*.test.tsx'],
       output: {
         chunkFileNames: "[hash].js",
       },

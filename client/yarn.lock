@@ -5892,6 +5892,7 @@ __metadata:
     lowcoder-sdk: "*"
     react: ^18.2.0
     react-dom: ^18.2.0
+    roboto-fontface: ^0.10.0
     typescript: ^5.2.2
     vite: ^5.2.8
   languageName: unknown
@@ -18830,6 +18831,13 @@ coolshapes-react@lowcoder-org/coolshapes-react:
     hash-base: ^3.0.0
     inherits: ^2.0.1
   checksum: 006accc40578ee2beae382757c4ce2908a826b27e2b079efdcd2959ee544ddf210b7b5d7d5e80467807604244e7388427330f5c6d4cd61e6edaddc5773ccc393
+  languageName: node
+  linkType: hard
+
+"roboto-fontface@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "roboto-fontface@npm:0.10.0"
+  checksum: 58749bb49133974aa72d79ab1928d5d0aa1df162daab7398cbceeadc1508d222054d2e81d41ab548361a785c5cd2da97159544c3acecc8a180030c91b504be3b
   languageName: node
   linkType: hard
 
