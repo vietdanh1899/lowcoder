@@ -63,6 +63,7 @@ const ContainWrapper = styled.div<{
   border-style: ${(props) => props.$style?.borderStyle};
   margin: ${(props) => props.$style?.margin};
   padding: ${(props) => props.$style?.padding};
+    height: 100%;
 `;
 
 const ColWrapper = styled(Col)<{
