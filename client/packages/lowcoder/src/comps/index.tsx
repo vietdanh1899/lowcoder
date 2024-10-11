@@ -122,7 +122,7 @@ const builtInRemoteComps: Omit<RemoteCompInfo, "compName"> = {
   // source: !!REACT_APP_BUNDLE_BUILTIN_PLUGIN ? "bundle" : "npm",
   source: "npm",
   isRemote: true,
-  packageName: "lowcoder-comps",
+  packageName: "@vietdanh1899/lowcoder-comps",
 };
 
 export var uiCompMap: Registry = {
