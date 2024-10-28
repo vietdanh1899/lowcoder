@@ -65,7 +65,18 @@ public class PrivateNpmRegistryController implements PrivateNpmRegistryEndpoint{
                                     .headers(response.getHeaders())
                                     .body(response.getBody());
                         });
-            }));
+                    }))
+                    .onErrorResume(e -> WebClientBuildHelper.builder()
+                            .systemProxy()
+                            .build()
+                            .post()
+                            .uri(nodeServerHelper.createUri(prefix + "/" + withoutLeadingSlash))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .retrieve().toEntity(Resource.class)
+                            .map(response -> ResponseEntity
+                                    .status(response.getStatusCode())
+                                    .headers(response.getHeaders())
+                                    .body(response.getBody())));
         } else{
             return applicationServiceImpl.findById(applicationId).flatMap(application -> organizationService.getById(application.getOrganizationId())).flatMap(orgMember -> organizationService.getOrgCommonSettings(orgMember.getId()).flatMap(organizationCommonSettings -> {
                 Map<String, Object> config = Map.of("npmRegistries", Objects.requireNonNullElse(organizationCommonSettings.get("npmRegistries"), new ArrayList<>(0)), "workspaceId", orgMember.getId());

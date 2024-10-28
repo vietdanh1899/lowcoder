@@ -16,7 +16,7 @@ buildVars.forEach(({ name, defaultValue }) => {
   define[name] = JSON.stringify(process.env[name] || defaultValue);
 });
 
-const apiBaseUrl = "http://localhost:8000";
+const apiBaseUrl = "https://screenbuilder.smartcity-cloud.org";
 
 export const viteConfig: UserConfig = {
   define: {
