@@ -15,6 +15,8 @@ const SliderControlTemp = new MultiCompBuilder(childrenMap, (props) => {
 
 class SliderControl extends SliderControlTemp {
   propertyView(params: ControlParams) {
+    // Save changes if old version not have grid columns num value
+    if (this.getView() !== this.children.value.getView()) this.dispatchChangeValueAction({value: this.getView()})
     return controlItem({filterText: params.label}, <ControlPropertyViewWrapper {...params}>
       <Slider
         style={{width: "90%", margin: "8px 5% 0 5%"}}
