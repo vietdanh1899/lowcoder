@@ -17,7 +17,7 @@ async function npmLoader(
   // Falk: removed "packageVersion = "latest" as default value fir packageVersion - to ensure no automatic version jumping.
   const localPackageVersion = remoteInfo.packageVersion || "latest";
   const { packageName, packageVersion, compName } = remoteInfo;
-  const entry = `${NPM_PLUGIN_ASSETS_BASE_URL}/${appId}/${packageName}@${localPackageVersion}/index.js`;
+  const entry = `https://unpkg.com/${packageName}@${localPackageVersion}/index.js`;
 
   try {
     const module = await import(
