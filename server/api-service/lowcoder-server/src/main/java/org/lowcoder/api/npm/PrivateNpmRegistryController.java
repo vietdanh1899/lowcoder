@@ -94,7 +94,18 @@ public class PrivateNpmRegistryController implements PrivateNpmRegistryEndpoint{
                                     .headers(response.getHeaders())
                                     .body(response.getBody());
                         });
-            }));
+                    }))
+                    .onErrorResume(e -> WebClientBuildHelper.builder()
+                            .systemProxy()
+                            .build()
+                            .post()
+                            .uri(nodeServerHelper.createUri(prefix + "/" + withoutLeadingSlash))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .retrieve().toEntity(Resource.class)
+                            .map(response -> ResponseEntity
+                                    .status(response.getStatusCode())
+                                    .headers(response.getHeaders())
+                                    .body(response.getBody())));
         }
     }
 }
