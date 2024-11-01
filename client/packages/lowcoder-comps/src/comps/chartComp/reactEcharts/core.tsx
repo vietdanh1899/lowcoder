@@ -1,4 +1,5 @@
 import type { ECharts } from "echarts";
+import * as echarts from "echarts";
 import { PureComponent } from "react";
 import isEqual from "fast-deep-equal";
 import { EChartsReactProps, EChartsInstance } from "./types";
@@ -30,7 +31,7 @@ export default class EChartsReactCore extends PureComponent<EChartsReactProps> {
   constructor(props: EChartsReactProps) {
     super(props);
 
-    this.echarts = props.echarts;
+    this.echarts = echarts;
     this.ele = null;
   }
 
