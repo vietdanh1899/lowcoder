@@ -8,7 +8,7 @@ import { HookListComp } from "comps/hooks/hookListComp";
 import { QueryListComp } from "comps/queries/queryComp";
 import { NameAndExposingInfo } from "comps/utils/exposingTypes";
 import { handlePromiseAndDispatch } from "util/promiseUtils";
-import { HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState } from "react";
+import {HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState, useLayoutEffect} from "react";
 import { setFieldsNoTypeCheck } from "util/objectUtils";
 import { AppSettingsComp } from "./appSettingsComp";
 import {PreloadComp, PreloadIdContext} from "./preLoadComp";
@@ -73,10 +73,15 @@ const RootView = React.memo((props: RootViewProps) => {
     previewTheme?.previewTheme ||
     selectedTheme?.theme ||
     localDefaultTheme;
-  
+
   const themeId = selectedTheme ? selectedTheme.id : (
     previewTheme ? "preview-theme" : 'default-theme-id'
-  ); 
+  );
+
+  useLayoutEffect(() => {
+    const gridBg = comp.children.settings.getView().gridBg;
+    if (readOnly && gridBg) document.body.style.backgroundColor = gridBg;
+  }, []);
 
   useEffect(() => {
     const newEditorState = new EditorState(comp, (changeEditorStateFn) => {
