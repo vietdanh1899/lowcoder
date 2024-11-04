@@ -135,7 +135,7 @@ const RootView = React.memo((props: RootViewProps) => {
   }
 
   return (
-    <div {...divProps} style={{height: '100%'}}>
+    <div {...(readOnly && divProps)} style={{height: '100%'}}>
       <PropertySectionContext.Provider value={propertySectionContextValue}>
         <ThemeContext.Provider value={themeContextValue}>
           <EditorContext.Provider value={editorState}>
