@@ -47,6 +47,12 @@ function LowcoderAppViewBase<I = any, O = any>(
     }
     instance.on("moduleOutputChange", onModuleOutputChange);
     instance.on("moduleEventTriggered", onModuleEventTriggered);
+    instance.on("reload", () => {
+      root?.unmount();
+      const newRoot = createRoot(nodeRef.current!);
+      setRoot(newRoot);
+      bootstrapAppAt<I>(appId, nodeRef.current, newRoot, options).then(setInstance)
+    });
   }, [instance, onModuleEventTriggered, onModuleOutputChange]);
 
   useEffect(() => {

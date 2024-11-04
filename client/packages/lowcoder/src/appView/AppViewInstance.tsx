@@ -33,6 +33,7 @@ type Off = () => void;
 interface EventHandlerMap<O = any> {
   moduleOutputChange: OutputChangeHandler<O>;
   moduleEventTriggered: EventTriggerHandler;
+  reload: () => void;
 }
 
 export interface AppViewInstanceOptions<I = any> {
@@ -74,7 +75,7 @@ export class AppViewInstance<I = any, O = any> {
     return dsl?.ui?.compType === "module";
   }
 
-  private async loadData(dataReload?: ApplicationDetail) {
+  private async loadData() {
     const { baseUrl, appDsl, moduleDslMap, webUrl } = this.options;
 
     let finalAppDsl = appDsl;
@@ -87,51 +88,43 @@ export class AppViewInstance<I = any, O = any> {
     });
 
     if (!appDsl) {
-      let data: ApplicationDetail = dataReload!;
+      let data: ApplicationDetail;
 
-      if (!dataReload) {
-        const dataRes: Promise<ApplicationDetail> = Api
-          .get(`/applications/${this.appId}/view`)
-          .then((i) => i.data.data)
-          .catch((e) => {
-            if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
-              saveAuthSearchParams({
-                [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
-                [AuthSearchParams.loginType]: null,
-              })
+      const dataRes: Promise<ApplicationDetail> = Api
+        .get(`/applications/${this.appId}/view`)
+        .then((i) => i.data.data)
+        .catch((e) => {
+          if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
+            saveAuthSearchParams({
+              [AuthSearchParams.redirectUrl]: encodeURIComponent(window.location.href),
+              [AuthSearchParams.loginType]: null,
+            })
 
-              this.authorizedUser = false;
-              return {
-                data: {
-                  orgCommonSettings: undefined, applicationDSL: {}, moduleDSL: {},
-                }
-              };
-            }
-          });
-
-        const cacheViewPromise = db.apps.get({"applicationInfoView.applicationId": this.appId});
-
-        Promise.all([dataRes, cacheViewPromise]).then(async ([newView, oldView]) => {
-          if (oldView && !dequal(newView, oldView)) {
-            await db.apps.put(newView);
-            if (REACT_APP_MOBILE) {
-              window.location.reload();
-            } else {
-              this.dataPromise = this.loadData(newView);
-              await this.dataPromise;
-              await this.render();
-            }
-          } else if (!oldView) db.apps.put(newView);
+            this.authorizedUser = false;
+            return {
+              data: {
+                orgCommonSettings: undefined, applicationDSL: {}, moduleDSL: {},
+              }
+            };
+          }
         });
 
-        data = cloneDeep(await cacheViewPromise ?? await dataRes);
+      const cacheViewPromise = db.apps.get({"applicationInfoView.applicationId": this.appId});
 
-        DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
-          res.data.data.forEach((i) => {
-            registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
-          });
+      Promise.all([dataRes, cacheViewPromise]).then(async ([newView, oldView]) => {
+        if (oldView && !dequal(newView, oldView)) {
+          await db.apps.put(newView);
+          this.emit("reload", []);
+        } else if (!oldView) db.apps.put(newView);
+      });
+
+      data = cloneDeep(await cacheViewPromise ?? await dataRes);
+
+      DatasourceApi.fetchJsDatasourceByApp(this.appId).then((res) => {
+        res.data.data.forEach((i) => {
+          registryDataSourcePlugin(i.type, i.id, i.pluginDefinition);
         });
-      }
+      });
 
       setGlobalSettings({
         orgCommonSettings: data.orgCommonSettings,
@@ -142,7 +135,7 @@ export class AppViewInstance<I = any, O = any> {
       orgCommonSettings = data.orgCommonSettings;
     }
 
-    if (!dataReload && this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
+    if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
       const inputsPath = "ui.comp.io.inputs";
       const nextInputs = get(finalAppDsl, inputsPath, []).map((i: ModuleDSLIoInput) => {
         const inputValue = this.options.moduleInputs[i.name];
