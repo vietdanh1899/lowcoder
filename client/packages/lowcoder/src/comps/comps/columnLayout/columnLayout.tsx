@@ -70,22 +70,20 @@ const ContainWrapper = styled.div<{
 
 const ColWrapper = styled(Col)<{
   $itemCss: string,
-  $background: string,
   $style: ResponsiveLayoutColStyleType | undefined,
   $minWidth?: string,
   $matchColumnsHeight: boolean,
 }>`
-  ${props => props.$itemCss};
-  > div {
-    height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'auto'};
+    height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || '0px'} - ${props.$style?.padding || '0px'})` : 'auto'};
     border-radius: ${(props) => props.$style?.radius};
     border-width: ${(props) => props.$style?.borderWidth};
     border-color: ${(props) => props.$style?.border};
     border-style: ${(props) => props.$style?.borderStyle};
     margin: ${(props) => props.$style?.margin};
     padding: ${(props) => props.$style?.padding};
-    ${props => props.$style && getBackgroundStyle(props.$style)}
-  }
+    box-shadow: ${(props) => props.$style?.boxShadow};
+    ${props => props.$style && getBackgroundStyle(props.$style)};
+    ${props => props.$itemCss};
 `;
 
 const childrenMap = {
@@ -110,7 +108,7 @@ const childrenMap = {
 type ViewProps = RecordConstructorToView<typeof childrenMap>;
 type ColumnLayoutProps = ViewProps & { dispatch: DispatchType };
 type ColumnContainerProps = Omit<ContainerBaseProps, 'style'> & {
-  style: ResponsiveLayoutColStyleType,
+  // style: ResponsiveLayoutColStyleType,
 }
 
 const ColumnContainer = (props: ColumnContainerProps) => {
@@ -120,7 +118,7 @@ const ColumnContainer = (props: ColumnContainerProps) => {
       emptyRows={15}
       hintPlaceholder={HintPlaceHolder}
       radius={"0"}
-      style={props.style}
+      // style={props.style}
       enableGridLines={false}
     />
   );
@@ -137,7 +135,6 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
     rowGap,
     templateColumns,
     columnGap,
-    columnStyle,
     horizontalGridCells,
     mainScrollbar
   } = props;
@@ -163,14 +160,20 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
               const noOfColumns = columns.length;
               const itemCss = String(column.itemCss);
               return (
-                <BackgroundColorContext.Provider value={props.columnStyle.background}>
+                <BackgroundColorContext.Provider
+                  value={column.background || props.columnStyle.background}
+                >
                   <ColWrapper
                     key={id}
-                    $style={props.columnStyle}
+                    $style={_.mergeWith(
+                      {},
+                      props.columnStyle,
+                      column,
+                      (a, b) => b || a,
+                    )}
                     $minWidth={column.minWidth}
                     $matchColumnsHeight={matchColumnsHeight}
                     $itemCss={itemCss}
-                    $background={column.background}
                   >
                     <ColumnContainer
                       layout={containerProps.layout.getView()}
@@ -179,7 +182,6 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                       positionParams={containerProps.positionParams.getView()}
                       dispatch={childDispatch}
                       autoHeight={props.autoHeight}
-                      style={columnStyle}
                     />
                   </ColWrapper>
                 </BackgroundColorContext.Provider>
