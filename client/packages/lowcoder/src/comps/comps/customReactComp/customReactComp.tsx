@@ -20,6 +20,7 @@ import {createRoot} from "react-dom/client";
 import {JSONObject, JSONValue} from "lowcoder-sdk";
 import _ from "lodash";
 import * as Axios from "axios";
+import * as PrimeReact from "primereact";
 
 const defaultInput = {
   name: "{{currentUser.name}}", query: "query1"
@@ -135,6 +136,7 @@ function InnerCustomComponent(props: IProps) {
 
     return {
       import: {
+        primereact: PrimeReact,
         react: React,
         antd: Antd,
         'antd-mobile': AntdMobile,
