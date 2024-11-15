@@ -79,8 +79,10 @@ const RootView = React.memo((props: RootViewProps) => {
   );
 
   useLayoutEffect(() => {
-    const gridBg = comp.children.settings.getView().gridBg;
-    if (readOnly && gridBg) document.body.style.backgroundColor = gridBg;
+    if (REACT_APP_MOBILE) {
+      const gridBg = comp.children.settings.getView().gridBg;
+      if (readOnly && gridBg) document.body.style.backgroundColor = gridBg;
+    }
   }, []);
 
   useEffect(() => {
