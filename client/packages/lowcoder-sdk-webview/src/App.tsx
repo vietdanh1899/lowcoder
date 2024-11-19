@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {LowcoderAppView} from "lowcoder-sdk";
 import "lowcoder-sdk/dist/style.css";
-import {Base64} from "js-base64";
 
 declare global {
     interface Window {
+        Base64: { decode: any };
         flutter_inappwebview: { callHandler: any };
         loadScreen: (arg: never) => void;
     }
@@ -34,7 +34,7 @@ function App() {
         const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.smartcity-cloud.org"
         if (appIdQuery) setAppId(appIdQuery);
         if (moduleInputsQuery) {
-            const parsedInput = JSON.parse(Base64.decode(moduleInputsQuery))
+            const parsedInput = JSON.parse(window.Base64.decode(moduleInputsQuery))
             Object.entries(parsedInput).forEach(([key, value]) => {
                 if (typeof value != "string") parsedInput[key] = JSON.stringify(value)
             });

@@ -1,6 +1,6 @@
 {
   "name": "@ledangtruongdat/primereact-lowcoder-components",
-  "version": "0.0.65",
+  "version": "0.0.68",
   "type": "module",
   "license": "MIT",
   "dependencies": {
@@ -383,5 +383,6 @@
   "devDependencies": {
     "@types/lodash": "^4.17.5",
     "sass": "^1.72.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

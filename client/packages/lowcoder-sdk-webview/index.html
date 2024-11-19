@@ -1,10 +1,24 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link href="/ioc-styles.css" rel="stylesheet"/>
+    <script src="/base64.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const moduleInputsQuery = urlParams.get('moduleInputs');
+        let input;
+        try {
+            input = JSON.parse(window.Base64.decode(moduleInputsQuery));
+        } catch (e) {
+            console.error(e);
+        }
+        const newThemeElement = document.createElement("style");
+        newThemeElement.innerHTML = `@import url('./theme/ioc-${input?.colorScheme ?? "light"}/theme.css')`;
+        document.head.appendChild(newThemeElement);
+    </script>
     <meta charset="UTF-8"/>
     <link href="/vite.svg" rel="icon" type="image/svg+xml"/>
-    <link href="/lara-light-blue/theme.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/fonts/inter.css">
+    <link href="/fonts/inter.css" rel="stylesheet">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Vite + React + TS</title>
     <script type="importmap">
