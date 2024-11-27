@@ -71,7 +71,7 @@ const childrenMap = {
 
 type ViewProps = RecordConstructorToView<typeof childrenMap>;
 type TabbedContainerProps = ViewProps & { dispatch: DispatchType };
- 
+
 const getStyle = (
   style: TabContainerStyleType,
   headerStyle: ContainerHeaderStyleType,
@@ -95,7 +95,7 @@ const getStyle = (
       }
 
       > .ant-tabs-nav {
-        padding: ${headerStyle.containerHeaderPadding};
+        margin: ${headerStyle.containerHeaderPadding};
         ${getBackgroundStyle({
           background: headerStyle.headerBackground,
           backgroundImage: headerStyle.headerBackgroundImage,
@@ -137,11 +137,11 @@ const getStyle = (
   `;
 };
 
-const StyledTabs = styled(Tabs)<{ 
+const StyledTabs = styled(Tabs)<{
   $style: TabContainerStyleType;
   $headerStyle: ContainerHeaderStyleType;
   $bodyStyle: TabBodyStyleType;
-  $isMobile?: boolean; 
+  $isMobile?: boolean;
   $showHeader?: boolean;
   $animationStyle:AnimationStyleType
 }>`
@@ -160,8 +160,8 @@ const StyledTabs = styled(Tabs)<{
   }
 
   .ant-tabs-nav {
-    display: ${(props) => (props.$showHeader ? "block" : "none")};
-    padding: 0 ${(props) => (props.$isMobile ? 16 : 24)}px;
+    display: ${(props) => (props.$showHeader ? "flex" : "none")};
+    margin: 0 ${(props) => (props.$isMobile ? 16 : 24)}px;
     // background: white;
     margin: 0px;
   }
@@ -241,7 +241,7 @@ const TabbedContainer = (props: TabbedContainerProps) => {
     );
     return {
       label,
-      key: tab.key,                                                                            
+      key: tab.key,
       forceRender: true,
       children: (
         <BackgroundColorContext.Provider value={bodyStyle.background}>
@@ -310,7 +310,7 @@ export const TabbedContainerBaseComp = (function () {
             })}
             {children.selectedTabKey.propertyView({ label: trans("prop.defaultValue") })}
           </Section>
-        
+
           {["logic", "both"].includes(useContext(EditorContext).editorModeStatus) && (
             <Section name={sectionNames.interaction}>
               {children.onEvent.getPropertyView()}
