@@ -34,7 +34,7 @@ function App() {
         const webUrlQuery = url.searchParams.get("webUrl") || "https://screenbuilder.smartcity-cloud.org"
         if (appIdQuery) setAppId(appIdQuery);
         if (moduleInputsQuery) {
-            const parsedInput = JSON.parse(window.Base64.decode(moduleInputsQuery))
+            const parsedInput = JSON.parse(moduleInputsQuery);
             Object.entries(parsedInput).forEach(([key, value]) => {
                 if (typeof value != "string") parsedInput[key] = JSON.stringify(value)
             });
