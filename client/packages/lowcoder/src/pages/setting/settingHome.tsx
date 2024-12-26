@@ -8,7 +8,7 @@ import AuditSetting from "@lowcoder-ee/pages/setting/audit";
 import { isEE, isEnterpriseMode, isSelfDomain, showAuditLog } from "util/envUtils";
 import { TwoColumnSettingPageContent } from "./styled";
 import SubSideBar from "components/layout/SubSideBar";
-import { 
+import {
   Menu,
   UserGroupIcon,
   UserShieldIcon,
@@ -29,7 +29,6 @@ import { enableCustomBrand } from "util/featureFlagUtils";
 import FreeLimitTag from "pages/common/freeLimitTag";
 import { Helmet } from "react-helmet";
 import { Card } from "antd";
-import { Subscription } from "./subscriptions";
 
 enum SettingPageEnum {
   UserGroups = "permission",
@@ -130,10 +129,10 @@ export function SettingHome() {
         !enableCustomBrand(config) ||
         (!isSelfDomain(config) && !isEnterpriseMode(config)),
     },
-    { 
+    {
       key: SettingPageEnum.Subscription,
       label: trans("settings.subscription"),
-      icon: <SubscriptionIcon width={"20px"}/>, 
+      icon: <SubscriptionIcon width={"20px"}/>,
     }
   ];
 
@@ -162,16 +161,15 @@ export function SettingHome() {
         {selectKey === SettingPageEnum.Audit && <AuditSetting />}
         {selectKey === SettingPageEnum.Branding && <BrandingSetting />}
         {selectKey === SettingPageEnum.Advanced && <AdvancedSetting />}
-        {selectKey === SettingPageEnum.Subscription && <Subscription />}
       </TwoColumnSettingPageContent>
     </>
   );
 }
 
-// { 
+// {
 //  key: SettingPageEnum.Subscription,
 //  label: trans("settings.subscription"),
-//  icon: <SubscriptionIcon width={"20px"}/>, 
+//  icon: <SubscriptionIcon width={"20px"}/>,
 // }
 
 export default SettingHome;
