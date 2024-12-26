@@ -397,7 +397,7 @@ function* setAppEditingStateSaga(action: ReduxAction<SetAppEditingStatePayload>)
     yield call(
       ApplicationApi.setAppEditingState,
       action.payload
-    ); 
+    );
   } catch (error) {
     log.debug("set app editing state: ", error);
   }
@@ -432,7 +432,7 @@ export default function* applicationSagas() {
     takeLatest(ReduxActionTypes.UPDATE_APP_PERMISSION, updateApplicationPermission),
     takeLatest(ReduxActionTypes.DELETE_APP_PERMISSION, deleteApplicationPermission),
     takeLatest(ReduxActionTypes.FETCH_APPLICATION_DETAIL, fetchApplicationDetailSaga),
-    takeLatest(ReduxActionTypes.FETCH_ALL_APPLICATIONS_INIT, fetchAllApplicationSaga),
+    // takeLatest(ReduxActionTypes.FETCH_ALL_APPLICATIONS_INIT, fetchAllApplicationSaga),
     takeLatest(ReduxActionTypes.FETCH_ALL_MODULES_INIT, fetchAllModulesSaga),
 
     takeLatest(ReduxActionTypes.RECYCLE_APPLICATION_INIT, recycleApplicationSaga),
