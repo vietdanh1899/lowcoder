@@ -31,7 +31,7 @@ const StyledSpin = styled(Spin)`
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #f5f5f6;
+  background-color: transparent;
   height: 100%;
 `;
 
