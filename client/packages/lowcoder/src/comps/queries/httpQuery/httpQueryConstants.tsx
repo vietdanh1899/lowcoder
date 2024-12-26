@@ -33,6 +33,19 @@ const UrlInputAddonBefore = styled.div`
   white-space: nowrap;
 `;
 
+export const HttpProxyPropertyView = (props: {
+    comp: InstanceType<typeof HttpQuery | typeof GraphqlQuery | typeof StreamQuery>;
+    datasourceId: string;
+    urlPlaceholder?: string;
+}) => {
+    return (<QueryConfigWrapper>
+        <QueryConfigLabel>Proxy</QueryConfigLabel>
+        <QueryConfigItemWrapper>
+            {props.comp.children.proxy.propertyView({})}
+        </QueryConfigItemWrapper>
+    </QueryConfigWrapper>);
+};
+
 export const HttpPathPropertyView = (props: {
   comp: InstanceType<typeof HttpQuery | typeof GraphqlQuery | typeof StreamQuery>;
   datasourceId: string;

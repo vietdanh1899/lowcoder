@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 import DataSourceIcon from "components/DataSourceIcon";
 import { SimpleNameComp } from "comps/comps/simpleNameComp";
-import { StringControl } from "comps/controls/codeControl";
+import {BoolCodeControl, StringControl} from "comps/controls/codeControl";
 import { eventHandlerControl } from "comps/controls/eventHandlerControl";
 import { EditorState } from "comps/editorState";
 import {
@@ -25,6 +25,7 @@ import { getReduceContext } from "comps/utils/reduceContext";
 import { trans } from "i18n";
 import _ from "lodash";
 import {
+  AbstractNode,
   ChangeValueAction,
   CompAction,
   CompActionTypes,
@@ -168,6 +169,7 @@ const childrenMap = {
     },
   }),
   cancelPrevious: withDefault(BoolPureControl, false),
+  condition: BoolCodeControl,
   // use only for onQueryExecution trigger
   depQueryName: SimpleNameComp,
   // use only for onTimeout trigger, triggers query after x time passed on page load
@@ -206,7 +208,7 @@ QueryCompTmp = class extends QueryCompTmp {
   readonly isDepReady: boolean = false;
 
   dispatchExecuteAction() {
-    this.dispatch(executeQueryAction({}));
+    if (!this.children.condition.unevaledValue || (this.children.condition.nodeWithoutCache()  as AbstractNode<any>).evalCache.value.value) this.dispatch(executeQueryAction({}));
   }
 
   execute(target: any) {
@@ -286,7 +288,7 @@ QueryCompTmp = class extends QueryCompTmp {
         setTimeout(() => {
           blockInputChangeQueries = false;
         }, 500)
-        
+
         return setFieldsNoTypeCheck(next, {
           [lastDependsKey]: depends,
           [lastDslKey]: dsl,
@@ -328,7 +330,7 @@ function QueryView(props: QueryViewProps) {
       !comp.children.isNewCreate.value
     ) {
       setTimeout(() => {
-        comp.dispatch(deferAction(executeQueryAction({})));
+        if (!comp.children.condition.unevaledValue || (comp.children.condition.nodeWithoutCache()  as AbstractNode<any>).evalCache.value.value) comp.dispatch(deferAction(executeQueryAction({})));
       }, 300);
     }
 
@@ -702,7 +704,7 @@ class QueryListComp extends QueryListTmpComp implements BottomResListComp {
             getTriggerType(query) === 'onQueryExecution'
             && query.children.depQueryName.getView() === queryName
           ) {
-            return true; 
+            return true;
           }
         })
         dependentQueries?.forEach((query) => {

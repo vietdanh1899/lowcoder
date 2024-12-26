@@ -6,7 +6,7 @@ FROM maven:3.9-eclipse-temurin-17 AS build-api-service
 # Build lowcoder-api
 COPY ./server/api-service /lowcoder-server
 WORKDIR /lowcoder-server
-RUN --mount=type=cache,target=/root/.m2 mvn -f pom.xml clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn -f pom.xml clean package -DskipTests -Dmaven.test.skip=true
 
 # Create required folder structure
 RUN mkdir -p /lowcoder/api-service/config /lowcoder/api-service/logs /lowcoder/plugins
@@ -116,6 +116,7 @@ FROM node:20.2-slim AS build-client
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 
 # Build client
+ENV NODE_OPTIONS=--max-old-space-size=8192
 COPY ./client /lowcoder-client
 WORKDIR /lowcoder-client
 RUN yarn --immutable

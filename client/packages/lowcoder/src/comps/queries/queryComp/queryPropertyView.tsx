@@ -167,6 +167,16 @@ export function QueryPropertyView(props: { comp: InstanceType<typeof QueryComp> 
                   <QueryUsagePropertyView comp={comp} />
                 </QuerySectionWrapper>
 
+                <QuerySectionWrapper>
+                  <>
+                    {children.condition.propertyView({
+                      label: trans("eventHandler.condition"),
+                      tooltip: trans("eventHandler.conditionTooltip"),
+                      placeholder: "{{ !!example.value }}",
+                      placement: "bottom",
+                    })}
+                  </>
+                </QuerySectionWrapper>
 
               </QueryPropertyViewWrapper>
             ),
@@ -634,7 +644,7 @@ function buildQueryUsageDataset(components: any[], queryName: string): any[] {
 }
 
 
-const ComponentButton = (props: {   
+const ComponentButton = (props: {
   componentType: string;
   componentName: string;
   path: string;
@@ -732,7 +742,7 @@ export const QueryUsagePropertyView = (props: {
   const editorState = useContext(EditorContext);
   const queryName = comp.children.name.getView();
   const componentsUsingQuery = collectComponentsUsingQuery(editorState.getAllUICompMap(), queryName);
-  
+
   const usageObjects = buildQueryUsageDataset(componentsUsingQuery, queryName);
 
   const handleSelect = (componentType: string,componentName: string, path: string) => {
@@ -755,7 +765,7 @@ export const QueryUsagePropertyView = (props: {
   } else {
     return <div></div>;
   }
-  
+
 };
 
 

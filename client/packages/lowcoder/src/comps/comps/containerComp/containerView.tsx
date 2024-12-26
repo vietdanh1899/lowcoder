@@ -551,7 +551,7 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
       emptyRows={props.emptyRows}
       maxRows={currentRowCount}
       rowHeight={currentRowHeight}
-      overflow={props.overflow}
+      overflow={props.overflow ?? (props.autoHeight ? "hidden" : "auto")}
       extraHeight={props.extraHeight}
       cols={parseInt(defaultGrid)}
       autoHeight={props.autoHeight}
