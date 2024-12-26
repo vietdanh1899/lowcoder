@@ -580,6 +580,7 @@ const ColumnOption = new MultiCompBuilder(
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
+    itemCss: StringControl,
     minWidth: withDefault(RadiusControl, ""),
     background: withDefault(ColorControl, ""),
     backgroundImage: withDefault(StringControl, ""),
@@ -592,6 +593,15 @@ const ColumnOption = new MultiCompBuilder(
 )
 .setPropertyViewFn((children) => (
   <StyledContent>
+    {children.label.propertyView({
+      label: trans("label")
+    })}
+    {children.key.propertyView({
+      label: "Key"
+    })}
+    {children.itemCss.propertyView({
+      label: "Grid Item Css"
+    })}
     {children.minWidth.propertyView({
       label: trans('responsiveLayout.minWidth'),
       preInputNode: <StyledIcon as={WidthIcon} title="" />,

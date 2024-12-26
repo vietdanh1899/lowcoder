@@ -599,7 +599,7 @@ function calcColors<ColorMap extends Record<string, string>>(
       res[name] = props[name];
       return;
     }
-  
+
     if (!isEmptyTextWeight(props[name]) && isTextWeightConfig(config)) {
       res[name] = props[name];
       return;
@@ -1119,9 +1119,7 @@ const useThemeStyles = (
   const appSettingsComp = editorState?.getAppSettingsComp();
   const preventAppStylesOverwriting = appSettingsComp?.getView()?.preventAppStylesOverwriting;
   const { appliedThemeId, preventStyleOverwriting } = (comp?.comp || {});
-  const appTheme = isPreviewTheme || isDefaultTheme || (!preventStyleOverwriting && !preventAppStylesOverwriting)
-    ? theme?.theme
-    : defaultTheme;
+  const appTheme = theme?.theme || defaultTheme;
   let compTheme: JSONValue|undefined = {};
   if (appliedThemeId !== themeId) {
     compTheme = isPreviewTheme || isDefaultTheme || (compType && !preventStyleOverwriting && !preventAppStylesOverwriting)

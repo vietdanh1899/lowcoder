@@ -52,6 +52,7 @@ export function Modal(props: ModalProps) {
   // log.info("Modal. modalWidth: ", modalWidth, " width: ", size?.w, " detectWidth: ", detectWidth);
   return (
     <AntdModal
+      centered
       width={width ?? modalWidth}
       styles={{ 
         body: {

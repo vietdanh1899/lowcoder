@@ -302,13 +302,13 @@ export type SingleColorConfig =
   | BoxShadowColorConfig
   | AnimationIterationCountConfig
   | LineHeightConfig
-  | ChartBackgroundColorConfig
+| ChartBackgroundColorConfig
   | ChartGradientColorConfig
   | ChartShadowColorConfig
   | ChartBorderColorConfig
   | ChartTextColorConfig
-  
- 
+
+
 
 export const SURFACE_COLOR = "#FFFFFF";
 const SECOND_SURFACE_COLOR = "#D7D9E0";
@@ -2182,6 +2182,7 @@ export const ResponsiveLayoutColStyle = [
   BORDER_STYLE,
   MARGIN,
   PADDING,
+  BOXSHADOW
 ] as const;
 
 export const NavLayoutStyle = [

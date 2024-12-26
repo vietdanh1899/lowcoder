@@ -55,6 +55,7 @@ public interface AuthenticationEndpoints
             @RequestParam(required = false) String authId,
             @RequestParam(required = false) String source,
             @RequestParam String code,
+			@RequestParam(required = false, defaultValue = "false") Boolean isAccessToken,
             @RequestParam(required = false) String invitationId,
             @RequestParam String redirectUrl,
             @RequestParam String orgId,

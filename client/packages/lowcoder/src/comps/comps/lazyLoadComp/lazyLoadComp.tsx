@@ -17,7 +17,7 @@ const ViewError = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: transparent;
   height: 100%;
   color: ${GreyTextColor};
   border-radius: 4px;
@@ -28,7 +28,7 @@ const ViewLoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: transparent;
   height: 100%;
 `;
 
