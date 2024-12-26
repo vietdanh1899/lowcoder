@@ -21,10 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static com.google.common.base.Suppliers.memoize;
@@ -42,9 +39,12 @@ public class Application extends HasIdAndAuditing {
     @Setter
     @Getter
     private String slug;
+    @Getter
     private String organizationId;
+    @Getter
     private String name;
     private Integer applicationType;
+    @Getter
     private ApplicationStatus applicationStatus;
 
     private Map<String, Object> editingApplicationDSL;
@@ -140,21 +140,9 @@ public class Application extends HasIdAndAuditing {
     @Transient
     @JsonIgnore
     public Mono<Map<String, Object>> getLiveApplicationDsl(ApplicationRecordService applicationRecordService) {
-        return applicationRecordService.getLatestRecordByApplicationId(this.getId())
-                .map(ApplicationRecord::getApplicationDSL)
-                .switchIfEmpty(Mono.just(editingApplicationDSL));
-    }
-
-    public String getOrganizationId() {
-        return organizationId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ApplicationStatus getApplicationStatus() {
-        return this.applicationStatus;
+        var dsl = editingApplicationDSL;
+        if (dsl == null) dsl = new HashMap<>();
+        return Mono.just(dsl);
     }
 
     public int getApplicationType() {
