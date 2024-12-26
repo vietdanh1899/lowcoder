@@ -33,6 +33,11 @@ const ScrollBarWrapper = styled.div<{
     outline: none !important;
   }
 
+  .simplebar-content:before,
+  .simplebar-content:after {
+    display: none;
+  }
+
   .simplebar-offset {
     width: 100% !important;
   }

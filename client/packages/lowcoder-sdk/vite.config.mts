@@ -18,7 +18,7 @@ buildVars.forEach(({ name, defaultValue }) => {
   define[name] = JSON.stringify(process.env[name] || defaultValue);
 });
 
-const apiBaseUrl = "http://localhost:8000";
+const apiBaseUrl = "https://screenbuilder.smartcity-cloud.org";
 
 export const viteConfig: UserConfig = {
   define: {
@@ -257,7 +257,11 @@ export const viteConfig: UserConfig = {
         ref: true,
       },
     }),
-    dynamicImport(),
+    dynamicImport({
+      onFiles(files) {
+        return files.filter((file) => !file.includes('test'))
+      }
+    }),
     isVisualizerEnabled && visualizer({
       template: "treemap", // or sunburst
       open: true,

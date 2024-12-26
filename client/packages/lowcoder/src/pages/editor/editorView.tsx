@@ -141,11 +141,7 @@ const HookCompContainer = styled.div`
 `;
 
 const ViewBody = styled.div<{ $hideBodyHeader?: boolean; $height?: number }>`
-  height: ${(props) => `calc(${
-    props.$height ? props.$height + "px" : "100vh"
-  } - env(safe-area-inset-bottom) -
-      ${props.$hideBodyHeader ? "0px" : TopHeaderHeight}
-  )`};
+
 `;
 
 const SiderWrapper = styled.div`

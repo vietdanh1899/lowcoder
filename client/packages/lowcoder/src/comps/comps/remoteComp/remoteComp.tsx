@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import { useMount } from "react-use";
 import styled from "styled-components";
 import { RemoteCompInfo, RemoteCompLoader, RemoteCompSource } from "types/remoteComp";
-import { loaders } from "./loaders"; 
+import { loaders } from "./loaders";
 import { withErrorBoundary } from "comps/generators/withErrorBoundary";
 import { EditorContext } from "@lowcoder-ee/comps/editorState";
 import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
@@ -33,7 +33,7 @@ const ViewLoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: transparent;
   height: 100%;
 `;
 
@@ -126,7 +126,7 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
       }
       let finalLoader = loader;
       if (!loader) {
-        finalLoader = loaders[remoteInfo.source];
+        finalLoader = !REACT_APP_MOBILE ? loaders[remoteInfo.source] : loaders.bundle;
       }
       if (!finalLoader) {
         log.error("loader not found, remote info:", remoteInfo);

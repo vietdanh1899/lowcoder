@@ -18,7 +18,7 @@ import { Layers } from "constants/Layers";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
 import { Drawer, HintPlaceHolder, Section, sectionNames } from "lowcoder-design";
-import { useCallback } from "react";
+import {useCallback, useContext} from "react";
 import { ResizeHandle } from "react-resizable";
 import styled from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -26,6 +26,7 @@ import { isNumeric } from "util/stringUtils";
 import { NameConfig, withExposingConfigs } from "../generators/withExposing";
 import { title } from "process";
 import SliderControl from "../controls/sliderControl";
+import {PreloadIdContext} from "@lowcoder-ee/comps/comps/preLoadComp";
 
 const EventOptions = [closeEvent] as const;
 
@@ -119,6 +120,7 @@ let TmpDrawerComp = (function () {
       const isTopBom = ["top", "bottom"].includes(props.placement);
       const { items, ...otherContainerProps } = props.container;
       const userViewMode = useUserViewMode();
+      const preloadId = useContext(PreloadIdContext);
       const resizable = !userViewMode && (!isTopBom || !props.autoHeight);
       const onResizeStop = useCallback(
         (
@@ -137,6 +139,7 @@ let TmpDrawerComp = (function () {
         <BackgroundColorContext.Provider value={props.style.background}>
           <DrawerWrapper>
             <StyledDrawer
+              id={preloadId}
               resizable={resizable}
               onResizeStop={onResizeStop}
               rootStyle={props.visible.value ? { overflow: "auto", pointerEvents: "auto" } : {}}
@@ -195,6 +198,7 @@ let TmpDrawerComp = (function () {
                 containerPadding={[DEFAULT_PADDING, DEFAULT_PADDING]}
                 hintPlaceholder={HintPlaceHolder}
                 bgColor={props.style.background}
+                overflow={'auto'}
               />
             </StyledDrawer>
           </DrawerWrapper>

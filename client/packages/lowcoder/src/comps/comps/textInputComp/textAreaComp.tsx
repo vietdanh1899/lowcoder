@@ -52,7 +52,7 @@ const Wrapper = styled.div<{
   height: 100% !important;
   
   .ant-input { 
-    height:100% !important;
+    height:100%;
   }
 
   .ant-input-clear-icon {
@@ -91,7 +91,7 @@ let TextAreaTmpComp = (function () {
             {...inputProps}
             ref={props.viewRef}
             allowClear={props.allowClear}
-            style={{ height: "100% !important", resize: "vertical" }}
+            style={{ height: "100% !important", resize: props.autoHeight ? "vertical" : "none" }}
             $style={props.inputFieldStyle}
           />
         </Wrapper>
