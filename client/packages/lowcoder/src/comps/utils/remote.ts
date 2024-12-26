@@ -41,7 +41,7 @@ export function parseCompType(compType: string) {
 export async function getNpmPackageMeta(packageName: string) {
   const axiosInstance = axios.create({
     baseURL: NPM_REGISTRY_URL,
-    withCredentials: true,
+    withCredentials: false,
   })
   const res = await axiosInstance.get<NpmPackageMeta>(
     `/none/${packageName}`,
