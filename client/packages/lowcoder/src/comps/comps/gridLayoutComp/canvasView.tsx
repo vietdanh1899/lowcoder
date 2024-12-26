@@ -117,6 +117,7 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
 
   const externalState = useContext(ExternalEditorContext);
   const {
+    applicationId,
     readOnly,
     appType,
     rootContainerExtraHeight = DEFAULT_EXTRA_HEIGHT,
@@ -215,7 +216,7 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
 
   const defaultContainerPadding: [number, number] = useMemo(() => {
     const DEFAULT_PADDING = isMobile ? DEFAULT_MOBILE_PADDING : DEFAULT_CONTAINER_PADDING;
-    
+
     if (isPreviewTheme) {
       return [
         currentTheme?.gridPaddingX ?? defaultTheme.gridPaddingX ?? DEFAULT_PADDING[0],
@@ -277,6 +278,7 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
   }
 
   return (
+    <div id={`app-${applicationId}`}>
     <CanvasContainer $maxWidth={maxWidth} id={CanvasContainerID}>
       <EditorContainer ref={scrollContainerRef}>
         <UICompContainer
@@ -325,6 +327,7 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
         </UICompContainer>
       </EditorContainer>
     </CanvasContainer>
+    </div>
   );
 }, (prevProps, newProps) => {
   return isEqual(prevProps, newProps);

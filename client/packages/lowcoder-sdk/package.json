@@ -28,6 +28,7 @@
     }
   },
   "scripts": {
+    "build:mobile": "cross-env REACT_APP_BUNDLE_BUILTIN_PLUGIN=true REACT_APP_MOBILE=true vite build",
     "build": "NODE_OPTIONS=--max_old_space_size=6442 vite build",
     "start": "NODE_OPTIONS=--max_old_space_size=2048 vite"
   },
@@ -39,6 +40,7 @@
     "@rollup/plugin-url": "^7.0.0",
     "@svgr/rollup": "^6.3.1",
     "@vitejs/plugin-react": "^2.2.0",
+    "cross-env": "^7.0.3",
     "rollup": "^2",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",

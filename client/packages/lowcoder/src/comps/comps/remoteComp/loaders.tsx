@@ -18,12 +18,7 @@ async function npmLoader(
   // Falk: removed "packageVersion = "latest" as default value fir packageVersion - to ensure no automatic version jumping.
   const localPackageVersion = remoteInfo.packageVersion || "latest";
   const { packageName, packageVersion, compName } = remoteInfo;
-
-  const pluginBaseUrl = REACT_APP_BUNDLE_TYPE === 'sdk' && sdkConfig.baseURL
-    ? `${sdkConfig.baseURL}/${ASSETS_BASE_URL}`
-    : NPM_PLUGIN_ASSETS_BASE_URL;
-
-  const entry = `${pluginBaseUrl}/${appId || 'none'}/${packageName}@${localPackageVersion}/index.js`;
+  const entry = `https://unpkg.com/${packageName}@${localPackageVersion}/index.js`;
 
   try {
     const module = await import(
@@ -47,7 +42,8 @@ async function bundleLoader(
   remoteInfo: RemoteCompInfo
 ): Promise<CompConstructor | null> {
   const { packageName, packageVersion = "latest", compName } = remoteInfo;
-  const entry = `/${packageName}/${packageVersion}/index.js?v=${REACT_APP_COMMIT_ID}`;
+  const entry = !REACT_APP_MOBILE ? `/${packageName}/${packageVersion}/index.js?v=${REACT_APP_COMMIT_ID}`
+    : `../${packageName}/${packageVersion}/index.js`.replace("@", "");
   const module = await import(
     /* @vite-ignore */
     /* webpackIgnore: true */

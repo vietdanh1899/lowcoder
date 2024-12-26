@@ -49,13 +49,12 @@ import { loadComps } from "comps";
 import { initApp } from "util/commonUtils";
 import { favicon } from "assets/images";
 import { hasQueryParam } from "util/urlUtils";
-import { isFetchUserFinished } from "redux/selectors/usersSelectors"; // getCurrentUser, 
+import { isFetchUserFinished } from "redux/selectors/usersSelectors"; // getCurrentUser,
 import { getIsCommonSettingFetched } from "redux/selectors/commonSettingSelectors";
 import { SystemWarning } from "./components/SystemWarning";
 import { getBrandingConfig } from "./redux/selectors/configSelectors";
 import { buildMaterialPreviewURL } from "./util/materialUtils";
 import GlobalInstances from 'components/GlobalInstances';
-// import posthog from 'posthog-js'
 import { fetchHomeData, fetchServerSettingsAction } from "./redux/reduxActions/applicationActions";
 import { getNpmPackageMeta } from "./comps/utils/remote";
 import { packageMetaReadyAction, setLowcoderCompsLoading } from "./redux/reduxActions/npmPluginActions";
@@ -128,20 +127,11 @@ class AppIndex extends React.Component<AppIndexProps, any> {
 
     // we check if we are on the public cloud
     const isLowCoderDomain = window.location.hostname === 'app.lowcoder.cloud';
-    const isLocalhost = window.location.hostname === 'localhost';
 
     // make sure all users in this app have checked login info
     if (!this.props.isFetchUserFinished || (this.props.currentUserId && !this.props.fetchHomeDataFinished)) {
       const hideLoadingHeader = isTemplate || isAuthUnRequired(pathname);
       return <ProductLoading hideHeader={hideLoadingHeader} />;
-    }
-    else {
-      // if the user just logged in, we send the event to posthog
-      if (isLocalhost || isLowCoderDomain) {
-        if (sessionStorage.getItem('_just_logged_in_')) {
-          sessionStorage.removeItem('_just_logged_in_');
-        }
-      }
     }
 
     // persisting the language in local storage
@@ -254,7 +244,7 @@ class AppIndex extends React.Component<AppIndexProps, any> {
           {/* }<meta key="msapplication-config" name="msapplication-config" content="https://www.yourdomain.com/path/to/browserconfig.xml" />, */}
 
           <link rel="canonical" href={window.location.href} />
-          {isLowCoderDomain || isLocalhost && [
+          {isLowCoderDomain && [
             // Adding Support for iframely to be able to embedd the component explorer in the docu
             <meta
               key="iframely:title"
@@ -360,7 +350,7 @@ class AppIndex extends React.Component<AppIndexProps, any> {
               />
 
               {this.props.isFetchUserFinished && this.props.defaultHomePage? (
-                !this.props.orgDev ? ( 
+                !this.props.orgDev ? (
                   <Redirect exact from={BASE_URL} to={APPLICATION_VIEW_URL(this.props.defaultHomePage || "", "view")}/>
                 ) : (
                   <Redirect exact from={BASE_URL} to={ORG_HOME_URL} />
