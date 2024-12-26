@@ -139,6 +139,6 @@ export function* folderSagas() {
     takeLatest(ReduxActionTypes.UPDATE_FOLDER_INIT, updateFolderSaga),
     takeLatest(ReduxActionTypes.DELETE_FOLDER_INIT, deleteFolderSaga),
     takeLatest(ReduxActionTypes.MOVE_TO_FOLDER_INIT, moveToFolderSaga),
-    takeLatest(ReduxActionTypes.FETCH_FOLDER_ELEMENTS_INIT, fetchFolderElementsSaga),
+    // takeLatest(ReduxActionTypes.FETCH_FOLDER_ELEMENTS_INIT, fetchFolderElementsSaga),
   ]);
 }
