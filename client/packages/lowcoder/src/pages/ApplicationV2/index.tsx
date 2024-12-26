@@ -67,7 +67,6 @@ import { SubscriptionProductsEnum } from '@lowcoder-ee/constants/subscriptionCon
 import AppEditor from "../editor/AppEditor";
 import { fetchDeploymentIdAction } from "@lowcoder-ee/redux/reduxActions/configActions";
 import { getDeploymentId } from "@lowcoder-ee/redux/selectors/configSelectors";
-import { SimpleSubscriptionContextProvider } from '@lowcoder-ee/util/context/SimpleSubscriptionContext';
 import {LoadingBarHideTrigger} from "@lowcoder-ee/util/hideLoading";
 
 const TabLabel = styled.div`
@@ -152,7 +151,6 @@ export default function ApplicationHome() {
   return (
     <DivStyled>
       <LoadingBarHideTrigger />
-      <SimpleSubscriptionContextProvider>
         <Layout
           sections={[
             {
@@ -210,10 +208,10 @@ export default function ApplicationHome() {
                 },
               ],
             },
-    
+
             {
               items: [
-                
+
                 {
                   text: <TabLabel>{trans("home.queryLibrary")}</TabLabel>,
                   routePath: QUERY_LIBRARY_URL,
@@ -303,7 +301,6 @@ export default function ApplicationHome() {
 
           ]}
         />
-      </SimpleSubscriptionContextProvider>
     </DivStyled>
   );
 }
