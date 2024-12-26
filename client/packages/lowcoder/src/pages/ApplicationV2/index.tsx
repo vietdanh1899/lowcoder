@@ -102,7 +102,7 @@ export default function ApplicationHome() {
     if (user.currentOrgId) {
       dispatch(fetchDeploymentIdAction());
     }
-    dispatch(fetchHomeData({}));
+    // dispatch(fetchHomeData({}));
   }, [user.currentOrgId]);
 
   useEffect(() => {

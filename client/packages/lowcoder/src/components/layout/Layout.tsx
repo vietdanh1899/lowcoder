@@ -2,7 +2,7 @@ import { Route, Switch } from "react-router-dom";
 import { default as AntdLayout } from "antd/es/layout";
 import { AppHeader } from "pages/common/header";
 import * as React from "react";
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { HelpDropdown } from "pages/common/help";
 import MainContent from "components/layout/MainContent";
 import SideBar from "components/layout/SideBar";
@@ -10,7 +10,7 @@ import { CNMainContent, CNSidebar } from "constants/styleSelectors";
 import { SideBarSection, SideBarSectionProps } from "./SideBarSection";
 import styled from "styled-components";
 import { MenuOutlined } from "@ant-design/icons";
-import { Drawer, Button } from "antd";
+import { Button, Drawer } from "antd";
 
 type LayoutProps = {
   sections: SideBarSectionProps[];
@@ -111,8 +111,10 @@ export function Layout(props: LayoutProps) {
         placement="right"
         closable={true}
         onClose={toggleDrawer}
-        visible={drawerVisible}
-        bodyStyle={{ padding: "0px" }}
+        open={drawerVisible}
+        styles={{
+          body: { padding: "0px" },
+        }}
         destroyOnClose // Ensure drawer content is removed when closed
       >
         <DrawerContentWrapper>
