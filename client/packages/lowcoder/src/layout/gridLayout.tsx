@@ -4,7 +4,7 @@ import type { UICompType } from "comps/uiCompRegistry";
 import { ModulePrimaryColor, PrimaryColor } from "constants/style";
 import _, { isEqual } from "lodash";
 import log from "loglevel";
-import React, { DragEvent, DragEventHandler, MouseEventHandler, ReactElement } from "react";
+import React, { DragEvent, DragEventHandler, MouseEventHandler, ReactElement, RefObject } from "react";
 import ReactResizeDetector from "react-resize-detector";
 import styled from "styled-components";
 import { isDirectionKey, isFilterInputTarget, modKeyPressed } from "util/keyUtils";
@@ -54,6 +54,7 @@ import {
 } from "./utils";
 import { CompTypeContext } from "@lowcoder-ee/comps/utils/compTypeContext";
 import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
+import {LayoutContext} from "@lowcoder-ee/pages/common/header";
 
 type GridLayoutState = {
   layout: Layout;
@@ -341,7 +342,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
   onLayoutMaybeChanged(newLayout: Layout, oldLayout?: Layout) {
     // log.debug("layout: layoutMayBeChanged. oldLayout: ", oldLayout, " newLayout: ", newLayout);
     if (!oldLayout) oldLayout = this.state.layout;
-    
+
     if (!_.isEqual(oldLayout, newLayout)) {
       this.props.onLayoutChange?.(newLayout);
     }
@@ -414,6 +415,16 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     }
   };
 
+  onManualItemLayoutChange = (i: string, itemLayout: LayoutItem): void => {
+    const newLayout = {
+      ...this.state.layout, [i]: {
+        ...this.state.layout[i], ...itemLayout
+      }
+    }
+
+    this.onLayoutMaybeChanged(newLayout);
+  }
+
   processGridItem(
     zIndex: number,
     item: LayoutItem,
@@ -452,6 +463,15 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         }}
       >
         <CompTypeContext.Provider value={extraItem?.compType}>
+          <LayoutContext.Provider value={{
+            x: item.x,
+            y: item.y,
+            w: item.w,
+            h: item.h,
+            i: item.i,
+            onManualItemLayoutChange: (i: string, itemLayout: LayoutItem) => this.onManualItemLayoutChange(i, itemLayout),
+          }}>
+
           <GridItem
             compType={extraItem?.compType}
             key={item.i}
@@ -500,6 +520,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           >
             {child}
           </GridItem>
+
+          </LayoutContext.Provider>
         </CompTypeContext.Provider>
       </CompContext.Provider>
     );
@@ -1060,9 +1082,10 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           }}
           observerOptions={{ box: "border-box" }}
         >
-          <div style={contentStyle}>
+          {({targetRef}) =>
+          <div style={contentStyle} ref={targetRef as RefObject<HTMLDivElement>}>
             {showGridLines && this.gridLines()}
-            {mounted && 
+            {mounted &&
               layouts.map((item) => {
                 const zIndex = item.pos !== undefined
                   ? (maxLayoutPos - item.pos) + 1
@@ -1072,6 +1095,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
             }
             {this.hintPlaceholder()}
           </div>
+          }
         </ReactResizeDetector>
       </LayoutContainer>
     );
@@ -1086,15 +1110,11 @@ const LayoutContainer = styled.div<{
   $radius?: string;
 }>`
   border-radius: ${(props) => props.$radius ?? "4px"};
-  // background-color: ${(props) => props.$bgColor ?? "#f5f5f6"};
+  background-color: ${(props) => props.$bgColor ?? "transparent"};
   /* height: 100%; */
   height: ${(props) => (props.$autoHeight ? "auto" : "100%")};
 
-  overflow: ${(props) =>
-    props.$maxRows !== DEFAULT_ROW_COUNT
-    ? 'hidden'
-    : props.$overflow ?? "overlay"
-  };
+  overflow: hidden !important;
   ${(props) =>
     props.$autoHeight &&
     `::-webkit-scrollbar {

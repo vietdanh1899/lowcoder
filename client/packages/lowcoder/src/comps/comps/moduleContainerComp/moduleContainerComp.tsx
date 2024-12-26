@@ -13,11 +13,12 @@ import {
   InnerGrid,
 } from "../containerComp/containerView";
 import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
+import {EditorContext} from "lowcoder-sdk";
 
 const StyledInnerGrid = styled(InnerGrid)<ContainerBaseProps & { $bordered: boolean }>`
   border: ${(props) => (!props.$bordered ? "0px" : `1px solid ${BorderColor}`)};
   height: 100%;
-  overflow: auto;
+  overflow: ${(props) => props.overflow} !important;
 `;
 
 function ModuleContainerView(props: ContainerBaseProps) {
@@ -28,20 +29,21 @@ function ModuleContainerView(props: ContainerBaseProps) {
       onRowHeightChange?.(rowHeight);
     }, 50)
   );
+  const gridBg = useContext(EditorContext).getAppSettings().gridBg;
   const bgColor = useContext(ThemeContext || defaultTheme)?.theme?.canvas;
   return (
     <StyledInnerGrid
       onRowCountChange={rowHeightChangeRef.current}
       {...otherProps}
       emptyRows={5}
-      overflow="hidden"
+      overflow={readOnly ? "hidden" : "auto"}
       containerPadding={readOnly ? [0, 0] : [4, 4]}
       hintPlaceholder={HintPlaceHolder}
       $bordered={!readOnly}
       isDraggable={!readOnly}
       isDroppable={!readOnly}
       isSelectable={!readOnly}
-      bgColor={bgColor}
+      bgColor={gridBg || bgColor}
       radius={readOnly ? "0px" : "4px"}
     />
   );

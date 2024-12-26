@@ -1,0 +1,400 @@
+{
+  "name": "@ledangtruongdat/primereact-lowcoder-components",
+  "version": "0.0.80",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@observablehq/runtime": "^5.9.8",
+    "@types/react": "18",
+    "@types/react-dom": "18",
+    "autoprefixer": "^10.4.19",
+    "dayjs": "^1.11.10",
+    "is-what": "^5.0.2",
+    "lodash": "^4.17.21",
+    "lowcoder-cli": "^0.0.30",
+    "lowcoder-sdk": "2.4.4",
+    "postcss": "^8.4.38",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.4",
+    "prop-types": "^15.8.1",
+    "quill": "^2.0.2",
+    "react": "18",
+    "react-dom": "18",
+    "react-resize-detector": "^10.0.1",
+    "styled-components": "^6.1.8",
+    "typescript": "^5.4.3",
+    "use-deep-compare": "^1.3.0",
+    "vite": "^6.0.1",
+    "vite-plugin-fonts": "^0.7.0"
+  },
+  "lowcoder": {
+    "description": "A Demo Hillchart Component Plugin",
+    "comps": {
+      "pCalendar": {
+        "name": "P-Calendar",
+        "icon": "./icons/component.svg",
+        "description": "Calendar Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "button": {
+        "name": "Button",
+        "icon": "./icons/component.svg",
+        "description": "Button Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "timeline": {
+        "name": "Timeline",
+        "icon": "./icons/component.svg",
+        "description": "Timeline Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "tag": {
+        "name": "Tag",
+        "icon": "./icons/component.svg",
+        "description": "Tag Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "dropdown": {
+        "name": "Dropdown",
+        "icon": "./icons/component.svg",
+        "description": "Dropdown Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "table": {
+        "name": "Table",
+        "icon": "./icons/component.svg",
+        "description": "Table Component",
+        "layoutInfo": {
+          "w": 18,
+          "h": 18
+        }
+      },
+      "inputtext": {
+        "name": "InputText",
+        "icon": "./icons/component.svg",
+        "description": "InputText Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "inputtextarea": {
+        "name": "InputTextArea",
+        "icon": "./icons/component.svg",
+        "description": "InputTextArea Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "inputnumber": {
+        "name": "InputNumber",
+        "icon": "./icons/component.svg",
+        "description": "InputNumber Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "inputswitch": {
+        "name": "InputSwitch",
+        "icon": "./icons/component.svg",
+        "description": "InputSwitch Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "multiselect": {
+        "name": "MultiSelect",
+        "icon": "./icons/component.svg",
+        "description": "MultiSelect Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "treeselect": {
+        "name": "TreeSelect",
+        "icon": "./icons/component.svg",
+        "description": "TreeSelect Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "calendar": {
+        "name": "Old Calendar (deprecated)",
+        "icon": "./icons/component.svg",
+        "description": "Calendar Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "autocomplete": {
+        "name": "AutoComplete",
+        "icon": "./icons/component.svg",
+        "description": "AutoComplete Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "divider": {
+        "name": "Divider",
+        "icon": "./icons/component.svg",
+        "description": "Divider Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "password": {
+        "name": "Password",
+        "icon": "./icons/component.svg",
+        "description": "Password Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "paginator": {
+        "name": "Paginator",
+        "icon": "./icons/component.svg",
+        "description": "Paginator Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "radiobutton": {
+        "name": "RadioButton",
+        "icon": "./icons/component.svg",
+        "description": "RadioButton Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "label": {
+        "name": "Label",
+        "icon": "./icons/component.svg",
+        "description": "Label Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "internalstyle": {
+        "name": "InternalStyle",
+        "icon": "./icons/component.svg",
+        "description": "InternalStyle Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "file": {
+        "name": "File",
+        "icon": "./icons/component.svg",
+        "description": "File Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "cascadeselect": {
+        "name": "CascadeSelect",
+        "icon": "./icons/component.svg",
+        "description": "CascadeSelect Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "checkbox": {
+        "name": "Checkbox",
+        "icon": "./icons/component.svg",
+        "description": "Checkbox Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "chips": {
+        "name": "Chips",
+        "icon": "./icons/component.svg",
+        "description": "Chips Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "colorpicker": {
+        "name": "ColorPicker",
+        "icon": "./icons/component.svg",
+        "description": "ColorPicker Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "inputotp": {
+        "name": "InputOtp",
+        "icon": "./icons/component.svg",
+        "description": "InputOtp Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "editor": {
+        "name": "Editor",
+        "icon": "./icons/component.svg",
+        "description": "Editor Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "knob": {
+        "name": "Knob",
+        "icon": "./icons/component.svg",
+        "description": "Knob Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "listbox": {
+        "name": "ListBox",
+        "icon": "./icons/component.svg",
+        "description": "ListBox Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "rating": {
+        "name": "Rating",
+        "icon": "./icons/component.svg",
+        "description": "Rating Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "selectbutton": {
+        "name": "SelectButton",
+        "icon": "./icons/component.svg",
+        "description": "SelectButton Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "slider": {
+        "name": "Slider",
+        "icon": "./icons/component.svg",
+        "description": "Slider Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "speeddial": {
+        "name": "SpeedDial",
+        "icon": "./icons/component.svg",
+        "description": "SpeedDial Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "select": {
+        "name": "Select",
+        "icon": "./icons/component.svg",
+        "description": "Select Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "organizationchart": {
+        "name": "Organization Chart",
+        "icon": "./icons/component.svg",
+        "description": "OrganizationChart Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "avatar": {
+        "name": "Avatar",
+        "icon": "./icons/component.svg",
+        "description": "Avatar Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "progressbar": {
+        "name": "ProgressBar",
+        "icon": "./icons/component.svg",
+        "description": "ProgressBar Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "badge": {
+        "name": "Badge",
+        "icon": "./icons/component.svg",
+        "description": "Badge Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      },
+      "skeleton": {
+        "name": "Skeleton",
+        "icon": "./icons/component.svg",
+        "description": "Skeleton Component",
+        "layoutInfo": {
+          "w": 6,
+          "h": 6
+        }
+      }
+    },
+    "entry": "index.js"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "lowcoder-cli build",
+    "build_publish": "lowcoder-cli build --publish",
+    "format:write": "prettier --write \"**/*.{js,jsx,mjs,ts,tsx,mdx}\" --cache"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.5",
+    "prettier": "^3.4.2",
+    "sass": "^1.72.0"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+}

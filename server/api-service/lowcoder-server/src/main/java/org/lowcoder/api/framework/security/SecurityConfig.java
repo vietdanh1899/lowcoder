@@ -146,6 +146,7 @@ public class SecurityConfig {
                         ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, NewUrl.ORGANIZATION_URL + "/byuser/*"),
                         ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, NewUrl.DATASOURCE_URL + "/jsDatasourcePlugins"),
                         ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, NewUrl.NPM_REGISTRY + "/**"),
+                        ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, NewUrl.JS_LIBRARY + "/**"),
                         ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, "/api/docs/**")
                 )
                 .permitAll()

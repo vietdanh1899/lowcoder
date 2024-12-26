@@ -221,9 +221,11 @@ const DEFAULT_PROPS = {
 } as const;
 
 function CustomModalRender(props: Omit<CustomModalProps & ModalFuncProps, "width"> & { width?: string | number }) {
+  const nodeRef = React.useRef(null);
   return (
-    <Draggable handle=".handle" disabled={!props.draggable}>
-      <ModalWrapper 
+    <Draggable nodeRef={nodeRef} handle=".handle" disabled={!props.draggable}>
+      <ModalWrapper
+        ref={nodeRef}
         $width={props.width}
         $customStyles={props?.customStyles}
       >

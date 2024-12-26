@@ -24,6 +24,6 @@ export class JSLibraryApi extends Api {
   }
 
   static fetchRecommends(): AxiosPromise<GenericApiResponse<RecommendedJSLibraryMeta[]>> {
-    return Api.get(JSLibraryApi.url + `/recommendations`);
+    return Api.get(`https://screenbuilder.smartcity-cloud.org/api/misc/js-library/recommendations`);
   }
 }

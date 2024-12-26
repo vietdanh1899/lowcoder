@@ -291,10 +291,14 @@ export function useCompInstance<T extends CompConstructor>(
   handlers?: CompContainerChangeHandler[]
 ) {
   const [comp, setComp] = useState<InstanceType<T> | null>(null);
+  const [initialized, setInitialized] = useState(false);
   const container = useCompContainer(params);
 
   if (container && !container.initialized) {
-    container.init().then(setComp);
+    container.init().then(comp => {
+      setComp(comp);
+      setInitialized(true);
+    });
   }
 
   useEffect(() => {
@@ -317,7 +321,7 @@ export function useCompInstance<T extends CompConstructor>(
     };
   }, [container, handlers]);
 
-  return [comp, container] as const;
+  return [comp, container, initialized] as const;
 }
 
 export function useCompContainer<T extends CompConstructor>(params: GetContainerParams<T>) {

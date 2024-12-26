@@ -24,6 +24,8 @@ import { useUserViewMode } from "../../util/hooks";
 import { QueryApi } from "api/queryApi";
 import { RootCompInstanceType } from "./useRootCompInstance";
 import { getCurrentUser } from "redux/selectors/usersSelectors";
+import {getGlobalSettings, OrgCommonSettingsContext} from "lowcoder-sdk";
+import { StyleProvider } from '@ant-design/cssinjs';
 import React from "react";
 import { isEqual } from "lodash";
 import { isPublicApplication } from "@lowcoder-ee/redux/selectors/applicationSelector";
@@ -146,12 +148,11 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
     applicationId: appInfo.id,
     appType: AppTypeEnum.Application,
   });
-  
+
   const exportPublicAppToJson = useCallback(() => {
     const appDsl = compInstance.comp?.toJsonValue();
     exportAppToJson(appDsl);
   }, [compInstance.comp])
-
   useEffect(() => {
     setExternalEditorState((s) => ({
       ...s,
@@ -189,14 +190,17 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
   const currentUser = useSelector(getCurrentUser);
 
   return loading ? (
-    window.location.pathname.split("/")[3] === "admin" ? <div></div> : 
+    window.location.pathname.split("/")[3] === "admin" ? <div></div> :
     <EditorSkeletonView />
-  ) : (
-    <ConfigProvider locale={getAntdLocale(currentUser.uiLanguage)}>
-      <ExternalEditorContext.Provider value={externalEditorState}>
-        {compInstance?.comp?.getView()}
-      </ExternalEditorContext.Provider>
-    </ConfigProvider>
+  ) : (<StyleProvider layer>
+      <ConfigProvider theme={{hashed: false, cssVar: {key: 'lowcoder'}}} locale={getAntdLocale(currentUser.uiLanguage)}>
+        <OrgCommonSettingsContext.Provider value={getGlobalSettings().orgCommonSettings}>
+          <ExternalEditorContext.Provider value={externalEditorState}>
+            {compInstance?.comp?.getView()}
+          </ExternalEditorContext.Provider>
+        </OrgCommonSettingsContext.Provider>
+      </ConfigProvider>
+    </StyleProvider>
   );
 }, (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps)

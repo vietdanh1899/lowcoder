@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import { useMount } from "react-use";
 import styled from "styled-components";
 import { RemoteCompInfo, RemoteCompLoader, RemoteCompSource } from "types/remoteComp";
-import { loaders } from "./loaders"; 
+import { loaders } from "./loaders";
 import { withErrorBoundary } from "comps/generators/withErrorBoundary";
 import { EditorContext } from "@lowcoder-ee/comps/editorState";
 import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
@@ -17,6 +17,8 @@ import React from "react";
 import type { AppState } from "@lowcoder-ee/redux/reducers";
 import { useSelector } from "react-redux";
 import { ExternalEditorContext } from "@lowcoder-ee/util/context/ExternalEditorContext";
+import { getCommonSettings } from "@lowcoder-ee/redux/selectors/commonSettingSelectors";
+import { normalizeNpmPackage } from "@lowcoder-ee/comps/utils/remote";
 
 const ViewError = styled.div`
   display: flex;
@@ -33,7 +35,7 @@ const ViewLoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: transparent;
   height: 100%;
 `;
 
@@ -45,12 +47,13 @@ function ViewLoading(props: { padding?: number }) {
   );
 }
 
-interface RemoteCompReadyAction {
+export interface RemoteCompReadyAction {
   type: "RemoteCompReady";
   comp: Comp;
 }
 
 interface RemoteCompViewProps {
+  packageName?: string;
   isLowcoderComp?: boolean;
   loadComp: (packageVersion?: string, appId?: string) => Promise<void>;
   loadingElement?: () => React.ReactNode;
@@ -59,7 +62,7 @@ interface RemoteCompViewProps {
 }
 
 const RemoteCompView = React.memo((props: React.PropsWithChildren<RemoteCompViewProps>) => {
-  const { loadComp, loadingElement, errorElement, isLowcoderComp, source } = props;
+  const { loadComp, loadingElement, errorElement, isLowcoderComp, source, packageName } = props;
   const [error, setError] = useState<any>("");
   const editorState = useContext(EditorContext);
   const compState = useContext(CompContext);
@@ -67,6 +70,7 @@ const RemoteCompView = React.memo((props: React.PropsWithChildren<RemoteCompView
   const appId = externalEditorState.applicationId;
   const lowcoderCompPackageVersion = editorState?.getAppSettings().lowcoderCompVersion || 'latest';
   const latestLowcoderCompsVersion = useSelector((state: AppState) => state.npmPlugin.packageVersion['lowcoder-comps']);
+  const commonSettings = useSelector(getCommonSettings);
 
   let packageVersion = 'latest';
   // lowcoder-comps's package version
@@ -76,8 +80,10 @@ const RemoteCompView = React.memo((props: React.PropsWithChildren<RemoteCompView
       : lowcoderCompPackageVersion;
   }
   // component plugin's package version
-  else if (compState.comp?.comp?.version) {
-    packageVersion = compState.comp?.comp.version;
+  else {
+    packageVersion =
+      commonSettings.npmPlugins?.find((p) => normalizeNpmPackage(p) === packageName)?.split("#")[1] ||
+      "latest";
   }
 
   useMount(() => {
@@ -126,7 +132,7 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
       }
       let finalLoader = loader;
       if (!loader) {
-        finalLoader = loaders[remoteInfo.source];
+        finalLoader = !REACT_APP_MOBILE ? loaders[remoteInfo.source] : loaders.bundle;
       }
       if (!finalLoader) {
         log.error("loader not found, remote info:", remoteInfo);
@@ -161,6 +167,7 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
       return (
         <RemoteCompView
           key={key}
+          packageName={remoteInfo?.packageName}
           isLowcoderComp={remoteInfo?.packageName === 'lowcoder-comps'}
           loadComp={(packageVersion?: string, appId?: string) => this.load(packageVersion, appId)}
           loadingElement={loadingElement}
