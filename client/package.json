@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "yarn workspace lowcoder start",
-    "start-win": "LOWCODER_API_SERVICE_URL=http://localhost:8080 yarn start",
+    "start-win": "LOWCODER_API_SERVICE_URL=http://192.168.88.66:9191 yarn start",
     "start:ee": "REACT_APP_EDITION=enterprise yarn workspace lowcoder start",
     "translate": "node --loader ts-node/esm ./scripts/translate.js",
     "build": "yarn node ./scripts/build.js",

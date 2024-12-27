@@ -29,7 +29,7 @@ export function HomeView() {
           fetchFolderElements({
             pageNum:currentPage,
             pageSize:pageSize,
-            applicationType: ApplicationPaginationType[typeFilter],
+            // applicationType: ApplicationPaginationType[typeFilter],
             name: searchValues,
             category: categoryFilter === "All" ? "" : categoryFilter
           }).then(
