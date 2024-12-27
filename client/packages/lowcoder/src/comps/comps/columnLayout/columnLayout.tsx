@@ -161,6 +161,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
               const itemCss = String(column.itemCss);
               return (
                 <BackgroundColorContext.Provider
+                  key={id}
                   value={column.background || props.columnStyle.background}
                 >
                   <ColWrapper
