@@ -8,7 +8,7 @@ import { DragWhiteIcon } from "lowcoder-design";
 import { WidthDragIcon } from "lowcoder-design";
 import React, {
   MouseEvent,
-  MouseEventHandler,
+  MouseEventHandler, RefObject,
   useCallback,
   useContext,
   useRef,
@@ -374,7 +374,9 @@ export const CompSelectionWrapper = React.memo((props: {
             onResize={props.onInnerResize}
             observerOptions={{ box: "border-box" }}
           >
-            <div>{props.children}</div>
+            {({targetRef}) =>
+            <div ref={targetRef as RefObject<HTMLDivElement>}>{props.children}</div>
+            }
           </ReactResizeDetector>
         )}
       </SelectableDiv>
