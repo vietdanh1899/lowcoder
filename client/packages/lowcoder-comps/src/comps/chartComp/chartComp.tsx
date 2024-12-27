@@ -228,6 +228,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
           firstResize.current = false;
         }
       }}
+      targetRef={echartsCompRef}
     >
       {(mode !== 'map' || (mode === 'map' && isMapScriptLoaded)) && (
         <ReactECharts
