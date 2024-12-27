@@ -4,7 +4,7 @@ import { UICompType } from "comps/uiCompRegistry";
 import { ModulePrimaryColor, PrimaryColor } from "constants/style";
 import _ from "lodash";
 import log from "loglevel";
-import React, { DragEvent, DragEventHandler, MouseEventHandler, ReactElement } from "react";
+import React, { DragEvent, DragEventHandler, MouseEventHandler, ReactElement, RefObject } from "react";
 import ReactResizeDetector from "react-resize-detector";
 import styled from "styled-components";
 import { isDirectionKey, isFilterInputTarget, modKeyPressed } from "util/keyUtils";
@@ -1060,7 +1060,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           }}
           observerOptions={{ box: "border-box" }}
         >
-          <div style={contentStyle}>
+          {({targetRef}) =>
+          <div style={contentStyle} ref={targetRef as RefObject<HTMLDivElement>}>
             {showGridLines && this.gridLines()}
             {mounted &&
               layouts.map((item) => {
@@ -1072,6 +1073,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
             }
             {this.hintPlaceholder()}
           </div>
+          }
         </ReactResizeDetector>
       </LayoutContainer>
     );
