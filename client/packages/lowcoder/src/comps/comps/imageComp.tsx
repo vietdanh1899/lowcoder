@@ -139,6 +139,7 @@ const ContainerImg = (props: RecordConstructorToView<typeof childrenMap>) => {
   return (
     <ReactResizeDetector
       onResize={onResize}
+      targetRef={conRef}
       render={() => (
         <Container ref={conRef} $style={props.style} $animationStyle={props.animationStyle}>
           <div
