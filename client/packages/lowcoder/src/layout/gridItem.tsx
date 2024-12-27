@@ -394,9 +394,9 @@ export const GridItem = React.memo((props: GridItemProps) => {
       h: true,
       ceil: true,
     });
-    // if (props.h !== h) {
+    if (props.h !== h) {
       props.onHeightChange?.(props.i, h);
-    // }
+    }
   }, [
     props.i,
     props.h,
@@ -532,9 +532,9 @@ export const GridItem = React.memo((props: GridItemProps) => {
   ]);
 
   const { isDraggable, isResizable, layoutHide, children, isSelected, clickItem, zIndex } = props;
-
+  
   const pos = useMemo(calcPosition, [calcPosition]);
-
+  
   const render = useMemo(() => {
     let child = React.Children.only(children);
     // Create the child element. We clone the existing element but modify its className and style.
