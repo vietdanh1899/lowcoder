@@ -54,6 +54,7 @@ import {
 } from "./utils";
 import { CompTypeContext } from "@lowcoder-ee/comps/utils/compTypeContext";
 import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
+import {LayoutContext} from "@lowcoder-ee/pages/common/header";
 
 type GridLayoutState = {
   layout: Layout;
@@ -414,6 +415,16 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     }
   };
 
+  onManualItemLayoutChange = (i: string, itemLayout: LayoutItem): void => {
+    const newLayout = {
+      ...this.state.layout, [i]: {
+        ...this.state.layout[i], ...itemLayout
+      }
+    }
+
+    this.onLayoutMaybeChanged(newLayout);
+  }
+
   processGridItem(
     zIndex: number,
     item: LayoutItem,
@@ -452,6 +463,15 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         }}
       >
         <CompTypeContext.Provider value={extraItem?.compType}>
+          <LayoutContext.Provider value={{
+            x: item.x,
+            y: item.y,
+            w: item.w,
+            h: item.h,
+            i: item.i,
+            onManualItemLayoutChange: this.onManualItemLayoutChange
+          }}>
+
           <GridItem
             compType={extraItem?.compType}
             key={item.i}
@@ -500,6 +520,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           >
             {child}
           </GridItem>
+
+          </LayoutContext.Provider>
         </CompTypeContext.Provider>
       </CompContext.Provider>
     );
