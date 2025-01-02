@@ -30,7 +30,7 @@ import {
 } from "lowcoder-design";
 import { trans } from "i18n";
 import dayjs from "dayjs";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {createContext, useContext, useEffect, useMemo, useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   publishApplication,
@@ -64,9 +64,35 @@ import Avatar from 'antd/es/avatar';
 import UserApi from "@lowcoder-ee/api/userApi";
 import { validateResponse } from "@lowcoder-ee/api/apiUtils";
 import ProfileImage from "./profileImage";
+import _, { values } from "lodash";
+import {InputNumber} from "antd";
+import {GridItemComp} from "@lowcoder-ee/comps/comps/gridItemComp";
 
 const { Countdown } = Statistic;
 const { Text } = Typography;
+
+export const LayoutContext = createContext({});
+
+const ItemLayoutEditor = () => {
+  const editorState = useContext(EditorContext);
+  const selectedComp = values(editorState.selectedComps())[0];
+
+  if (!selectedComp || !(selectedComp instanceof GridItemComp)) return <></>;
+
+  const itemLayout = (selectedComp.children.comp as any).itemLayout;
+  if (!itemLayout) return <></>;
+
+  return <div>
+    <InputNumber size='small' min={0} addonBefore={<div style={{color: 'white'}}>x</div>} style={{width: '80px'}}
+                 value={itemLayout.x} onChange={(v) => itemLayout.onManualItemLayoutChange(itemLayout.i, {x: v})}/>
+    <InputNumber size='small' min={0} addonBefore={<div style={{color: 'white'}}>y</div>} style={{width: '80px'}}
+                 value={itemLayout.y} onChange={(v) => itemLayout.onManualItemLayoutChange(itemLayout.i, {y: v})}/>
+    <InputNumber size='small' min={0} addonBefore={<div style={{color: 'white'}}>w</div>} style={{width: '80px'}}
+                 value={itemLayout.w} onChange={(v) => itemLayout.onManualItemLayoutChange(itemLayout.i, {w: v})}/>
+    <InputNumber size='small' min={0} addonBefore={<div style={{color: 'white'}}>h</div>} style={{width: '80px'}}
+                 value={itemLayout.h} onChange={(v) => itemLayout.onManualItemLayoutChange(itemLayout.i, {h: v})}/>
+  </div>;
+};
 
 const StyledLink = styled.a`
   display: flex;
@@ -469,6 +495,7 @@ export default function Header(props: HeaderProps) {
 
   const headerMiddle = (
     <>
+      <ItemLayoutEditor />
       <Radio.Group
         onChange={onEditorStateValueChange}
         value={props.editorModeStatus}
@@ -543,7 +570,7 @@ export default function Header(props: HeaderProps) {
             content={() => {
               return (
                 <Flex vertical gap={10} align="center" style={{maxWidth : "250px"}}>
-                  <Text style={{textAlign : "center"}}> 
+                  <Text style={{textAlign : "center"}}>
                     {trans("header.AppEditingBlockedHint")}
                   </Text>
                   <StyledCountdown
@@ -601,11 +628,11 @@ export default function Header(props: HeaderProps) {
             {SHARE_TITLE}
           </GrayBtn>
         )}
-  
+
         <PreviewBtn buttonType="primary" onClick={() => preview(applicationId)}>
           {trans("header.preview")}
         </PreviewBtn>
-  
+
         <Dropdown
           className="cypress-header-dropdown"
           placement="bottomRight"
@@ -654,7 +681,7 @@ export default function Header(props: HeaderProps) {
             <PackUpIcon />
           </PackUpBtn>
         </Dropdown>
-  
+
         <HeaderProfile user={user} />
       </>
     );
