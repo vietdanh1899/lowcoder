@@ -20,10 +20,7 @@ var ks = (n, t) => {
   return e;
 };
 var x = (n, t, e) => (Rs(n, typeof t != "symbol" ? t + "" : t, e), e);
-var Xt = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
-function Xl(n) {
-  return n && n.__esModule && Object.prototype.hasOwnProperty.call(n, "default") ? n.default : n;
-}
+import { c as Xt, g as Xl } from "./33eb31a7.js";
 var pa = typeof global == "object" && global && global.Object === Object && global;
 const Yl = pa;
 var ma = typeof self == "object" && self && self.Object === Object && self, ba = Yl || ma || Function("return this")();
