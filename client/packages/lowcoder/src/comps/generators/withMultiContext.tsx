@@ -26,6 +26,7 @@ import { setFieldsNoTypeCheck } from "util/objectUtils";
 import { map } from "./map";
 import { paramsEqual, withParamsWithDefault } from "./withParams";
 import { LazyCompReadyAction } from "../comps/lazyLoadComp/lazyLoadComp";
+import { RemoteCompReadyAction } from "@lowcoder-ee/comps/comps/remoteComp/remoteComp";
 
 export const COMP_KEY = "__comp__";
 export const MAP_KEY = "__map__";
@@ -167,6 +168,7 @@ export function withMultiContext<TCtor extends MultiCompConstructor>(VariantComp
         && (
           !thisCompMap.hasOwnProperty(action.path[1])
           || isCustomAction<LazyCompReadyAction>(action, "LazyCompReady")
+          || isCustomAction<RemoteCompReadyAction>(action, "RemoteCompReady")
         )
       ) {
         /**

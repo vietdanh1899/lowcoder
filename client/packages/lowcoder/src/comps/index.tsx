@@ -127,6 +127,7 @@ import { TextComp } from "./comps/textComp";
 import { SelectComp } from "./comps/selectInputComp/selectComp";
 import { InputComp } from "./comps/textInputComp/inputComp";
 import { TextAreaComp } from "./comps/textInputComp/textAreaComp";
+import { ListViewComp } from "@lowcoder-ee/comps/comps/listViewComp";
 
 type Registry = {
   [key in UICompType]?: UICompManifest;
@@ -564,9 +565,8 @@ export var uiCompMap: Registry = {
     description: trans("uiComp.listViewCompDesc"),
     categories: ["layout"],
     keywords: trans("uiComp.listViewCompKeywords"),
-    lazyLoad: true,
-    compName: "ListViewComp",
-    compPath: "comps/listViewComp/index",
+    withoutLoading: true,
+    comp: ListViewComp,
     layoutInfo: {
       w: 12,
       h: 40,
@@ -1763,6 +1763,7 @@ export var uiCompMap: Registry = {
     icon: TextCompIcon,
     keywords: trans("uiComp.textCompKeywords"),
     comp: TextComp,
+    withoutLoading: true,
     layoutInfo: {
       w: 6,
       h: 24,
