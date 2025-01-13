@@ -300,8 +300,10 @@ export function ListView(props: Props) {
                 if (height) setListHeight(height);
               }}
               observerOptions={{ box: "border-box" }}
-              render={() => (
+            >
+              {({ targetRef }) => (
                 <ListOrientationWrapper
+                  ref={targetRef as RefObject<HTMLDivElement>}
                   $isHorizontal={horizontal}
                   $isGrid={noOfColumns > 1}
                   $autoHeight={autoHeight}
@@ -309,7 +311,6 @@ export function ListView(props: Props) {
                   {renders}
                 </ListOrientationWrapper>
               )}
-            >
             </ReactResizeDetector>
           </ScrollBar>
         </BodyWrapper>
