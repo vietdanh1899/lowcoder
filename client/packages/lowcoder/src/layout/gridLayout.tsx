@@ -469,7 +469,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
             w: item.w,
             h: item.h,
             i: item.i,
-            onManualItemLayoutChange: this.onManualItemLayoutChange
+            onManualItemLayoutChange: (i: string, itemLayout: LayoutItem) => this.onManualItemLayoutChange(i, itemLayout),
           }}>
 
           <GridItem
