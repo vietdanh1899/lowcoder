@@ -231,6 +231,14 @@ export const folderReducer = createReducer(initialState, {
     ...state,
     loadingStatus: { ...state.loadingStatus, isFetchingFolderElements: false },
   }),
+  [ReduxActionTypes.FETCH_FOLDER_ELEMENTS_LOADING_INIT]: (state: FolderReduxState): FolderReduxState => ({
+    ...state,
+    loadingStatus: { ...state.loadingStatus, isFetchingFolderElements: true },
+  }),
+  [ReduxActionTypes.FETCH_FOLDER_ELEMENTS_LOADING_SUCCESS]: (state: FolderReduxState): FolderReduxState => ({
+    ...state,
+    loadingStatus: { ...state.loadingStatus, isFetchingFolderElements: false },
+  }),
   [ReduxActionTypes.FETCH_ALL_FOLDERS_SUCCESS]: (
     state: FolderReduxState,
     action: ReduxAction<FolderMeta[]>
