@@ -565,6 +565,7 @@ export var uiCompMap: Registry = {
     categories: ["layout"],
     keywords: trans("uiComp.listViewCompKeywords"),
     lazyLoad: true,
+    withoutLoading: true,
     compName: "ListViewComp",
     compPath: "comps/listViewComp/index",
     layoutInfo: {
@@ -583,6 +584,7 @@ export var uiCompMap: Registry = {
     categories: ["layout"],
     keywords: trans("uiComp.gridCompKeywords"),
     lazyLoad: true,
+    withoutLoading: true,
     compName: "GridComp",
     compPath: "comps/listViewComp/index",
     layoutInfo: {
@@ -685,6 +687,7 @@ export var uiCompMap: Registry = {
     icon: LinkCompIcon,
     keywords: trans("uiComp.linkCompKeywords"),
     lazyLoad: true,
+    withoutLoading: true,
     compName: "LinkComp",
     compPath: "comps/buttonComp/linkComp",
     layoutInfo: {
@@ -1763,6 +1766,7 @@ export var uiCompMap: Registry = {
     icon: TextCompIcon,
     keywords: trans("uiComp.textCompKeywords"),
     comp: TextComp,
+    withoutLoading: true,
     layoutInfo: {
       w: 6,
       h: 24,
