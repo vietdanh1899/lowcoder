@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { RecordConstructorToView } from "lowcoder-core";
 import { styleControl } from "comps/controls/styleControl";
-import _ from "lodash";
 import {
   AnimationStyle,
   AnimationStyleType,
@@ -22,7 +20,7 @@ import { hiddenPropertyView } from "comps/utils/propertyUtils";
 import { trans } from "i18n";
 import { NumberControl } from "comps/controls/codeControl";
 import { IconControl } from "comps/controls/iconControl";
-import ReactResizeDetector from "react-resize-detector";
+import { useResizeDetector } from "react-resize-detector";
 import { AutoHeightControl } from "../controls/autoHeightControl";
 import {
   clickEvent,
@@ -71,43 +69,23 @@ const childrenMap = {
 };
 
 const IconView = (props: RecordConstructorToView<typeof childrenMap>) => {
-  const conRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (height && width) {
-      onResize();
-    }
-  }, [height, width]);
-
-  const onResize = () => {
-    const container = conRef.current;
-    setWidth(container?.clientWidth ?? 0);
-    setHeight(container?.clientHeight ?? 0);
-  };
+  const { width, height, ref: conRef } = useResizeDetector();
 
   return (
-    <ReactResizeDetector
-      onResize={onResize}
-      render={() => (
-        <Container
-          ref={conRef}
-          $style={props.style}
-          $animationStyle={props.animationStyle}
-          style={{
-            fontSize: props.autoHeight
-              ? `${height < width ? height : width}px`
-              : props.iconSize,
-            background: props.style.background,
-          }}
-          onClick={() => props.onEvent("click")}
-        >
-          {props.icon}
-        </Container>
-      )}
+    <Container
+      ref={conRef}
+      $style={props.style}
+      $animationStyle={props.animationStyle}
+      style={{
+        fontSize: props.autoHeight
+          ? `${(height || 0) < (width || 0) ? height : width}px`
+          : props.iconSize,
+        background: props.style.background,
+      }}
+      onClick={() => props.onEvent("click")}
     >
-    </ReactResizeDetector>
+      {props.icon}
+    </Container>
   );
 };
 
