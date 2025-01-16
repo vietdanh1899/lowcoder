@@ -31,6 +31,10 @@ export interface LanguageMeta {
   
   // Example metadata object
   export const languagesMetadata: LanguagesMetadata = {
+    vi: {
+      languageName: 'Tiếng Việt',
+      flag: Flag_vi
+    },
     en: {
       languageName: "English",
       flag: Flag_gb
