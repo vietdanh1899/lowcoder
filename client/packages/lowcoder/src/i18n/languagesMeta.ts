@@ -5,7 +5,8 @@ import {
     Flag_cn,
     Flag_ru,
     Flag_es,
-    Flag_br
+    Flag_br,
+    Flag_vi
   } from "lowcoder-design";
 import { es, ru } from "./locales";
 
@@ -22,6 +23,10 @@ export interface LanguageMeta {
   
   // Example metadata object
   export const languagesMetadata: LanguagesMetadata = {
+    vi: {
+      languageName: 'Tiếng Việt',
+      flag: Flag_vi
+    },
     en: {
       languageName: "English",
       flag: Flag_gb
