@@ -1114,11 +1114,7 @@ const LayoutContainer = styled.div<{
   /* height: 100%; */
   height: ${(props) => (props.$autoHeight ? "auto" : "100%")};
 
-  overflow: ${(props) =>
-    props.$maxRows !== DEFAULT_ROW_COUNT
-    ? 'hidden'
-    : props.$overflow ?? "overlay"
-  };
+  overflow: hidden !important;
   ${(props) =>
     props.$autoHeight &&
     `::-webkit-scrollbar {
