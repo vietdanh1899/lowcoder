@@ -18,7 +18,7 @@ import {EditorContext} from "lowcoder-sdk";
 const StyledInnerGrid = styled(InnerGrid)<ContainerBaseProps & { $bordered: boolean }>`
   border: ${(props) => (!props.$bordered ? "0px" : `1px solid ${BorderColor}`)};
   height: 100%;
-  overflow: auto;
+  overflow: ${(props) => props.overflow} !important;
 `;
 
 function ModuleContainerView(props: ContainerBaseProps) {
@@ -36,7 +36,7 @@ function ModuleContainerView(props: ContainerBaseProps) {
       onRowCountChange={rowHeightChangeRef.current}
       {...otherProps}
       emptyRows={5}
-      overflow="auto"
+      overflow={readOnly ? "hidden" : "auto"}
       containerPadding={readOnly ? [0, 0] : [4, 4]}
       hintPlaceholder={HintPlaceHolder}
       $bordered={!readOnly}
