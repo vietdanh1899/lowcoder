@@ -1,24 +1,38 @@
-import { default as Row } from "antd/es/row";
 import { default as Col } from "antd/es/col";
 import { JSONObject, JSONValue } from "util/jsonTypes";
-import { CompAction, CompActionTypes, deleteCompAction, wrapChildAction } from "lowcoder-core";
-import { DispatchType, RecordConstructorToView, wrapDispatch } from "lowcoder-core";
+import {
+  CompAction,
+  CompActionTypes,
+  deleteCompAction,
+  DispatchType,
+  RecordConstructorToView,
+  wrapChildAction,
+  wrapDispatch,
+} from "lowcoder-core";
 import { AutoHeightControl } from "comps/controls/autoHeightControl";
 import { ColumnOptionControl } from "comps/controls/optionsControl";
 import { styleControl } from "comps/controls/styleControl";
 import {
   ContainerStyle,
   ContainerStyleType,
+  ResponsiveLayoutColStyle,
   ResponsiveLayoutColStyleType,
-  ResponsiveLayoutColStyle
 } from "comps/controls/styleControlConstants";
 
 import { sameTypeMap, UICompBuilder, withDefault } from "comps/generators";
 import { addMapChildAction } from "comps/generators/sameTypeMap";
-import { NameConfigHidden, withExposingConfigs } from "comps/generators/withExposing";
+import {
+  NameConfigHidden,
+  withExposingConfigs,
+} from "comps/generators/withExposing";
 import { NameGenerator } from "comps/utils";
-import { ScrollBar, Section, controlItem, sectionNames } from "lowcoder-design";
-import { HintPlaceHolder } from "lowcoder-design";
+import {
+  controlItem,
+  HintPlaceHolder,
+  ScrollBar,
+  Section,
+  sectionNames,
+} from "lowcoder-design";
 import _ from "lodash";
 import styled from "styled-components";
 import { IContainer } from "../containerBase/iContainer";
@@ -33,24 +47,29 @@ import { BackgroundColorContext } from "comps/utils/backgroundColorContext";
 import { trans } from "i18n";
 import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { BoolControl } from "comps/controls/boolControl";
-import { BoolCodeControl, NumberControl, StringControl } from "comps/controls/codeControl";
+import { BoolCodeControl, StringControl } from "comps/controls/codeControl";
 
-import { useContext, useEffect } from "react";
+import { ReactElement, useContext } from "react";
 import { EditorContext } from "comps/editorState";
 
-import { disabledPropertyView, hiddenPropertyView } from "comps/utils/propertyUtils";
+import {
+  disabledPropertyView,
+  hiddenPropertyView,
+} from "comps/utils/propertyUtils";
 import { DisabledContext } from "comps/generators/uiCompBuilder";
 import SliderControl from "@lowcoder-ee/comps/controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 
 const ContainWrapper = styled.div<{
-  $style: ContainerStyleType & {
-    display: string,
-    gridTemplateColumns: string,
-    columnGap: string,
-    gridTemplateRows: string,
-    rowGap: string,
-  } | undefined;
+  $style:
+    | (ContainerStyleType & {
+        display: string;
+        gridTemplateColumns: string;
+        columnGap: string;
+        gridTemplateRows: string;
+        rowGap: string;
+      })
+    | undefined;
 }>`
   display: ${(props) => props.$style?.display};
   grid-template-columns: ${(props) => props.$style?.gridTemplateColumns};
@@ -64,26 +83,31 @@ const ContainWrapper = styled.div<{
   border-style: ${(props) => props.$style?.borderStyle};
   margin: ${(props) => props.$style?.margin};
   padding: ${(props) => props.$style?.padding};
-  ${props => props.$style && getBackgroundStyle(props.$style)}
-    height: 100%;
+  ${(props) => props.$style && getBackgroundStyle(props.$style)}
+  height: 100%;
 `;
 
 const ColWrapper = styled(Col)<{
-  $itemCss: string,
-  $style: ResponsiveLayoutColStyleType | undefined,
-  $minWidth?: string,
-  $matchColumnsHeight: boolean,
+  $itemCss: string;
+  $hide?: boolean;
+  $style: ResponsiveLayoutColStyleType | undefined;
+  $minWidth?: string;
+  $matchColumnsHeight: boolean;
 }>`
-    height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || '0px'} - ${props.$style?.padding || '0px'})` : 'auto'};
-    border-radius: ${(props) => props.$style?.radius};
-    border-width: ${(props) => props.$style?.borderWidth};
-    border-color: ${(props) => props.$style?.border};
-    border-style: ${(props) => props.$style?.borderStyle};
-    margin: ${(props) => props.$style?.margin};
-    padding: ${(props) => props.$style?.padding};
-    box-shadow: ${(props) => props.$style?.boxShadow};
-    ${props => props.$style && getBackgroundStyle(props.$style)};
-    ${props => props.$itemCss};
+  height: ${(props) =>
+    props.$matchColumnsHeight
+      ? `calc(100% - ${props.$style?.padding || "0px"} - ${props.$style?.padding || "0px"})`
+      : "auto"};
+  border-radius: ${(props) => props.$style?.radius};
+  border-width: ${(props) => props.$style?.borderWidth};
+  border-color: ${(props) => props.$style?.border};
+  border-style: ${(props) => props.$style?.borderStyle};
+  margin: ${(props) => props.$style?.margin};
+  padding: ${(props) => props.$style?.padding};
+  box-shadow: ${(props) => props.$style?.boxShadow};
+  ${(props) => props.$style && getBackgroundStyle(props.$style)};
+  ${(props) => props.$itemCss};
+  ${(props) => props.$hide && "visibility: hidden;"}
 `;
 
 const childrenMap = {
@@ -101,15 +125,15 @@ const childrenMap = {
   templateColumns: withDefault(StringControl, "1fr 1fr"),
   mainScrollbar: withDefault(BoolControl, false),
   columnGap: withDefault(StringControl, "20px"),
-  style: styleControl(ContainerStyle, 'style'),
-  columnStyle: styleControl(ResponsiveLayoutColStyle , 'columnStyle')
+  style: styleControl(ContainerStyle, "style"),
+  columnStyle: styleControl(ResponsiveLayoutColStyle, "columnStyle"),
 };
 
 type ViewProps = RecordConstructorToView<typeof childrenMap>;
 type ColumnLayoutProps = ViewProps & { dispatch: DispatchType };
-type ColumnContainerProps = Omit<ContainerBaseProps, 'style'> & {
+type ColumnContainerProps = Omit<ContainerBaseProps, "style"> & {
   // style: ResponsiveLayoutColStyleType,
-}
+};
 
 const ColumnContainer = (props: ColumnContainerProps) => {
   return (
@@ -124,6 +148,15 @@ const ColumnContainer = (props: ColumnContainerProps) => {
   );
 };
 
+const ConditionalWrap = ({
+  condition,
+  wrap,
+  children,
+}: {
+  condition: boolean;
+  wrap: (children: ReactElement) => ReactElement;
+  children: ReactElement;
+}) => (condition ? wrap(children) : children);
 
 const ColumnLayout = (props: ColumnLayoutProps) => {
   let {
@@ -136,29 +169,47 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
     templateColumns,
     columnGap,
     horizontalGridCells,
-    mainScrollbar
+    mainScrollbar,
+    autoHeight,
   } = props;
 
   return (
     <BackgroundColorContext.Provider value={props.style.background}>
       <DisabledContext.Provider value={props.disabled}>
-        <div style={{ height: "inherit", overflow: "auto"}}>
-        <ScrollBar style={{ margin: "0px", padding: "0px" }} overflow="scroll" hideScrollbar={!mainScrollbar}>
-          <ContainWrapper $style={{
-            ...props.style,
-            display: "grid",
-            gridTemplateColumns: templateColumns,
-            columnGap,
-            gridTemplateRows: templateRows,
-            rowGap,
-          }}>
-            {columns.map(column => {
+        <ConditionalWrap
+          condition={!autoHeight}
+          wrap={(wrapChildren) => (
+            <div style={{ height: "inherit", overflow: "auto" }}>
+              <ScrollBar
+                style={{ margin: "0px", padding: "0px" }}
+                overflow="scroll"
+                hideScrollbar={!mainScrollbar}
+              >
+                {wrapChildren}
+              </ScrollBar>
+            </div>
+          )}
+        >
+          <ContainWrapper
+            $style={{
+              ...props.style,
+              display: "grid",
+              gridTemplateColumns: templateColumns,
+              columnGap,
+              gridTemplateRows: templateRows,
+              rowGap,
+            }}
+          >
+            {columns.map((column) => {
               const id = String(column.id);
-              const childDispatch = wrapDispatch(wrapDispatch(dispatch, "containers"), id);
-              if(!containers[id]) return null
+              const childDispatch = wrapDispatch(
+                wrapDispatch(dispatch, "containers"),
+                id,
+              );
+              if (!containers[id]) return null;
               const containerProps = containers[id].children;
-              const noOfColumns = columns.length;
               const itemCss = String(column.itemCss);
+              const hide = Boolean(column.hide);
               return (
                 <BackgroundColorContext.Provider
                   key={id}
@@ -175,10 +226,13 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                     $minWidth={column.minWidth}
                     $matchColumnsHeight={matchColumnsHeight}
                     $itemCss={itemCss}
+                    $hide={hide}
                   >
                     <ColumnContainer
                       layout={containerProps.layout.getView()}
-                      items={gridItemCompToGridItems(containerProps.items.getView())}
+                      items={gridItemCompToGridItems(
+                        containerProps.items.getView(),
+                      )}
                       horizontalGridCells={horizontalGridCells}
                       positionParams={containerProps.positionParams.getView()}
                       dispatch={childDispatch}
@@ -186,12 +240,10 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                     />
                   </ColWrapper>
                 </BackgroundColorContext.Provider>
-              )
-              })
-            }
+              );
+            })}
           </ContainWrapper>
-        </ScrollBar>
-        </div>
+        </ConditionalWrap>
       </DisabledContext.Provider>
     </BackgroundColorContext.Provider>
   );
@@ -199,9 +251,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
 
 export const ResponsiveLayoutBaseComp = (function () {
   return new UICompBuilder(childrenMap, (props, dispatch) => {
-    return (
-      <ColumnLayout {...props} dispatch={dispatch} />
-    );
+    return <ColumnLayout {...props} dispatch={dispatch} />;
   })
     .setPropertyViewFn((children) => {
       return (
@@ -213,39 +263,58 @@ export const ResponsiveLayoutBaseComp = (function () {
             })}
           </Section>
 
-          {(useContext(EditorContext).editorModeStatus === "logic" || useContext(EditorContext).editorModeStatus === "both") && (
+          {(useContext(EditorContext).editorModeStatus === "logic" ||
+            useContext(EditorContext).editorModeStatus === "both") && (
             <Section name={sectionNames.interaction}>
               {disabledPropertyView(children)}
               {hiddenPropertyView(children)}
             </Section>
           )}
 
-          {["layout", "both"].includes(useContext(EditorContext).editorModeStatus) && (
+          {["layout", "both"].includes(
+            useContext(EditorContext).editorModeStatus,
+          ) && (
             <>
-            <Section name={sectionNames.layout}>
-              {children.autoHeight.getPropertyView()}
-              {(!children.autoHeight.getView()) && children.mainScrollbar.propertyView({
-                label: trans("prop.mainScrollbar")
-              })}
-              {children.horizontalGridCells.propertyView({
-                label: trans('prop.horizontalGridCells'),
-              })}
-            </Section>
-            <Section name={trans("responsiveLayout.columnsLayout")}>
-              {children.matchColumnsHeight.propertyView({ label: trans("responsiveLayout.matchColumnsHeight")
-              })}
-              {controlItem({}, (
-                <div style={{ marginTop: '8px' }}>{trans("responsiveLayout.columnsSpacing")}</div>
-              ))}
-              {children.templateColumns.propertyView({label: trans("responsiveLayout.columnDefinition"), tooltip: trans("responsiveLayout.columnsDefinitionTooltip")})}
-              {children.templateRows.propertyView({label: trans("responsiveLayout.rowDefinition"), tooltip: trans("responsiveLayout.rowsDefinitionTooltip")})}
-              {children.columnGap.propertyView({label: trans("responsiveLayout.columnGap")})}
-              {children.rowGap.propertyView({label: trans("responsiveLayout.rowGap")})}
-            </Section>
+              <Section name={sectionNames.layout}>
+                {children.autoHeight.getPropertyView()}
+                {!children.autoHeight.getView() &&
+                  children.mainScrollbar.propertyView({
+                    label: trans("prop.mainScrollbar"),
+                  })}
+                {children.horizontalGridCells.propertyView({
+                  label: trans("prop.horizontalGridCells"),
+                })}
+              </Section>
+              <Section name={trans("responsiveLayout.columnsLayout")}>
+                {children.matchColumnsHeight.propertyView({
+                  label: trans("responsiveLayout.matchColumnsHeight"),
+                })}
+                {controlItem(
+                  {},
+                  <div style={{ marginTop: "8px" }}>
+                    {trans("responsiveLayout.columnsSpacing")}
+                  </div>,
+                )}
+                {children.templateColumns.propertyView({
+                  label: trans("responsiveLayout.columnDefinition"),
+                  tooltip: trans("responsiveLayout.columnsDefinitionTooltip"),
+                })}
+                {children.templateRows.propertyView({
+                  label: trans("responsiveLayout.rowDefinition"),
+                  tooltip: trans("responsiveLayout.rowsDefinitionTooltip"),
+                })}
+                {children.columnGap.propertyView({
+                  label: trans("responsiveLayout.columnGap"),
+                })}
+                {children.rowGap.propertyView({
+                  label: trans("responsiveLayout.rowGap"),
+                })}
+              </Section>
             </>
           )}
 
-          {(useContext(EditorContext).editorModeStatus === "layout" || useContext(EditorContext).editorModeStatus === "both") && (
+          {(useContext(EditorContext).editorModeStatus === "layout" ||
+            useContext(EditorContext).editorModeStatus === "both") && (
             <>
               <Section name={sectionNames.style}>
                 {children.style.getPropertyView()}
@@ -261,17 +330,27 @@ export const ResponsiveLayoutBaseComp = (function () {
     .build();
 })();
 
-class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContainer {
+class ColumnLayoutImplComp
+  extends ResponsiveLayoutBaseComp
+  implements IContainer
+{
   private syncContainers(): this {
     const columns = this.children.columns.getView();
-    const ids: Set<string> = new Set(columns.map((column) => String(column.id)));
+    const ids: Set<string> = new Set(
+      columns.map((column) => String(column.id)),
+    );
     let containers = this.children.containers.getView();
     // delete
     const actions: CompAction[] = [];
     Object.keys(containers).forEach((id) => {
       if (!ids.has(id)) {
         // log.debug("syncContainers delete. ids=", ids, " id=", id);
-        actions.push(wrapChildAction("containers", wrapChildAction(id, deleteCompAction())));
+        actions.push(
+          wrapChildAction(
+            "containers",
+            wrapChildAction(id, deleteCompAction()),
+          ),
+        );
       }
     });
     // new
@@ -279,7 +358,10 @@ class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContaine
       if (!containers.hasOwnProperty(id)) {
         // log.debug("syncContainers new containers: ", containers, " id: ", id);
         actions.push(
-          wrapChildAction("containers", addMapChildAction(id, { layout: {}, items: {} }))
+          wrapChildAction(
+            "containers",
+            addMapChildAction(id, { layout: {}, items: {} }),
+          ),
         );
       }
     });
@@ -307,8 +389,14 @@ class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContaine
         } as CompAction;
       }
       const { path } = action;
-      if (value.type === "delete" && path[0] === 'columns' && columns.length <= 1) {
-        messageInstance.warning(trans("responsiveLayout.atLeastOneColumnError"));
+      if (
+        value.type === "delete" &&
+        path[0] === "columns" &&
+        columns.length <= 1
+      ) {
+        messageInstance.warning(
+          trans("responsiveLayout.atLeastOneColumnError"),
+        );
         // at least one column
         return this;
       }
@@ -325,13 +413,15 @@ class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContaine
 
   realSimpleContainer(key?: string): SimpleContainerComp | undefined {
     return Object.values(this.children.containers.children).find((container) =>
-      container.realSimpleContainer(key)
+      container.realSimpleContainer(key),
     );
   }
 
   getCompTree(): CompTree {
     const containerMap = this.children.containers.getView();
-    const compTrees = Object.values(containerMap).map((container) => container.getCompTree());
+    const compTrees = Object.values(containerMap).map((container) =>
+      container.getCompTree(),
+    );
     return mergeCompTrees(compTrees);
   }
 
@@ -349,7 +439,7 @@ class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContaine
   getPasteValue(nameGenerator: NameGenerator): JSONValue {
     const containerMap = this.children.containers.getView();
     const containerPasteValueMap = _.mapValues(containerMap, (container) =>
-      container.getPasteValue(nameGenerator)
+      container.getPasteValue(nameGenerator),
     );
 
     return { ...this.toJsonValue(), containers: containerPasteValueMap };
@@ -360,7 +450,6 @@ class ColumnLayoutImplComp extends ResponsiveLayoutBaseComp implements IContaine
   }
 }
 
-export const ColumnLayoutComp = withExposingConfigs(
-  ColumnLayoutImplComp,
-  [ NameConfigHidden]
-);
+export const ColumnLayoutComp = withExposingConfigs(ColumnLayoutImplComp, [
+  NameConfigHidden,
+]);
