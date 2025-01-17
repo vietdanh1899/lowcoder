@@ -1,6 +1,6 @@
 {
   "name": "@vietdanh1899/lowcoder-sdk",
-  "version": "2.5.3-2",
+  "version": "2.5.3-4",
   "type": "module",
   "files": [
     "src",

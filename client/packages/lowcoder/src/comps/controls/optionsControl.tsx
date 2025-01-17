@@ -582,6 +582,7 @@ const ColumnOption = new MultiCompBuilder(
     label: StringControl,
     key: StringControl,
     itemCss: StringControl,
+    hide: BoolControl,
     minWidth: withDefault(RadiusControl, ""),
     background: withDefault(ColorControl, ""),
     backgroundImage: withDefault(StringControl, ""),
@@ -602,6 +603,9 @@ const ColumnOption = new MultiCompBuilder(
     })}
     {children.itemCss.propertyView({
       label: "Grid Item Css"
+    })}
+    {children.hide.propertyView({
+      label: "Hide"
     })}
     {children.minWidth.propertyView({
       label: trans('responsiveLayout.minWidth'),
