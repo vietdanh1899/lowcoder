@@ -25,6 +25,7 @@ import { withDefault } from "comps/generators";
 import SliderControl from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import {PreloadIdContext} from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [
   { label: trans("modalComp.open"), value: "open", description: trans("modalComp.openDesc") },
@@ -199,6 +200,9 @@ let TmpModalComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("modalComp.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("modalComp.titleAlign"), radioButton: true })}

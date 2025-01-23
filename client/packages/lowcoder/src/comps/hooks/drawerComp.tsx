@@ -27,6 +27,7 @@ import { NameConfig, withExposingConfigs } from "../generators/withExposing";
 import { title } from "process";
 import SliderControl from "../controls/sliderControl";
 import {PreloadIdContext} from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [closeEvent] as const;
 
@@ -208,6 +209,9 @@ let TmpDrawerComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("drawer.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("drawer.titleAlign"), radioButton: true })}

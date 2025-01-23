@@ -233,6 +233,9 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                       items={gridItemCompToGridItems(
                         containerProps.items.getView(),
                       )}
+                      enableCodeLayout={column.enableCodeLayout}
+                      input={column.input}
+                      codeLayout={column.codeLayout}
                       horizontalGridCells={horizontalGridCells}
                       positionParams={containerProps.positionParams.getView()}
                       dispatch={childDispatch}
