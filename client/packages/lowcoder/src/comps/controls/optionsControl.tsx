@@ -1,5 +1,12 @@
 import { ViewDocIcon } from "assets/icons";
-import { ArrayControl, BoolCodeControl, NumberControl, RadiusControl, StringControl } from "comps/controls/codeControl";
+import {
+  ArrayControl,
+  BoolCodeControl,
+  CodeLayoutControl,
+  NumberControl,
+  RadiusControl,
+  StringControl,
+} from "comps/controls/codeControl";
 import { BoolControl } from "comps/controls/boolControl";
 import { dropdownControl, LeftRightControl } from "comps/controls/dropdownControl";
 import { IconControl } from "comps/controls/iconControl";
@@ -514,6 +521,8 @@ export const DropdownOptionControl = optionsControl(DropdownOption, {
 
 const TabsOption = new MultiCompBuilder(
   {
+    enableCodeLayout: BoolControl,
+    codeLayout: CodeLayoutControl,
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
@@ -525,6 +534,8 @@ const TabsOption = new MultiCompBuilder(
 )
   .setPropertyViewFn((children) => (
     <>
+      {children.enableCodeLayout.propertyView({label: "Enable Code Layout"})}
+      {children.enableCodeLayout.getView() && children.codeLayout.propertyView({label: "Code Layout"})}
       {children.label.propertyView({ label: trans("label") })}
       {children.key.propertyView({ label: trans("value") })}
       {children.icon.propertyView({ label: trans("icon") })}
@@ -558,7 +569,7 @@ const StyledContent = styled.div`
     flex-wrap: wrap;
 
     > div:nth-of-type(1) {
-      flex: 0 0 96px;
+      flex: 1 0 96px;
   
       div {
         line-height: 16px;
@@ -578,6 +589,8 @@ const StyledContent = styled.div`
 
 const ColumnOption = new MultiCompBuilder(
   {
+    enableCodeLayout: BoolControl,
+    codeLayout: CodeLayoutControl,
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
@@ -595,6 +608,8 @@ const ColumnOption = new MultiCompBuilder(
 )
 .setPropertyViewFn((children) => (
   <StyledContent>
+    {children.enableCodeLayout.propertyView({label: "Enable Code Layout"})}
+    {children.enableCodeLayout.getView() && children.codeLayout.propertyView({label: "Code Layout"})}
     {children.label.propertyView({
       label: trans("label")
     })}
