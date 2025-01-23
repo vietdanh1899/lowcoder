@@ -63,6 +63,9 @@ import { defaultLayout, GridItemComp, GridItemDataType } from "../gridItemComp";
 import { ThemeContext } from "comps/utils/themeContext";
 import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
 import { ExpandViewContext } from "../tableComp/expansionControl";
+import { ReactRunnerView } from "@lowcoder-ee/comps/comps/customReactComp/customReactComp";
+import { ErrorBoundary } from "react-error-boundary";
+import { Button } from "antd";
 
 const childrenMap = {
   layout: valueComp<Layout>({}),
@@ -132,6 +135,8 @@ type DispatchProps = { dispatch: DispatchType };
 type ContainerParamProps = {
   layout: Layout;
   items: GridItemsType;
+  enableCodeLayout?: boolean;
+  codeLayout?: string;
   positionParams: PositionParams;
   onPositionParamsChange?: (params: PositionParams) => void;
   onLayoutChange?: (Layout: Layout) => void;
@@ -335,6 +340,20 @@ const GridItemWrapper = React.memo(React.forwardRef(
 
 type GirdItemViewRecord = Record<string, GridItem>;
 
+function Fallback({ error, resetErrorBoundary }: any) {
+  // Call resetErrorBoundary() to reset the error boundary and retry the render.
+
+  return (
+    <div role="alert">
+      <p>
+        Something went wrong:{" "}
+        <Button onClick={() => resetErrorBoundary()}>Try again</Button>
+      </p>
+      <pre style={{ color: "red" }}>{error.message}</pre>
+    </div>
+  );
+}
+
 export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
   const {
     positionParams,
@@ -492,6 +511,18 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
   }, [isRowCountLocked, positionParams.rowHeight, onRowCountChange]);
 
   // log.info("rowCount:", currentRowCount, "rowHeight:", currentRowHeight);
+
+  if (props.enableCodeLayout && props.codeLayout)
+    return (
+      <ErrorBoundary FallbackComponent={Fallback}>
+        <ReactRunnerView
+          code={props.codeLayout}
+          itemViews={itemViews}
+          extraLayout={extraLayout}
+          dispatch={props.dispatch}
+        />
+      </ErrorBoundary>
+    );
 
   return (
     <ReactGridLayout

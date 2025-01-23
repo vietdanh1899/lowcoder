@@ -1,7 +1,7 @@
 import { JSONValue } from "util/jsonTypes";
 import { changeValueAction, CustomAction, multiChangeAction } from "lowcoder-core";
 import { ConstructorToDataType } from "lowcoder-core";
-import { sameTypeMap, stateComp, valueComp } from "comps/generators";
+import { sameTypeMap, stateComp, valueComp, withDefault } from "comps/generators";
 import { MultiCompBuilder } from "comps/generators/multi";
 import { addMapChildAction, multiMapAction } from "comps/generators/sameTypeMap";
 import { NameGenerator } from "comps/utils";
@@ -11,11 +11,25 @@ import _ from "lodash";
 import { GridItemComp, GridItemDataType } from "../gridItemComp";
 import { IContainer, isContainer } from "./iContainer";
 import { CompTree, getCompTree } from "./utils";
+import { StringControl } from "@lowcoder-ee/comps/controls/codeControl";
+import { BoolControl } from "@lowcoder-ee/comps/controls/boolControl";
 
 const children = {
   layout: valueComp<Layout>({}),
   items: sameTypeMap(GridItemComp),
   positionParams: stateComp<PositionParams>(DEFAULT_POSITION_PARAMS),
+  enableCodeLayout: BoolControl,
+  codeLayout: withDefault(
+    StringControl,
+    `import _ from "lodash";
+
+export default function App({ items }) {
+  const children = _.values(items);
+
+  return <div>{children}</div>;
+}
+`,
+  ),
 };
 
 const SimpleContainerTmpComp = new MultiCompBuilder(children, (props, dispatch) => {

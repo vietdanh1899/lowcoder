@@ -17,6 +17,7 @@ export const en = {
     copyFail: "Copy failed",
   },
   prop: {
+    codeLayout: "Code Layout",
     basic: "Basic",
     resources: "Resources",
     interaction: "Interaction",

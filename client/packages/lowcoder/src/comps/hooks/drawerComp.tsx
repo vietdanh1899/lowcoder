@@ -208,6 +208,10 @@ let TmpDrawerComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {children.container.children.enableCodeLayout.propertyView({label: "Enable Code Layout"})}
+          {children.container.children.enableCodeLayout.getView() && children.container.children.codeLayout.propertyView({label: "Code Layout"})}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("drawer.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("drawer.titleAlign"), radioButton: true })}

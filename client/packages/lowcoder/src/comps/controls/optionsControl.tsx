@@ -578,6 +578,18 @@ const StyledContent = styled.div`
 
 const ColumnOption = new MultiCompBuilder(
   {
+    enableCodeLayout: BoolControl,
+    codeLayout: withDefault(
+      StringControl,
+      `import _ from "lodash";
+
+export default function App({ items }) {
+  const children = _.values(items);
+
+  return <div>{children}</div>;
+}
+`,
+    ),
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
@@ -595,6 +607,8 @@ const ColumnOption = new MultiCompBuilder(
 )
 .setPropertyViewFn((children) => (
   <StyledContent>
+    {children.enableCodeLayout.propertyView({label: "Enable Code Layout"})}
+    {children.enableCodeLayout.getView() && children.codeLayout.propertyView({label: "Code Layout"})}
     {children.label.propertyView({
       label: trans("label")
     })}
