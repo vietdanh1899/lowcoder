@@ -138,6 +138,11 @@ export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer
   getPropertyView() {
     return (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {this.children.container.children.enableCodeLayout.propertyView({ label: "Enable Code Layout" })}
+          {this.children.container.children.enableCodeLayout.getView() &&
+            this.children.container.children.codeLayout.propertyView({ label: "Code Layout" })}
+        </Section>
         <Section name={sectionNames.basic}>
           {this.children.autoScaleCompHeight.propertyView({
             label: trans("module.autoScaleCompHeight"),

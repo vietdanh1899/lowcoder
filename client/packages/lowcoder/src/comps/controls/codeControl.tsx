@@ -320,6 +320,17 @@ const tmpFuncForJson = () => codeControl<JSONValue>(() => 1);
 export type CodeControlJSONType = ReturnType<typeof tmpFuncForJson>;
 
 export const StringControl = codeControl<string>(toString);
+export const CodeLayoutControl = withDefault(
+  StringControl,
+  `import _ from "lodash";
+
+export default function App({ items }) {
+  const children = _.values(items);
+
+  return <div>{children}</div>;
+}
+`
+);
 export const NumberControl = codeControl<number>(toNumber);
 export const StringOrNumberControl = codeControl<string | number>(toStringOrNumber);
 export const MaskControl = codeControl<boolean | { style?: CSSProperties | undefined; color?: string | undefined; } | undefined>(toBooleanOrCss);

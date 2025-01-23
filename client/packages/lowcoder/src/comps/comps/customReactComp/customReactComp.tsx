@@ -36,6 +36,10 @@ import { JSONObject, JSONValue } from "lowcoder-sdk";
 import _ from "lodash";
 import * as Axios from "axios";
 import * as PrimeReact from "primereact";
+import dayjs from "dayjs";
+import numbro from "numbro";
+import { useRunner } from "./react-runner/useRunner";
+import { ExtraLayout } from "@lowcoder-ee/layout";
 
 const defaultInput = {
   name: "{{currentUser.name}}",
@@ -132,6 +136,78 @@ const Wrapper = styled.div`
   }
 `;
 
+const staticImportScope = {
+  primereact: PrimeReact,
+  react: React,
+  antd: Antd,
+  "antd-mobile": AntdMobile,
+  "styled-components": styled,
+  "@ant-design/icons": AntIcons,
+  axios: Axios,
+  "react-dom": {
+    ...ReactDOM,
+    render: (element: ReactElement) =>
+      createRoot(document.getElementById("root")!).render(element),
+  },
+  lodash: _,
+  dayjs: dayjs,
+  numbro: numbro,
+};
+
+export function ReactRunnerView(props: {
+  itemViews: ReactElement[];
+  extraLayout: ExtraLayout;
+  containerPadding?: [number, number];
+  code: string;
+  dispatch: (action: CompAction<any>) => void;
+}) {
+  const { itemViews, extraLayout, containerPadding, code, dispatch } = props;
+
+  const items = useMemo(
+    () =>
+      Object.entries(extraLayout).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [value.name]: itemViews.find((i) => i.key === key),
+        }),
+        {},
+      ),
+    [extraLayout, itemViews],
+  );
+
+  const scope = useMemo(() => {
+    const runQuery = async (queryName: string, args: any) => {
+      return getPromiseAfterDispatch(
+        dispatch,
+        routeByNameAction(queryName, executeQueryAction({ args })),
+      ).catch((error) => Promise.resolve({}));
+    };
+
+    return {
+      import: {
+        ...staticImportScope,
+        lowcoder: { runQuery },
+      },
+    };
+  }, []);
+
+  const { element } = useRunner({ code, scope });
+
+  return (
+    <>
+      {typeof element === "function"
+        ? createElement(
+            element as FunctionComponent,
+            {
+              items,
+              containerPadding,
+            } as any,
+          )
+        : element}
+    </>
+  );
+}
+
 function InnerCustomComponent(props: IProps) {
   const { input, model: initialModel, code, onModelChange, dispatch } = props;
   const [model, setModel] = useState(initialModel);
@@ -156,18 +232,7 @@ function InnerCustomComponent(props: IProps) {
 
     return {
       import: {
-        primereact: PrimeReact,
-        react: React,
-        antd: Antd,
-        "antd-mobile": AntdMobile,
-        "styled-components": styled,
-        "@ant-design/icons": AntIcons,
-        axios: Axios,
-        "react-dom": {
-          ...ReactDOM,
-          render: (element: ReactElement) =>
-            createRoot(document.getElementById("root")!).render(element),
-        },
+        ...staticImportScope,
         lowcoder: { runQuery, updateModel },
       },
     };

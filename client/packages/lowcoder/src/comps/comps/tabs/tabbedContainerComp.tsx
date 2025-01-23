@@ -252,6 +252,8 @@ const TabbedContainer = (props: TabbedContainerProps) => {
             <ContainerInTab
               layout={containerProps.layout.getView()}
               items={gridItemCompToGridItems(containerProps.items.getView())}
+              enableCodeLayout={tab.enableCodeLayout}
+              codeLayout={tab.codeLayout}
               horizontalGridCells={horizontalGridCells}
               positionParams={containerProps.positionParams.getView()}
               dispatch={childDispatch}
