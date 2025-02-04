@@ -587,7 +587,7 @@ export function HomeLayout(props: HomeLayoutProps) {
 
             <ContentWrapper>
 
-              {isFetching && resList.length === 0 ? (
+              {isFetching ? (
                 <SkeletonStyle active paragraph={{ rows: 8, width: 648 }} title={false} />
               ) : (
                 <>
