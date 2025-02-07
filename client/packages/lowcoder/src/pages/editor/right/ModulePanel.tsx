@@ -30,7 +30,7 @@ import { showAppSnapshotSelector} from "@lowcoder-ee/redux/selectors/appSnapshot
 import {DraggableTreeNode, DraggableTreeNodeItemRenderProps} from "@lowcoder-ee/components/DraggableTree/types";
 import { EmptyContent } from "components/EmptyContent";
 import {deleteFolder, moveToFolder, updateFolder} from "@lowcoder-ee/redux/reduxActions/folderActions";
-import { isPublicApplication } from "@lowcoder-ee/redux/selectors/applicationSelector";
+import { isPublicApplication, modulesSelector } from "@lowcoder-ee/redux/selectors/applicationSelector";
 const ItemWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -77,8 +77,8 @@ type NodeType = {
 
 
 
-function buildTree(elementRecord: Record<string, Array<ApplicationMeta | FolderMeta>>): NodeType {
-    const elements = elementRecord[""] || [];
+function buildTree(elementRecord: Array<ApplicationMeta | FolderMeta>): NodeType {
+    const elements = elementRecord || [];
     const elementMap: Record<string, NodeType> = {};
     let rootNode: NodeType = {
         name: "root",
@@ -481,7 +481,7 @@ function ModuleSidebarItem(props: ModuleSidebarItemProps) {
 
 export default function ModulePanel() {
     const dispatch = useDispatch();
-    let elements = useSelector(folderElementsSelector);
+    let elements = useSelector(modulesSelector);
     const isPublicApp = useSelector(isPublicApplication);
     const { searchValue } = useContext(RightContext);
     const [selectedID, setSelectedID] = useState("");
