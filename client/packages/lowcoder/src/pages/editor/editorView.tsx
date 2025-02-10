@@ -304,6 +304,22 @@ const aggregationSiderItems = [
   }
 ];
 
+export function getDeviceWidth(deviceType: string, deviceOrientation: string) {
+  if (deviceType === "tablet" && deviceOrientation === "portrait") {
+    return 980;
+  }
+  if (deviceType === "tablet" && deviceOrientation === "landscape") {
+    return 1280;
+  }
+  if (deviceType === "mobile" && deviceOrientation === "portrait") {
+    return 550;
+  }
+  if (deviceType === "mobile" && deviceOrientation === "landscape") {
+    return 1200;
+  }
+  return null;
+}
+
 const DeviceWrapper = ({
   deviceType,
   deviceOrientation,
@@ -334,18 +350,7 @@ const DeviceWrapper = ({
   }, [deviceType]);
 
   const deviceWidth = useMemo(() => {
-    if (deviceType === 'tablet' && deviceOrientation === 'portrait') {
-      return 980;
-    }
-    if (deviceType === 'tablet' && deviceOrientation === 'landscape') {
-      return 1280;
-    }
-    if (deviceType === 'mobile' && deviceOrientation === 'portrait') {
-      return 550;
-    }
-    if (deviceType === 'mobile' && deviceOrientation === 'landscape') {
-      return 1200;
-    }
+    return getDeviceWidth(deviceType, deviceOrientation);
   }, [deviceType, deviceOrientation]);
 
   if (!Wrapper) return <>{children}</>;
@@ -700,7 +705,7 @@ function EditorView(props: EditorViewProps) {
               <EditorWrapper className={editorContentClassName}>
                 <EditorHotKeys disabled={readOnly}>
                   <EditorContainerWithViewMode>
-                    {uiCompView}
+                    {uiCompViewWrapper}
                     <HookCompContainer>{hookCompViews}</HookCompContainer>
                   </EditorContainerWithViewMode>
                 </EditorHotKeys>
