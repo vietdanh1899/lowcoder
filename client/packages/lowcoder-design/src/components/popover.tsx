@@ -64,7 +64,7 @@ const SimplePopover = (props: {
   );
   return (
     <Popover
-      overlayInnerStyle={{padding: 0}}
+      styles={{ body: { padding: 0 } }}
       align={{
         offset: [-12, 0, 0, 0],
       }}
@@ -101,7 +101,7 @@ const CustomPopover = (props: {
   );
   return (
     <Popover
-      overlayInnerStyle={{padding: 0}}
+      styles={{ body: { padding: 0 } }}
       content={contentWithBox}
       trigger="click"
       open={visible}
@@ -167,8 +167,7 @@ const EditPopover = (props: EditPopoverProps) => {
   return (
     <Popover
       arrow={false}
-      overlayStyle={{paddingTop: '15px'}}
-      overlayInnerStyle={{padding: 0}}
+      styles={{ root: { paddingTop: "15px" }, body: { padding: 0 } }}
       content={() => (
         <>
           <Wedge />
@@ -181,9 +180,7 @@ const EditPopover = (props: EditPopoverProps) => {
                 hide();
               }}
             >
-              <HandleText $color={item.type === "delete" ? "#F73131" : "#333333"}>
-                {item.text}
-              </HandleText>
+              <HandleText $color={item.type === "delete" ? "#F73131" : "#333333"}>{item.text}</HandleText>
             </Handle>
           ))}
           {add && (
