@@ -23,6 +23,7 @@ import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
 import { isEqual } from "lodash";
 import { DEFAULT_GRID_COLUMNS, DEFAULT_ROW_COUNT, DEFAULT_ROW_HEIGHT } from "@lowcoder-ee/layout/calculateUtils";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
+import { getDeviceWidth } from "@lowcoder-ee/pages/editor/editorView";
 
 const UICompContainer = styled.div<{
   $maxWidth?: number;
@@ -53,7 +54,7 @@ const UICompContainer = styled.div<{
 // modal/drawer container
 export const CanvasContainer = styled.div<{ $maxWidth: number }>`
   max-width: ${(props) => props.$maxWidth}px;
-  min-width: min(${(props) => props.$maxWidth}px, 718px);
+  //min-width: min(${(props) => props.$maxWidth}px, 718px);
   margin: 0 auto;
   height: 100%;
   contain: paint;
@@ -103,8 +104,8 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
   const maxWidthFromHook = useMaxWidth();
 
   const maxWidth = useMemo(
-    () => appSettings.maxWidth ?? maxWidthFromHook,
-    [appSettings, maxWidthFromHook]
+    () => getDeviceWidth(editorState.deviceType, editorState.deviceOrientation) ?? appSettings.maxWidth ?? maxWidthFromHook,
+    [appSettings.maxWidth, editorState.deviceOrientation, editorState.deviceType, maxWidthFromHook]
   );
 
   const preventStylesOverwriting = useMemo(

@@ -25,7 +25,7 @@ import Segmented from "antd/es/segmented";
 import MobileOutlined from "@ant-design/icons/MobileOutlined";
 import TabletOutlined from "@ant-design/icons/TabletOutlined";
 import DesktopOutlined from "@ant-design/icons/DesktopOutlined";
-import { DeviceOrientation, DeviceType, EditorContext } from "@lowcoder-ee/comps/editorState";
+import { DeviceOrientation, DeviceType, EditorContext, EditorState } from "@lowcoder-ee/comps/editorState";
 
 const HeaderFont = styled.div<{ $bgColor: string }>`
   font-weight: 500;
@@ -133,6 +133,39 @@ export function HeaderProfile(props: { user: User }) {
   );
 }
 
+export function getDevicePreviewSetting(editorState: EditorState) {
+  return (
+    <>
+      {/* Devices */}
+      <Segmented<DeviceType>
+        options={[
+          { value: "mobile", icon: <MobileOutlined /> },
+          { value: "tablet", icon: <TabletOutlined /> },
+          { value: "desktop", icon: <DesktopOutlined /> },
+        ]}
+        value={editorState.deviceType}
+        onChange={(value) => {
+          editorState.setDeviceType(value);
+        }}
+      />
+
+      {/* Orientation */}
+      {editorState.deviceType !== "desktop" && (
+        <Segmented<DeviceOrientation>
+          options={[
+            { value: "portrait", label: "Portrait" },
+            { value: "landscape", label: "Landscape" },
+          ]}
+          value={editorState.deviceOrientation}
+          onChange={(value) => {
+            editorState.setDeviceOrientation(value);
+          }}
+        />
+      )}
+    </>
+  );
+}
+
 const PreviewHeaderComp = () => {
   const params = useParams<AppPathParams>();
   const editorState = useContext(EditorContext);
@@ -204,36 +237,7 @@ const PreviewHeaderComp = () => {
     </Wrapper>
   );
 
-  const headerMiddle = (
-    <>
-      {/* Devices */}
-      <Segmented<DeviceType>
-        options={[
-          { value: 'mobile', icon: <MobileOutlined /> },
-          { value: 'tablet', icon: <TabletOutlined /> },
-          { value: 'desktop', icon: <DesktopOutlined /> },
-        ]}
-        value={editorState.deviceType}
-        onChange={(value) => {
-          editorState.setDeviceType(value);
-        }}
-      />
-
-      {/* Orientation */}
-      {editorState.deviceType !== 'desktop' && (
-        <Segmented<DeviceOrientation>
-          options={[
-            { value: 'portrait', label: "Portrait" },
-            { value: 'landscape', label: "Landscape" },
-          ]}
-          value={editorState.deviceOrientation}
-          onChange={(value) => {
-            editorState.setDeviceOrientation(value);
-          }}
-        />
-      )}
-    </>
-  );
+  const headerMiddle = getDevicePreviewSetting(editorState);
 
   return (
     <Header

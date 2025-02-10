@@ -30,7 +30,7 @@ import {
 } from "lowcoder-design";
 import { trans } from "i18n";
 import dayjs from "dayjs";
-import {createContext, useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {createContext, useContext, useEffect, useMemo, useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   publishApplication,
@@ -67,6 +67,7 @@ import ProfileImage from "./profileImage";
 import _, { values } from "lodash";
 import {InputNumber} from "antd";
 import {GridItemComp} from "@lowcoder-ee/comps/comps/gridItemComp";
+import { getDevicePreviewSetting } from "@lowcoder-ee/pages/common/previewHeader";
 
 const { Countdown } = Statistic;
 const { Text } = Typography;
@@ -521,6 +522,7 @@ export default function Header(props: HeaderProps) {
       <IconRadius disabled={showAppSnapshot}>
         <RightIcon onClick={() => togglePanel("right")} $show={right} />
       </IconRadius>
+      {getDevicePreviewSetting(editorState)}
       {showAppSnapshot && (
         <SnapshotBtnWrapper>
           <RecoverSnapshotBtn
