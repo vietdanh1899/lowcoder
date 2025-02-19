@@ -240,21 +240,17 @@ function InnerCustomComponent(props: IProps) {
     <Wrapper>
       <div className="Preview">
         {isLoading && <div className="PreviewLoading"></div>}
-        <div className="PreviewElementContainer">
-          <div className="PreviewElement">
-            <>
-              {typeof element === "function"
-                ? createElement(
-                    element as FunctionComponent,
-                    {
-                      input,
-                      model,
-                    } as any
-                  )
-                : element}
-            </>
-          </div>
-        </div>
+        <>
+          {typeof element === "function"
+            ? createElement(
+                element as FunctionComponent,
+                {
+                  input,
+                  model,
+                } as any
+              )
+            : element}
+        </>
         {error && <pre className="PreviewError">{error}</pre>}
       </div>
     </Wrapper>

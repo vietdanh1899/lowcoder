@@ -7,7 +7,7 @@ import {
   JSONValueControl,
   jsonValueControl,
 } from "lowcoder-sdk";
-import { ReactNode, useCallback, useContext, useRef, useState } from "react";
+import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -35,10 +35,17 @@ const OpenCodeLayout = ({
   const compName = useContext(CompNameContext);
   const valueRef = useRef<string>(code);
   const [value, setValue] = useState<string>(valueRef.current);
-  const onChange = useCallback((val: string) => {
-    valueRef.current = val; // Update ref instead of state to avoid unnecessary re-renders
-    dispatchCodeChange(val);
-  }, []);
+  const onChange = useCallback(
+    (val: string) => {
+      valueRef.current = val; // Update ref instead of state to avoid unnecessary re-renders
+      dispatchCodeChange(val);
+    },
+    [dispatchCodeChange]
+  );
+
+  useEffect(() => {
+    setValue(code);
+  }, [compName]);
 
   const showModal = () => {
     setOpen(true);
@@ -67,8 +74,8 @@ const OpenCodeLayout = ({
             <Button
               icon={<FormatPainterOutlined />}
               onClick={async () => {
-                setValue(valueRef.current);
-                const formatedCode = await jsxFormatter(valueRef.current);
+                setValue(code);
+                const formatedCode = await jsxFormatter(code);
                 setValue(formatedCode);
                 onChange(formatedCode);
               }}
