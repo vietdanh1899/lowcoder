@@ -71,7 +71,8 @@ export function normalizeNpmPackage(nameOrUrl: string) {
   if (prefixReg.test(nameOrUrl)) {
     return nameOrUrl.replace(prefixReg, "");
   }
-  return nameOrUrl;
+  const suffixReg = /#.*/;
+  return nameOrUrl.replace(suffixReg, "");
 }
 
 export function validateNpmPackage(packageNameOrUrl: string) {
