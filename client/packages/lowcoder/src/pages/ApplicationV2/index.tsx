@@ -33,7 +33,6 @@ import {
 } from "lowcoder-design";
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { fetchAllApplications, fetchHomeData } from "redux/reduxActions/applicationActions";
-import { fetchSubscriptionsAction } from "redux/reduxActions/subscriptionActions";
 import { getHomeOrg, normalAppListSelector } from "redux/selectors/applicationSelector";
 import { DatasourceHome } from "../datasource";
 import { clearStyleEval, evalStyle } from "lowcoder-core";
@@ -58,12 +57,9 @@ import { trans } from "../../i18n";
 import { foldersSelector } from "../../redux/selectors/folderSelector";
 import Setting from "pages/setting";
 import { Support } from "pages/support";
-import { Subscription } from "pages/setting/subscriptions"
 // import { TypographyText } from "../../components/TypographyText";
 // import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { isEE } from "util/envUtils";
-import { getSubscriptions } from 'redux/selectors/subscriptionSelectors';
-import { SubscriptionProductsEnum } from '@lowcoder-ee/constants/subscriptionConstants';
 
 // adding App Editor, so we can show Apps inside the Admin Area
 import AppEditor from "../editor/AppEditor";
@@ -97,7 +93,6 @@ export default function ApplicationHome() {
   const allAppCount = allApplications.length;
   const allFoldersCount = allFolders.length;
   const orgHomeId = "root";
-  const subscriptions = useSelector(getSubscriptions);
   const deploymentId = useSelector(getDeploymentId);
 
   useEffect(() => {
@@ -106,18 +101,6 @@ export default function ApplicationHome() {
     }
     dispatch(fetchHomeData({}));
   }, [user.currentOrgId]);
-
-  useEffect(() => {
-    if(Boolean(deploymentId)) {
-      dispatch(fetchSubscriptionsAction())
-    }
-  }, [deploymentId]);
-
-  const supportSubscription = useMemo(() => {
-    return subscriptions.some(
-      sub => sub.product === SubscriptionProductsEnum.SUPPORT && sub.status === 'active'
-    );
-  }, [subscriptions])
 
   useEffect(() => {
     if (!org) {
@@ -244,32 +227,6 @@ export default function ApplicationHome() {
                   icon: ({ selected, ...otherProps }) => selected ? ( <EnterpriseIcon {...otherProps} width={"24px"}/> ) : ( <EnterpriseIcon {...otherProps} width={"24px"}/> ),
                   visible: ({ user }) => user.orgDev,
                   mobileVisible: false,
-                },
-              ],
-            } : { items: [] },
-
-            !supportSubscription && user.orgDev ? {
-              items: [
-                {
-                  text: <TabLabel>{trans("home.support")}</TabLabel>,
-                  routePath: SUBSCRIPTION_SETTING,
-                  routeComp: Subscription,
-                  routePathExact: false,
-                  icon: ({ selected, ...otherProps }) => selected ? <SupportIcon {...otherProps} width={"24px"}/> : <SupportIcon {...otherProps} width={"24px"}/>,
-                  mobileVisible: true,
-                },
-              ],
-            } : { items: [] },
-
-            supportSubscription && user.orgDev ? {
-              items: [
-                {
-                  text: <TabLabel>{trans("home.support")}</TabLabel>,
-                  routePath: SUPPORT_URL,
-                  routeComp: Support,
-                  routePathExact: false,
-                  icon: ({ selected, ...otherProps }) => selected ? <SupportIcon {...otherProps} width={"24px"}/> : <SupportIcon {...otherProps} width={"24px"}/>,
-                  mobileVisible: true,
                 },
               ],
             } : { items: [] },
