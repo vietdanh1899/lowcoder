@@ -246,6 +246,12 @@
 			<version>3.6.0</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>jwks-rsa</artifactId>
+			<version>0.22.1</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

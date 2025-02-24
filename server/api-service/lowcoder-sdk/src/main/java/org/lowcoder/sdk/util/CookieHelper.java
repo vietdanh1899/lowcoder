@@ -46,8 +46,25 @@ public class CookieHelper {
         exchange.getResponse().addCookie(builder.build());
     }
 
+    public void saveTenantCookie(String tenant, ServerWebExchange exchange) {
+        ResponseCookieBuilder builder = ResponseCookie.from("tenant", tenant)
+                .path(exchange.getRequest().getPath().contextPath().value() + "/");
+
+        // set cookie max-age
+        Cookie cookie = commonConfig.getCookie();
+        if (cookie.getMaxAgeInSeconds() >= 0) {
+            builder.maxAge(cookie.getMaxAgeInSeconds());
+        }
+
+        exchange.getResponse().addCookie(builder.build());
+    }
+
     public String getCookieToken(ServerWebExchange exchange) {
         return getCookieValue(exchange, getCookieName(), "");
+    }
+
+    public String getCookieTenant(ServerWebExchange exchange) {
+        return getCookieValue(exchange, "tenant", "");
     }
 
     public String getCookieValue(ServerWebExchange exchange, String cookieName, String defaultValue) {

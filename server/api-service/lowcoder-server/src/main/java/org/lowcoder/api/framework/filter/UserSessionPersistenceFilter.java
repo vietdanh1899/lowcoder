@@ -1,5 +1,6 @@
 package org.lowcoder.api.framework.filter;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -8,6 +9,7 @@ import org.lowcoder.api.authentication.request.AuthRequest;
 import org.lowcoder.api.authentication.request.AuthRequestFactory;
 import org.lowcoder.api.authentication.request.oauth2.OAuth2RequestContext;
 import org.lowcoder.api.authentication.service.AuthenticationApiServiceImpl;
+import org.lowcoder.api.authentication.util.JWTUtils;
 import org.lowcoder.api.home.SessionUserService;
 import org.lowcoder.domain.authentication.AuthenticationService;
 import org.lowcoder.domain.authentication.context.AuthRequestContext;
@@ -47,20 +49,32 @@ public class UserSessionPersistenceFilter implements WebFilter {
 
     private final AuthRequestFactory<AuthRequestContext> authRequestFactory;
 
+    private final JWTUtils jwtUtils;
+
     public UserSessionPersistenceFilter(SessionUserService service, UserService userService, CookieHelper cookieHelper, AuthenticationService authenticationService,
-                                        AuthenticationApiServiceImpl authenticationApiService, AuthRequestFactory<AuthRequestContext> authRequestFactory) {
+                                        AuthenticationApiServiceImpl authenticationApiService, AuthRequestFactory<AuthRequestContext> authRequestFactory, JWTUtils jwtUtils) {
         this.service = service;
         this.userService = userService;
         this.cookieHelper = cookieHelper;
         this.authenticationService = authenticationService;
         this.authenticationApiService = authenticationApiService;
         this.authRequestFactory = authRequestFactory;
+        this.jwtUtils = jwtUtils;
     }
 
     @Nonnull
     @Override
     public Mono<Void> filter(@Nonnull ServerWebExchange exchange, WebFilterChain chain) {
         String cookieToken = cookieHelper.getCookieToken(exchange);
+        try {
+            String tenant = cookieHelper.getCookieTenant(exchange);
+            DecodedJWT verifiedToken = jwtUtils.verifyToken(cookieToken, tenant);
+            cookieToken = verifiedToken.getSubject();
+        }
+        catch (Exception e) {
+            System.err.println("Token verification failed: " + e.getMessage());
+        }
+        String finalCookieToken = cookieToken;
         return service.resolveSessionUserFromCookie(cookieToken)
                 .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
                 .map(user -> {
@@ -98,7 +112,7 @@ public class UserSessionPersistenceFilter implements WebFilter {
 
                 }).flatMap(this::refreshOauthToken)
                 .flatMap(user -> chain.filter(exchange).contextWrite(withAuthentication(toAuthentication(user)))
-                        .then(service.extendValidity(cookieToken))
+                        .then(service.extendValidity(finalCookieToken))
                 );
     }
 

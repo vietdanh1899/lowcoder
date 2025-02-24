@@ -167,7 +167,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
         );
 
-        http.addFilterBefore(new UserSessionPersistenceFilter(sessionUserService, userService, cookieHelper, authenticationService, authenticationApiService, authRequestFactory), SecurityWebFiltersOrder.AUTHENTICATION);
+        http.addFilterBefore(new UserSessionPersistenceFilter(sessionUserService, userService, cookieHelper, authenticationService, authenticationApiService, authRequestFactory, jwtUtils), SecurityWebFiltersOrder.AUTHENTICATION);
         http.addFilterBefore(new APIKeyAuthFilter(sessionUserService, cookieHelper, jwtUtils), SecurityWebFiltersOrder.AUTHENTICATION);
 
         return http.build();

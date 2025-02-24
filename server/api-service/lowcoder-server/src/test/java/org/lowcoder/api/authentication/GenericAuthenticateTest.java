@@ -127,7 +127,7 @@ public class GenericAuthenticateTest {
         MockServerWebExchange exchange = MockServerWebExchange.builder(request).build();
 
         var authId = getGenericAuthConfigId(orgId).block();
-        Mono<User> userMono = authenticationController.loginWithThirdParty(authId, source, code, null, redirectUrl, orgId, exchange).hasElement()
+        Mono<User> userMono = authenticationController.loginWithThirdParty(authId, source, code, "", null, redirectUrl, orgId, exchange).hasElement()
                 .then(userRepository.findByConnections_SourceAndConnections_RawId(source, uid));
 
         StepVerifier.create(userMono)

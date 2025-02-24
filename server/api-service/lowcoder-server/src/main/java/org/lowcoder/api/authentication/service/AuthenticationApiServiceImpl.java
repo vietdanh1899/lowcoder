@@ -1,5 +1,6 @@
 package org.lowcoder.api.authentication.service;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ import org.lowcoder.sdk.config.AuthProperties;
 import org.lowcoder.sdk.exception.BizError;
 import org.lowcoder.sdk.exception.BizException;
 import org.lowcoder.sdk.util.CookieHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
@@ -69,6 +72,8 @@ public class AuthenticationApiServiceImpl implements AuthenticationApiService {
     private final OrgMemberService orgMemberService;
     private final JWTUtils jwtUtils;
     private final AuthProperties authProperties;
+    @Autowired
+    private ReactiveRedisTemplate<String, String> reactiveTemplate;
 
     @Override
     public Mono<AuthUser> authenticateByForm(String loginId, String password, String source, boolean register, String authId, String orgId) {
@@ -81,8 +86,31 @@ public class AuthenticationApiServiceImpl implements AuthenticationApiService {
     }
 
     @Override
-    public Mono<AuthUser> authenticateByAccessToken(String authId, String source, String code, String redirectUrl, String orgId) {
-        return authenticate(authId, source, new OAuth2RequestContext(orgId, code, redirectUrl, true));
+    public Mono<Void> authenticateByAccessToken(String authId, String source, String code, String tenant, String redirectUrl, String orgId, ServerWebExchange exchange, String invitationId) {
+        // if redis contains keycloak user id record, return;
+        // else login with keycloak and save keycloak user id to redis
+        try {
+            DecodedJWT verifiedToken = jwtUtils.verifyToken(code, tenant);
+            String subject = verifiedToken.getSubject();
+            if (!subject.isEmpty()) {
+                return reactiveTemplate.hasKey(subject).flatMap((value) -> {
+                    if (!value)
+                        return authenticate(authId, source, new OAuth2RequestContext(orgId, code, redirectUrl, true))
+                                .flatMap(authUser -> Mono.zip(
+                                        loginOrRegister(authUser, exchange, invitationId, Boolean.FALSE, false),
+                                        reactiveTemplate.opsForValue().set(subject, authUser.getUid())
+                                ));
+
+                    return Mono.empty();
+                }).then(Mono.fromRunnable(() -> {
+                    cookieHelper.saveCookie(code, exchange);
+                    cookieHelper.saveTenantCookie(tenant, exchange);
+                }));
+            }
+        } catch (Exception e) {
+            System.err.println("Token verification failed: " + e.getMessage());
+        }
+        return Mono.empty();
     }
 
     protected Mono<AuthUser> authenticate(String authId, @Deprecated String source, AuthRequestContext context) {
@@ -123,13 +151,19 @@ public class AuthenticationApiServiceImpl implements AuthenticationApiService {
     }
 
     @Override
-    public Mono<Void> loginOrRegister(AuthUser authUser, ServerWebExchange exchange,
-                                      String invitationId, boolean linKExistingUser) {
+    public Mono<Void> loginOrRegister(AuthUser authUser, ServerWebExchange exchange, String invitationId, boolean linKExistingUser) {
+        return loginOrRegister(authUser, exchange, invitationId, linKExistingUser, false);
+    }
+
+    @Override
+    public Mono<Void> loginOrRegister(AuthUser authUser, ServerWebExchange exchange, String invitationId, boolean linKExistingUser, boolean shouldGenCookie) {
         return updateOrCreateUser(authUser, linKExistingUser, false)
                 .delayUntil(user -> ReactiveSecurityContextHolder.getContext()
                         .doOnNext(securityContext -> securityContext.setAuthentication(AuthenticationUtils.toAuthentication(user))))
                 // save token and set cookie
                 .delayUntil(user -> {
+                    if (!shouldGenCookie) return Mono.just(user);
+
                     String token = CookieHelper.generateCookieToken();
                     return sessionUserService.saveUserSession(token, user, authUser.getSource())
                             .then(Mono.fromRunnable(() -> cookieHelper.saveCookie(token, exchange)));

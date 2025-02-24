@@ -16,9 +16,11 @@ public interface AuthenticationApiService {
 
     Mono<AuthUser> authenticateByOauth2(String authId, String source, String code, String redirectUrl, String orgId);
 
-    Mono<AuthUser> authenticateByAccessToken(String authId, String source, String code, String redirectUrl, String orgId);
+    Mono<Void> authenticateByAccessToken(String authId, String source, String code, String tenant, String redirectUrl, String orgId, ServerWebExchange exchange, String invitationId);
 
     Mono<Void> loginOrRegister(AuthUser authUser, ServerWebExchange exchange, String invitationId, boolean linKExistingUser);
+
+    Mono<Void> loginOrRegister(AuthUser authUser, ServerWebExchange exchange, String invitationId, boolean linKExistingUser, boolean shouldGenCookie);
 
     Mono<Boolean> enableAuthConfig(AuthConfigRequest authConfigRequest);
 

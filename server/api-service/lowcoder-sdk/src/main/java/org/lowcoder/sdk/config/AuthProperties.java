@@ -24,6 +24,7 @@ public class AuthProperties {
     private Oauth2Simple google = new Oauth2Simple();
     private Oauth2Simple github = new Oauth2Simple();
     private ApiKey apiKey = new ApiKey();
+    private Keycloak keycloak = new Keycloak();
     private Boolean workspaceCreation;
 
     @Getter
@@ -55,6 +56,13 @@ public class AuthProperties {
     @Getter
     public static class ApiKey {
         private String secret;
+    }
+
+    @Getter
+    @Setter
+    public static class Keycloak {
+        private String url;
+        private List<String> tenants;
     }
 
     /**
