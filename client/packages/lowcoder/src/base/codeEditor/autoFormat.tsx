@@ -27,7 +27,7 @@ async function getJavascriptFormatter() {
 export async function getJsonFormatter() {
   const prettier = await import("prettier/standalone");
   const parserBabel = await import("prettier/plugins/babel");
-  return async (text: string) => (await prettier.format(text, { parser: "json", plugins: [parserBabel] })).trim();
+  return async (text: string) => (await prettier.format(text, { parser: "json", plugins: [parserBabel, estree] })).trim();
 }
 
 async function formatJsSegment(formatter: (text: string) => Promise<string>, script: string): Promise<string> {
