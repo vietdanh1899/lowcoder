@@ -63,11 +63,10 @@ import { defaultLayout, GridItemComp, GridItemDataType } from "../gridItemComp";
 import { ThemeContext } from "comps/utils/themeContext";
 import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
 import { ExpandViewContext } from "../tableComp/expansionControl";
-import { ReactRunnerView } from "@lowcoder-ee/comps/comps/customReactComp/customReactComp";
-import { ErrorBoundary } from "react-error-boundary";
-import { Button } from "antd";
+import { Fallback, ReactRunnerView } from "@lowcoder-ee/comps/comps/customReactComp/customReactComp";
 import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
 import { JSONValue } from "@lowcoder-ee/util/jsonTypes";
+import { ErrorBoundary } from "react-error-boundary";
 
 const childrenMap = {
   layout: valueComp<Layout>({}),
@@ -344,20 +343,6 @@ const GridItemWrapper = React.memo(React.forwardRef(
 ));
 
 type GirdItemViewRecord = Record<string, GridItem>;
-
-function Fallback({ error, resetErrorBoundary }: any) {
-  // Call resetErrorBoundary() to reset the error boundary and retry the render.
-
-  return (
-    <div role="alert">
-      <p>
-        Something went wrong:{" "}
-        <Button onClick={() => resetErrorBoundary()}>Try again</Button>
-      </p>
-      <pre style={{ color: "red" }}>{error.message}</pre>
-    </div>
-  );
-}
 
 export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
   const {

@@ -128,6 +128,7 @@ import { TextComp } from "./comps/textComp";
 import { SelectComp } from "./comps/selectInputComp/selectComp";
 import { InputComp } from "./comps/textInputComp/inputComp";
 import { TextAreaComp } from "./comps/textInputComp/textAreaComp";
+import { ReactComponent as ReactSvgIcon } from "./comps/customReactComp/react-icon.svg";
 
 type Registry = {
   [key in UICompType]?: UICompManifest;
@@ -1719,7 +1720,7 @@ export var uiCompMap: Registry = {
     name: "React Custom Component",
     enName: "React Custom Component",
     description: trans("uiComp.customCompDesc"),
-    icon: CustomCompIcon,
+    icon: ReactSvgIcon,
     categories: ["integration"],
     keywords: trans("uiComp.customCompKeywords"),
     lazyLoad: true,

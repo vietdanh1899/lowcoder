@@ -13,8 +13,8 @@ import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { Resizable, ResizeCallbackData } from "react-resizable";
 import Handle from "@lowcoder-ee/layout/handler";
-import { Button, Modal } from "antd";
-import { FormatPainterOutlined, FullscreenOutlined } from "@ant-design/icons";
+import { Button, Card, Flex } from "antd";
+import { CloseOutlined, FormatPainterOutlined, FullscreenOutlined } from "@ant-design/icons";
 import { BoolControl } from "comps/controls/boolControl";
 import { getFormatter } from "@lowcoder-ee/base/codeEditor/autoFormat";
 
@@ -60,57 +60,60 @@ const OpenCodeLayout = ({
       <Button icon={<FullscreenOutlined />} onClick={showModal}>
         {label ?? "Open Code Layout Editor"}
       </Button>
-      <Modal
-        styles={{ content: { height: "100%" } }}
-        mask={false}
-        footer={null}
-        open={open}
-        maskClosable={false}
-        title={
-          <div style={{ display: "flex", justifyContent: "space-between", marginRight: "15px" }}>
-            <div className="handle" style={{ cursor: "move" }}>
-              {label ?? "Code layout"}: {compName}
-            </div>
-            <Button
-              icon={<FormatPainterOutlined />}
-              onClick={async () => {
-                setValue(code);
-                const formatedCode = await jsxFormatter(code);
-                setValue(formatedCode);
-                onChange(formatedCode);
-              }}
+      {open && (
+        <Draggable nodeRef={draggableRef} handle=".handle">
+          <Card
+            ref={draggableRef}
+            style={{
+              position: "fixed",
+              top: "30%",
+              left: "30%",
+              zIndex: 999,
+              width: size.width + "px",
+              height: size.height + "px",
+            }}
+          >
+            <Resizable
+              width={size.width}
+              height={size.height}
+              onResize={onResize}
+              handle={Handle}
+              minConstraints={[500, 400]}
+              resizeHandles={["s", "n", "w", "e", "sw", "nw", "se", "ne"]}
             >
-              Format Code
-            </Button>
-          </div>
-        }
-        onCancel={() => setOpen(false)}
-        modalRender={(modal) => (
-          <Draggable nodeRef={draggableRef} handle=".handle">
-            <div ref={draggableRef} style={{ width: size.width + "px", height: size.height + "px" }}>
-              <Resizable
-                width={size.width}
-                height={size.height}
-                onResize={onResize}
-                handle={Handle}
-                minConstraints={[500, 400]}
-                resizeHandles={["s", "n", "w", "e", "sw", "nw", "se", "ne"]}
-              >
-                {modal}
-              </Resizable>
-            </div>
-          </Draggable>
-        )}
-      >
-        <CodeMirror
-          autoFocus={true}
-          basicSetup={{ autocompletion: true }}
-          value={value}
-          height={size.height - 70 + "px"}
-          extensions={[javascript({ jsx: true })]}
-          onChange={onChange}
-        />
-      </Modal>
+              <>
+                <Flex justify="space-between">
+                  <div className="handle" style={{ cursor: "move" }}>
+                    {label ?? "Code layout"}: {compName}
+                  </div>
+                  <Flex>
+                    <Button
+                      icon={<FormatPainterOutlined />}
+                      onClick={async () => {
+                        setValue(code);
+                        const formatedCode = await jsxFormatter(code);
+                        setValue(formatedCode);
+                        onChange(formatedCode);
+                      }}
+                    >
+                      Format Code
+                    </Button>
+                    <Button type="text" icon={<CloseOutlined />} onClick={() => setOpen(false)}></Button>
+                  </Flex>
+                </Flex>
+                <CodeMirror
+                  autoFocus={true}
+                  basicSetup={{ autocompletion: true, searchKeymap: true }}
+                  value={value}
+                  height={size.height - 70 + "px"}
+                  extensions={[javascript({ jsx: true })]}
+                  onChange={onChange}
+                />
+              </>
+            </Resizable>
+          </Card>
+        </Draggable>
+      )}
     </>
   );
 };

@@ -19,13 +19,16 @@ import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import { JSONObject, JSONValue } from "lowcoder-sdk";
 import _ from "lodash";
-import * as Axios from "axios";
+import Axios from "axios";
 import * as PrimeReact from "primereact";
 import dayjs from "dayjs";
 import numbro from "numbro";
+import * as echarts from "echarts";
 import { useRunner } from "./react-runner/useRunner";
 import { ExtraLayout } from "@lowcoder-ee/layout";
 import { CodeLayoutControl } from "@lowcoder-ee/comps/controls/codeLayoutControl";
+import { Button } from "antd";
+import { ErrorBoundary } from "react-error-boundary";
 
 const defaultInput = {
   name: "{{currentUser.name}}",
@@ -124,6 +127,7 @@ const Wrapper = styled.div`
 
 const staticImportScope = {
   primereact: PrimeReact,
+  echarts,
   react: React,
   antd: Antd,
   "antd-mobile": AntdMobile,
@@ -138,6 +142,19 @@ const staticImportScope = {
   dayjs: dayjs,
   numbro: numbro,
 };
+
+export function Fallback({ error, resetErrorBoundary }: any) {
+  // Call resetErrorBoundary() to reset the error boundary and retry the render.
+
+  return (
+    <div role="alert">
+      <p>
+        Something went wrong: <Button onClick={() => resetErrorBoundary()}>Try again</Button>
+      </p>
+      <pre style={{ color: "red" }}>{error.message}</pre>
+    </div>
+  );
+}
 
 export function ReactRunnerView(props: {
   itemViews: ReactElement[];
@@ -267,13 +284,15 @@ const childrenMap = {
 const CustomCompBase = new UICompBuilder(childrenMap, (props, dispatch) => {
   const { code, model, input } = props;
   return (
-    <InnerCustomComponent
-      code={code}
-      input={input}
-      model={model.value}
-      onModelChange={(v) => model.onChange(v)}
-      dispatch={dispatch}
-    />
+    <ErrorBoundary FallbackComponent={Fallback}>
+      <InnerCustomComponent
+        code={code}
+        input={input}
+        model={model.value}
+        onModelChange={(v) => model.onChange(v)}
+        dispatch={dispatch}
+      />
+    </ErrorBoundary>
   );
 })
   .setPropertyViewFn((children) => {
