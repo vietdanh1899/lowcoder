@@ -10051,13 +10051,13 @@ coolshapes-react@lowcoder-org/coolshapes-react:
   languageName: node
   linkType: hard
 
-"echarts@npm:^5.4.3":
-  version: 5.5.0
-  resolution: "echarts@npm:5.5.0"
+"echarts@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "echarts@npm:5.6.0"
   dependencies:
     tslib: 2.3.0
-    zrender: 5.5.0
-  checksum: 181600d21bc4ad6a877bac419800501345c4103ae49ef05a4db495c8dde91f0a5f7ff02eb94581190c59518526f7931e8410ce3fe5da1e0f1e60cd1aeec04a52
+    zrender: 5.6.1
+  checksum: 4b545444155f9457daa89a4ea45f9e08177a9a59d9df7e5ea5206f66e290964fb0a1a273b0dfdeb24a4aa264f6afc925918aa2b76190917abf390bef092ba95c
   languageName: node
   linkType: hard
 
@@ -15020,7 +15020,7 @@ coolshapes-react@lowcoder-org/coolshapes-react:
     dexie: ^4.0.4
     dexie-react-hooks: ^1.1.7
     dotenv: ^16.0.3
-    echarts: ^5.4.3
+    echarts: ^5.6.0
     echarts-wordcloud: ^2.1.0
     eslint: ^8.0.0
     eslint-config-react-app: ^7.0.1
@@ -23339,12 +23339,12 @@ coolshapes-react@lowcoder-org/coolshapes-react:
   languageName: node
   linkType: hard
 
-"zrender@npm:5.5.0":
-  version: 5.5.0
-  resolution: "zrender@npm:5.5.0"
+"zrender@npm:5.6.1":
+  version: 5.6.1
+  resolution: "zrender@npm:5.6.1"
   dependencies:
     tslib: 2.3.0
-  checksum: 89e4f9e95b586af66ebf5c0504d5f8da73678e18c5b888124943ca81ecea7cff12f23009d64048df91e4dc670e9c51fa66c357834d9347e367f3b5cc02a24d35
+  checksum: 01caeac2d30f0083009aafa531ccb7fe991b6ac0ddd8134dc7b0015f794ed7e3d4fbfe5d32f61cb591014245eca15aeebcfc962cdebfe3829598f0c94ba3dc29
   languageName: node
   linkType: hard
 

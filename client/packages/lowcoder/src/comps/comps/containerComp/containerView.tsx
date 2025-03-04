@@ -137,7 +137,7 @@ type ContainerParamProps = {
   layout: Layout;
   items: GridItemsType;
   enableCodeLayout?: boolean;
-  input?: JSONValue;
+  input?: object;
   codeLayout?: string;
   positionParams: PositionParams;
   onPositionParamsChange?: (params: PositionParams) => void;

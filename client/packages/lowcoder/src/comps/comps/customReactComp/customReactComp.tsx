@@ -1,5 +1,5 @@
 import { CompAction, executeQueryAction, routeByNameAction } from "lowcoder-core";
-import { jsonValueControl } from "comps/controls/codeControl";
+import { ObjectControl } from "comps/controls/codeControl";
 import { jsonObjectStateControl } from "comps/controls/codeStateControl";
 import { UICompBuilder, withDefault } from "comps/generators";
 import { NameConfig, NameConfigHidden, withExposingConfigs } from "comps/generators/withExposing";
@@ -12,12 +12,13 @@ import { trans } from "i18n";
 import { EditorContext } from "comps/editorState";
 import { AutoHeightControl } from "comps/controls/autoHeightControl";
 import * as Antd from "antd";
+import { Button } from "antd";
 import * as AntdMobile from "antd-mobile";
 import * as AntIcons from "@ant-design/icons";
 import { useAsyncRunner } from "./useAsyncRunner";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
-import { JSONObject, JSONValue } from "lowcoder-sdk";
+import { JSONObject } from "lowcoder-sdk";
 import _ from "lodash";
 import Axios from "axios";
 import * as PrimeReact from "primereact";
@@ -27,7 +28,6 @@ import * as echarts from "echarts";
 import { useRunner } from "./react-runner/useRunner";
 import { ExtraLayout } from "@lowcoder-ee/layout";
 import { CodeLayoutControl } from "@lowcoder-ee/comps/controls/codeLayoutControl";
-import { Button } from "antd";
 import { ErrorBoundary } from "react-error-boundary";
 
 const defaultInput = {
@@ -65,7 +65,7 @@ export default function App({ model, input }) {
 `;
 
 type IProps = {
-  input: JSONValue;
+  input: object;
   code: string;
   model: JSONObject;
   onModelChange: (v: any) => void;
@@ -160,7 +160,7 @@ export function ReactRunnerView(props: {
   itemViews: ReactElement[];
   extraLayout: ExtraLayout;
   containerPadding?: [number, number];
-  input?: JSONValue;
+  input?: object;
   code: string;
   dispatch: (action: CompAction<any>) => void;
 }) {
@@ -275,7 +275,7 @@ function InnerCustomComponent(props: IProps) {
 }
 
 const childrenMap = {
-  input: jsonValueControl(defaultInput),
+  input: withDefault(ObjectControl, defaultInput),
   model: jsonObjectStateControl(defaultModel),
   code: withDefault(CodeLayoutControl, defaultCode),
   autoHeight: withDefault(AutoHeightControl, "fixed"),

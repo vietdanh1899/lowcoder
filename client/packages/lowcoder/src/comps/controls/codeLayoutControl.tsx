@@ -4,8 +4,8 @@ import {
   controlItem,
   ControlNode,
   ControlParams,
+  jsonObjectControl,
   JSONValueControl,
-  jsonValueControl,
 } from "lowcoder-sdk";
 import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
@@ -31,7 +31,7 @@ const OpenCodeLayout = ({
 }) => {
   const [open, setOpen] = useState(false);
   const draggableRef = useRef<HTMLDivElement>(null!);
-  const [size, setSize] = useState({ width: 500, height: 400 });
+  const [size, setSize] = useState({ width: 800, height: 800 });
   const compName = useContext(CompNameContext);
   const valueRef = useRef<string>(code);
   const [value, setValue] = useState<string>(valueRef.current);
@@ -66,8 +66,8 @@ const OpenCodeLayout = ({
             ref={draggableRef}
             style={{
               position: "fixed",
-              top: "30%",
-              left: "30%",
+              top: "10%",
+              left: "10%",
               zIndex: 999,
               width: size.width + "px",
               height: size.height + "px",
@@ -154,7 +154,7 @@ export type CodeLayoutChildrenType = {
 
 export const CodeLayoutChildrenMap = {
   enableCodeLayout: BoolControl,
-  input: jsonValueControl({}),
+  input: jsonObjectControl({}),
   codeLayout: CodeLayoutControl,
 };
 
