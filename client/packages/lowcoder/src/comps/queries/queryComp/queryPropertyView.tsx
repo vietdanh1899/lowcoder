@@ -163,9 +163,9 @@ export function QueryPropertyView(props: { comp: InstanceType<typeof QueryComp> 
                   </>
                 </QuerySectionWrapper>
 
-                <QuerySectionWrapper>
-                  <QueryUsagePropertyView comp={comp} />
-                </QuerySectionWrapper>
+                {/*<QuerySectionWrapper>*/}
+                {/*  <QueryUsagePropertyView comp={comp} />*/}
+                {/*</QuerySectionWrapper>*/}
 
                 <QuerySectionWrapper>
                   <>

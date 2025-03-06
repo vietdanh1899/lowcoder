@@ -1,5 +1,5 @@
 import { default as Skeleton } from "antd/es/skeleton";
-import { simpleMultiComp } from "comps/generators";
+import { simpleMultiComp, withIsLoading } from "comps/generators";
 import { withExposingConfigs } from "comps/generators/withExposing";
 import { GreyTextColor } from "constants/style";
 import log from "loglevel";
@@ -150,7 +150,7 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
       if (this.compValue) {
         params.value = this.compValue;
       }
-      const RemoteCompWithErrorBound = withErrorBoundary(RemoteExportedComp);
+      const RemoteCompWithErrorBound = withErrorBoundary(withIsLoading(RemoteExportedComp as any));
       this.dispatch(
         customAction<RemoteCompReadyAction>(
           {

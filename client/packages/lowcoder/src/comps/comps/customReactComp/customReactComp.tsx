@@ -30,10 +30,10 @@ import { ExtraLayout } from "@lowcoder-ee/layout";
 import { CodeLayoutControl } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 import { ErrorBoundary } from "react-error-boundary";
 
-const defaultInput = {
+const defaultInput = `{
   name: "{{currentUser.name}}",
   query: "query1",
-};
+}`;
 
 const defaultModel = {
   text: trans("customComp.text"),
