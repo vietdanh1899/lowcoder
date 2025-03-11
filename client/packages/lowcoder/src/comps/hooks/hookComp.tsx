@@ -113,6 +113,9 @@ const HookMap: HookCompMapRawType = {
   theme: ThemeComp,
 };
 
+// use void to prevent HookMap from optimization in production build, which will cause the hook to be empty
+void Object.assign({}, HookMap);
+
 export const HookTmpComp = withTypeAndChildren(HookMap, "title", {
   name: SimpleNameComp,
 });
