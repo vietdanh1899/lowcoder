@@ -5786,6 +5786,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/systemjs@npm:^6.15.1":
+  version: 6.15.1
+  resolution: "@types/systemjs@npm:6.15.1"
+  checksum: 4c29f4951299b67a287b8b21219416c4d8eee277582ae045f6a97eaaa9d27ad59789f6b608c5519adf0e42eee23f139c4027cc157f37807a16b4601b353f5442
+  languageName: node
+  linkType: hard
+
 "@types/tern@npm:0.23.4":
   version: 0.23.4
   resolution: "@types/tern@npm:0.23.4"
@@ -6183,6 +6190,7 @@ __metadata:
   dependencies:
     "@types/react": ^18.2.0
     "@types/react-dom": ^18.2.0
+    "@types/systemjs": ^6.15.1
     "@typescript-eslint/eslint-plugin": ^7.5.0
     "@typescript-eslint/parser": ^7.5.0
     "@vitejs/plugin-react": ^4.2.1
@@ -6192,6 +6200,7 @@ __metadata:
     lowcoder-sdk: "*"
     react: ^18.2.0
     react-dom: ^18.2.0
+    systemjs: ^6.15.1
     typescript: ^5.2.2
     vite: ^5.2.8
   languageName: unknown
@@ -21009,6 +21018,13 @@ coolshapes-react@lowcoder-org/coolshapes-react:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
+  languageName: node
+  linkType: hard
+
+"systemjs@npm:^6.15.1":
+  version: 6.15.1
+  resolution: "systemjs@npm:6.15.1"
+  checksum: 238d99938cc47bc761a97caeec3f7fceb5fe0c5a8a4a29bb8d6f55c250dfa20ce1c3623c7194c738f01ca1805d2ceb9b57acdc3a6e9b382b434ab60baa893bd7
   languageName: node
   linkType: hard
 

@@ -26,9 +26,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/systemjs": "^6.15.1",
     "lowcoder-sdk": "*",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "systemjs": "^6.15.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
