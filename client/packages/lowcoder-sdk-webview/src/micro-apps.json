@@ -9,8 +9,8 @@
   },
   {
     "name": "iocv3-explain",
-    "entry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-explain.zip/index.js",
-    "cssEntry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-explain.zip/index.css",
+    "entry": "/micro/iocv3-explain/index.js",
+    "cssEntry": "/micro/iocv3-explain/index.css",
     "prefetch": true,
     "type": "ESM",
     "container": "root",

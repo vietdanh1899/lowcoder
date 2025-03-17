@@ -44,7 +44,7 @@ export async function getNpmPackageMeta(packageName: string) {
     withCredentials: false,
   })
   const res = await axiosInstance.get<NpmPackageMeta>(
-    `/none/${packageName}`,
+    `https://registry.npmjs.com/${packageName}`,
   );
   if (res.status >= 400) {
     return null;
