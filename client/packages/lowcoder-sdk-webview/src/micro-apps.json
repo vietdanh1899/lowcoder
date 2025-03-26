@@ -13,7 +13,6 @@
     "cssEntry": "/micro/iocv3-explain/index.css",
     "prefetch": true,
     "type": "ESM",
-    "container": "root",
     "props": {
       "basename": "/micro"
     }
