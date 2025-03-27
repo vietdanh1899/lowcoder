@@ -2,8 +2,6 @@ import orgSagas from "redux/sagas/orgSagas";
 import { pluginSagas } from "redux/sagas/pluginSagas";
 import { datasourceSagas } from "redux/sagas/datasourceSagas";
 import userSagas from "redux/sagas/userSagas";
-import subscriptionSagas from "redux/sagas/subscriptionSagas";
-import enterpriseSagas from "redux/sagas/enterpriseSagas";
 import applicationSagas from "redux/sagas/applicationSagas";
 import configSagas from "redux/sagas/configSagas";
 import appSnapshotSagas from "redux/sagas/appSnapshotSagas";
@@ -28,8 +26,6 @@ export const sagas = [
   appSnapshotSagas,
   commonSettingsSagas,
   jsLibrarySagas,
-  subscriptionSagas,
-  enterpriseSagas,
 ];
 
 export function* rootSaga(sagasToRun = sagas) {

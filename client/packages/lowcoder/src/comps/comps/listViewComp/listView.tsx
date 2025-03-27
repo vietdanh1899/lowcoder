@@ -363,7 +363,7 @@ export function ListView(props: Props) {
     if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) {
       return;
     }
-    
+
     const newData = [...listData];
     const [movedItem] = newData.splice(fromIndex, 1);
     newData.splice(toIndex, 0, movedItem);

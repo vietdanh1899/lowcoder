@@ -1056,16 +1056,16 @@ var log = loglevelExports;
 
 // global variables black list, forbidden to use in for jsQuery/jsAction
 const functionBlacklist = new Set([
-    "top",
-    "parent",
-    "document",
-    "location",
-    "chrome",
-    "fetch",
-    "XMLHttpRequest",
-    "importScripts",
-    "Navigator",
-    "MutationObserver",
+    // "top",
+    // "parent",
+    // "document",
+    // "location",
+    // "chrome",
+    // "fetch",
+    // "XMLHttpRequest",
+    // "importScripts",
+    // "Navigator",
+    // "MutationObserver",
 ]);
 const expressionBlacklist = new Set([
     ...Array.from(functionBlacklist.values()),

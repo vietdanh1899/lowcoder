@@ -11,11 +11,13 @@ import _ from "lodash";
 import { GridItemComp, GridItemDataType } from "../gridItemComp";
 import { IContainer, isContainer } from "./iContainer";
 import { CompTree, getCompTree } from "./utils";
+import { CodeLayoutChildrenMap } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const children = {
   layout: valueComp<Layout>({}),
   items: sameTypeMap(GridItemComp),
   positionParams: stateComp<PositionParams>(DEFAULT_POSITION_PARAMS),
+  ...CodeLayoutChildrenMap
 };
 
 const SimpleContainerTmpComp = new MultiCompBuilder(children, (props, dispatch) => {

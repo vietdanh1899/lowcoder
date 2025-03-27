@@ -3,7 +3,7 @@ import { css } from "styled-components";
 
 const getBackgroundStyle = (style: Record<string, string | undefined>) => {
   return css`
-    ${isValidColor(style.background) && `background-color: ${style.background}`};
+    ${CSS.supports('background-color', style.background ?? '') && `background-color: ${style.background}`};
     ${isValidGradient(style.background) && !Boolean(style.backgroundImage) && `background-image: ${style.background}`};
     ${!isValidGradient(style.background) && Boolean(style.backgroundImage) && `background-image: url(${style.backgroundImage})`};
     ${isValidGradient(style.background) && Boolean(style.backgroundImage) && `background-image: url(${style.backgroundImage}), ${style.background}`};

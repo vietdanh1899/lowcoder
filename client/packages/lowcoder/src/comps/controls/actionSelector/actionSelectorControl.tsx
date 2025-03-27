@@ -67,6 +67,9 @@ const ActionMap = {
   download: DownloadAction,
 };
 
+// use void to prevent ActionMap from optimization in production build, which will cause the hook to be empty
+void Object.assign({}, ActionMap)
+
 // The type of getView is wrong
 // Do not delete this line, for the view type of assert comp
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

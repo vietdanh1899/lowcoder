@@ -31,6 +31,8 @@ public class GenericAuthRequest  extends AbstractOauth2Request<Oauth2GenericAuth
 
     @Override
     protected Mono<AuthToken> getAuthToken(OAuth2RequestContext context) {
+        if (context.getIsAccessToken()) return Mono.just(AuthToken.builder().accessToken(context.getCode()).build());
+
         return WebClientBuildHelper.builder()
                 .systemProxy()
                 .timeoutMs(HTTP_TIMEOUT)

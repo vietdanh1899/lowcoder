@@ -38,7 +38,8 @@ if (!apiServiceUrl && isDev) {
 const proxyConfig: ServerOptions["proxy"] = {
   "/api": {
     target: apiServiceUrl,
-    changeOrigin: false,
+    changeOrigin: true,
+    secure: false
   },
 };
 
@@ -249,6 +250,11 @@ export const viteConfig: UserConfig = {
         parserOpts: {
           plugins: ["decorators-legacy"],
         },
+        plugins: [
+          [
+            "babel-plugin-styled-components"
+          ]
+        ]
       },
     }),
     viteTsconfigPaths({

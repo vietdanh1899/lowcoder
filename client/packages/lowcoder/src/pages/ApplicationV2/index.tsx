@@ -52,8 +52,6 @@ import { fetchFolderElements, updateFolder } from "../../redux/reduxActions/fold
 import { trans } from "../../i18n";
 import { foldersSelector } from "../../redux/selectors/folderSelector";
 import Setting from "pages/setting";
-import { Support } from "pages/support";
-import { Subscription } from "pages/setting/subscriptions"
 // import { TypographyText } from "../../components/TypographyText";
 // import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { getSubscriptions } from 'redux/selectors/subscriptionSelectors';
@@ -65,6 +63,8 @@ import { selectIsLicenseActive } from "redux/selectors/enterpriseSelectors";
 
 // adding App Editor, so we can show Apps inside the Admin Area
 import AppEditor from "../editor/AppEditor";
+import { fetchDeploymentIdAction } from "@lowcoder-ee/redux/reduxActions/configActions";
+import { getDeploymentId } from "@lowcoder-ee/redux/selectors/configSelectors";
 import {LoadingBarHideTrigger} from "@lowcoder-ee/util/hideLoading";
 
 const TabLabel = styled.div`
@@ -193,7 +193,7 @@ export default function ApplicationHome() {
                   },
                 ],
               },
-      
+
               {
                 items: [
                   {

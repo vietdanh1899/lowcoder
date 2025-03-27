@@ -365,7 +365,7 @@ declare function nodeIsRecord(node: Node<unknown>): node is RecordNode<Record<st
 
 declare function changeDependName(unevaledValue: string, oldName: string, name: string, isFunction?: boolean): string;
 
-type JSONValue = string | number | boolean | JSONObject | JSONArray | null;
+type JSONValue = string | number | boolean | JSONObject | JSONArray | null | undefined;
 interface JSONObject {
     [x: string]: JSONValue | undefined;
 }

@@ -99,7 +99,7 @@ BasicChartTmpComp = withViewFn(BasicChartTmpComp, (comp) => {
           data: getSelectedPoints(param, option)
         }
       }));
-      
+
       if (param.fromAction === "select") {
         comp.dispatch(changeChildAction("selectedPoints", getSelectedPoints(param, option), false));
         onUIEvent("select");

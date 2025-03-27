@@ -14,7 +14,7 @@ import { Layers } from "constants/Layers";
 import { HintPlaceHolder, Modal, Section, sectionNames } from "lowcoder-design";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
-import { CSSProperties, useCallback, useEffect, useMemo, useRef } from "react";
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useContext } from "react";
 import { ResizeHandle } from "react-resizable";
 import styled, { css } from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -26,6 +26,8 @@ import { SliderControl } from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [
   { label: trans("modalComp.open"), value: "open", description: trans("modalComp.openDesc") },
@@ -125,18 +127,18 @@ let TmpModalComp = (function () {
       }, []);
 
       // Memoize body style
-      const bodyStyle = useMemo<CSSProperties>(() => ({ 
+      const bodyStyle = useMemo<CSSProperties>(() => ({
         padding: 0,
         overflow: props.autoHeight ? undefined : "hidden auto"
       }), [props.autoHeight]);
 
       // Memoize width and height
-      const width = useMemo(() => 
+      const width = useMemo(() =>
         transToPxSize(props.width || DEFAULT_WIDTH),
         [props.width]
       );
 
-      const height = useMemo(() => 
+      const height = useMemo(() =>
         !props.autoHeight ? transToPxSize(props.height || DEFAULT_HEIGHT) : undefined,
         [props.autoHeight, props.height]
       );
@@ -251,6 +253,9 @@ let TmpModalComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("modalComp.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("modalComp.titleAlign"), radioButton: true })}
@@ -258,7 +263,7 @@ let TmpModalComp = (function () {
             label: trans('prop.horizontalGridCells'),
           })}
           {children.autoHeight.getPropertyView()}
-          {!children.autoHeight.getView() && 
+          {!children.autoHeight.getView() &&
             children.modalScrollbar.propertyView({
               label: trans("prop.modalScrollbar")
             })}

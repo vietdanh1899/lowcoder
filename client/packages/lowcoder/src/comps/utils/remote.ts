@@ -41,10 +41,10 @@ export function parseCompType(compType: string) {
 export async function getNpmPackageMeta(packageName: string) {
   const axiosInstance = axios.create({
     baseURL: NPM_REGISTRY_URL,
-    withCredentials: true,
+    withCredentials: false,
   })
   const res = await axiosInstance.get<NpmPackageMeta>(
-    `/none/${packageName}`,
+    `https://registry.npmjs.com/${packageName}`,
   );
   if (res.status >= 400) {
     return null;
@@ -71,7 +71,8 @@ export function normalizeNpmPackage(nameOrUrl: string) {
   if (prefixReg.test(nameOrUrl)) {
     return nameOrUrl.replace(prefixReg, "");
   }
-  return nameOrUrl;
+  const suffixReg = /#.*/;
+  return nameOrUrl.replace(suffixReg, "");
 }
 
 export function validateNpmPackage(packageNameOrUrl: string) {
