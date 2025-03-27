@@ -226,7 +226,7 @@ function CustomModalRender(props: Omit<CustomModalProps & ModalFuncProps, "width
   return (
     <Draggable handle=".handle" disabled={!props.draggable} nodeRef={draggableRef}>
       <ModalWrapper
-        ref={draggableRef} 
+        ref={draggableRef}
         $width={props.width}
         $customStyles={props?.customStyles}
       >

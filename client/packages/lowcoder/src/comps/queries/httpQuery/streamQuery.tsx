@@ -1,5 +1,5 @@
 import { simpleMultiComp } from "comps/generators/multi";
-import {  ParamsStringControl } from "comps/controls/paramsControl";
+import {ParamsBooleanControl, ParamsStringControl} from "comps/controls/paramsControl";
 import {
   HttpPathPropertyView,
 } from "./httpQueryConstants";
@@ -8,7 +8,7 @@ import { QUERY_EXECUTION_ERROR, QUERY_EXECUTION_OK } from "constants/queryConsta
 import { FunctionControl } from "comps/controls/codeControl";
 import { JSONValue } from "util/jsonTypes";
 import { withMethodExposing } from "comps/generators/withMethodExposing";
-import { stateComp } from "comps/generators";
+import {stateComp, withDefault} from "comps/generators";
 import { multiChangeAction } from "lowcoder-core";
 
 const socketConnection = async (socket: WebSocket, timeout = 10000) => {
@@ -53,6 +53,7 @@ const createErrorResponse = (
 }
 
 const childrenMap = {
+  proxy: withDefault(ParamsBooleanControl, false),
   path: ParamsStringControl,
   destroySocketConnection: FunctionControl,
   isSocketConnected: stateComp<boolean>(false),

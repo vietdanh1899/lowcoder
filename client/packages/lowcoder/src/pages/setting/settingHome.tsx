@@ -36,7 +36,6 @@ import { Environments}  from "@lowcoder-ee/pages/setting/environments";
 import { AppUsage } from "@lowcoder-ee/pages/setting/appUsage";
 import { AuditLog } from "@lowcoder-ee/pages/setting/audit";
 import { IdSourceHome } from "@lowcoder-ee/pages/setting/idSource";
-import { Subscription } from "./subscriptions";
 import history from "util/history";
 import { HubspotModal } from "./hubspotModal";
 

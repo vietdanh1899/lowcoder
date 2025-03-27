@@ -164,10 +164,20 @@ export function QueryPropertyView(props: { comp: InstanceType<typeof QueryComp> 
                   </>
                 </QuerySectionWrapper>
 
-                <QuerySectionWrapper>
-                  <QueryUsagePropertyView comp={comp} />
-                </QuerySectionWrapper>
+                {/*<QuerySectionWrapper>*/}
+                {/*  <QueryUsagePropertyView comp={comp} />*/}
+                {/*</QuerySectionWrapper>*/}
 
+                <QuerySectionWrapper>
+                  <>
+                    {children.condition.propertyView({
+                      label: trans("eventHandler.condition"),
+                      tooltip: trans("eventHandler.conditionTooltip"),
+                      placeholder: "{{ !!example.value }}",
+                      placement: "bottom",
+                    })}
+                  </>
+                </QuerySectionWrapper>
 
               </QueryPropertyViewWrapper>
             ),
@@ -634,7 +644,7 @@ function buildQueryUsageDataset(components: any[], queryName: string): any[] {
 }
 
 
-const ComponentButton = (props: {   
+const ComponentButton = (props: {
   componentType: string;
   componentName: string;
   path: string;
@@ -736,6 +746,7 @@ export const QueryUsagePropertyView = React.memo((props: {
   const allUICompMap = useMemo(() => editorState.getAllUICompMap(), []);
 
 
+
   const buildUsageDataset = useCallback(async () => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -796,7 +807,7 @@ function useDatasourceStatus(datasourceId: string, datasourceType: ResourceType)
       datasourceType === "libraryQuery" ||
       datasourceType === "alasql" ||
       datasourceId === QUICK_REST_API_ID ||
-      datasourceId === QUICK_GRAPHQL_ID || 
+      datasourceId === QUICK_GRAPHQL_ID ||
       datasourceId === JS_CODE_ID
     ) {
       return "";

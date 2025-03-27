@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { RecordConstructorToView } from "lowcoder-core";
 import { styleControl } from "comps/controls/styleControl";
-import _ from "lodash";
 import {
   AnimationStyle,
   AnimationStyleType,
@@ -91,21 +90,7 @@ const childrenMap = {
 };
 
 const IconView = (props: RecordConstructorToView<typeof childrenMap>) => {
-  const conRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (height && width) {
-      onResize();
-    }
-  }, [height, width]);
-
-  const onResize = () => {
-    const container = conRef.current;
-    setWidth(container?.clientWidth ?? 0);
-    setHeight(container?.clientHeight ?? 0);
-  };
+  const { width, height, ref: conRef } = useResizeDetector();
 
   useResizeDetector({
     targetRef: conRef,

@@ -1,0 +1,60 @@
+[
+  {
+    "name": "zeebe-modeler",
+    "entry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/zeebe-modeler.zip/index.js",
+    "cssEntry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/zeebe-modeler.zip/index.css",
+    "prefetch": false,
+    "type": "ESM",
+    "container": "root"
+  },
+  {
+    "name": "iocv3-explain",
+    "entry": "/micro/iocv3-explain/index.js",
+    "cssEntry": "/micro/iocv3-explain/index.css",
+    "prefetch": true,
+    "type": "ESM",
+    "props": {
+      "basename": "/micro"
+    }
+  },
+  {
+    "name": "iocv3-process-management",
+    "entry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-process-management.zip/index.js",
+    "cssEntry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-process-management.zip/index.css",
+    "prefetch": false,
+    "container": "root",
+    "props": {
+      "basename": "/micro/process-management"
+    }
+  },
+  {
+    "name": "iocv3-service",
+    "entry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-service.zip/index.js",
+    "cssEntry": "https://bvhttdl-s3.ioc-cloud.com/public-apps/iocv3-service.zip/index.css",
+    "prefetch": false,
+    "type": "ESM",
+    "container": "root"
+  },
+  {
+    "name": "gis-editor",
+    "entry": "https://ioc.smartcity-cloud.org/web-gis-editor/main.js",
+    "cssEntry": "https://ioc.smartcity-cloud.org/web-gis-editor/main.css",
+    "prefetch": false,
+    "type": "SYSTEMJS",
+    "container": "root",
+    "props": {
+      "basename": "/gis-editor"
+    }
+  },
+  {
+    "name": "gis-portal",
+    "entry": "https://ioc.smartcity-cloud.org/web-gis-portal/main.js",
+    "cssEntry": "https://ioc.smartcity-cloud.org/web-gis-portal/main.css",
+    "prefetch": false,
+    "type": "SYSTEMJS",
+    "container": "root",
+    "props": {
+      "basename": "/gis-portal"
+    }
+  }
+]

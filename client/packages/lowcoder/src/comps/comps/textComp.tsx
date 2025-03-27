@@ -83,8 +83,19 @@ const getStyle = (style: TextStyleType) => {
 const TextContainer = React.memo(styled.div<{
   $type: string;
   $styleConfig: TextStyleType;
-  $animationStyle:AnimationStyleType;
+  $verticalAlignment: string;
+  $animationStyle: AnimationStyleType;
 }>`
+  .simplebar-content-wrapper {
+    display: flex;
+    align-items: ${(props) => props.$verticalAlignment};
+  }
+
+  .simplebar-content {
+    width: 100%;
+    ${(props) => props.$styleConfig && getStyle(props.$styleConfig)}
+  }
+
   height: 100%;
   overflow: auto;
   margin: 0;
@@ -170,7 +181,7 @@ const TextPropertyView = React.memo((props: {
     </Section>
   ), [props.children.type, props.children.text]);
 
-  const interactionSection = useMemo(() => 
+  const interactionSection = useMemo(() =>
     ["logic", "both"].includes(editorModeStatus) && (
       <Section name={sectionNames.interaction}>
         {hiddenPropertyView(props.children)}
@@ -179,7 +190,7 @@ const TextPropertyView = React.memo((props: {
       </Section>
     ), [editorModeStatus, props.children]);
 
-  const layoutSection = useMemo(() => 
+  const layoutSection = useMemo(() =>
     ["layout", "both"].includes(editorModeStatus) && (
       <>
         <Section name={sectionNames.layout}>
@@ -235,7 +246,7 @@ const TextView = React.memo((props: ToViewReturn<ChildrenType>) => {
     rotate: props.style.rotation
   }), [props.horizontalAlignment, props.autoHeight, props.verticalAlignment, props.style.rotation]);
 
-  const content = useMemo(() => 
+  const content = useMemo(() =>
     props.type === "markdown" ? <TacoMarkDown>{value}</TacoMarkDown> : value,
     [props.type, value]
   );
@@ -245,6 +256,7 @@ const TextView = React.memo((props: ToViewReturn<ChildrenType>) => {
       $animationStyle={props.animationStyle}
       $type={props.type}
       $styleConfig={props.style}
+      $verticalAlignment={props.autoHeight ? "center" : props.verticalAlignment}
       style={containerStyle}
       onClick={handleClick}
     >

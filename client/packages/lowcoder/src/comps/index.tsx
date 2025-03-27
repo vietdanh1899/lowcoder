@@ -193,6 +193,7 @@ import { DrawerComp } from "./hooks/drawerComp";
 import { ModalComp } from "./hooks/modalComp";
 import { defaultCollapsibleContainerData } from "./comps/containerComp/collapsibleContainerComp";
 import { ContainerComp as FloatTextContainerComp } from "./comps/containerComp/textContainerComp";
+import { ReactComponent as ReactSvgIcon } from "./comps/customReactComp/react-icon.svg";
 
 type Registry = {
   [key in UICompType]?: UICompManifest;
@@ -202,7 +203,7 @@ const builtInRemoteComps: Omit<RemoteCompInfo, "compName"> = {
   // source: !!REACT_APP_BUNDLE_BUILTIN_PLUGIN ? "bundle" : "npm",
   source: "npm",
   isRemote: true,
-  packageName: "lowcoder-comps",
+  packageName: "@vietdanh1899/lowcoder-comps",
 };
 
 export var uiCompMap: Registry = {
@@ -579,8 +580,8 @@ export var uiCompMap: Registry = {
     comp: ColumnLayoutComp,
     withoutLoading: true,
     layoutInfo: {
-      w: 24,
-      h: 25,
+      w: 5,
+      h: 5,
       delayCollision: true,
     },
   },
@@ -1696,6 +1697,51 @@ export var uiCompMap: Registry = {
     layoutInfo: {
       w: 12,
       h: 40,
+    },
+  },
+  reactCustom: {
+    name: "React Custom Component",
+    enName: "React Custom Component",
+    description: trans("uiComp.customCompDesc"),
+    icon: ReactSvgIcon,
+    categories: ["integration"],
+    keywords: trans("uiComp.customCompKeywords"),
+    lazyLoad: true,
+    compName: "CustomReactComp",
+    compPath: "comps/customReactComp/customReactComp",
+    layoutInfo: {
+      w: 5,
+      h: 5,
+    },
+  },
+  dynamicModule: {
+    name: "Dynamic Module Component",
+    enName: "Dynamic Module Component",
+    description: "Dynamic Module Component",
+    icon: CustomCompIcon,
+    categories: ["integration"],
+    keywords: trans("uiComp.customCompKeywords"),
+    lazyLoad: true,
+    compName: "DynamicModuleComp",
+    compPath: "comps/dynamicModuleComp/dynamicModuleComp",
+    layoutInfo: {
+      w: 5,
+      h: 5,
+    },
+  },
+  microApp: {
+    name: "Micro App Component",
+    enName: "Micro App Component",
+    description: "Micro App Component",
+    icon: CustomCompIcon,
+    categories: ["integration"],
+    keywords: trans("uiComp.customCompKeywords"),
+    lazyLoad: true,
+    compName: "MicroAppComp",
+    compPath: "comps/microAppComp/microAppComp",
+    layoutInfo: {
+      w: 5,
+      h: 5,
     },
   },
   module: {

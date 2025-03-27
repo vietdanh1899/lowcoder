@@ -24,6 +24,8 @@ import { useUserViewMode } from "../../util/hooks";
 import { QueryApi } from "api/queryApi";
 import { RootCompInstanceType } from "./useRootCompInstance";
 import { getCurrentUser } from "redux/selectors/usersSelectors";
+import {getGlobalSettings, OrgCommonSettingsContext} from "lowcoder-sdk";
+import { StyleProvider } from '@ant-design/cssinjs';
 import React from "react";
 import { isEqual } from "lodash";
 import { isPublicApplication } from "@lowcoder-ee/redux/selectors/applicationSelector";
@@ -108,7 +110,7 @@ const exportAppToJson = (appDSL?: any) => {
   const id = `t--export-app-link`;
   const existingLink = document.getElementById(id);
   existingLink?.remove();
-  
+
   const link = document.createElement("a");
   const time = new Date().getTime();
   const applicationName = `test_app_${time}`;
@@ -122,12 +124,12 @@ const exportAppToJson = (appDSL?: any) => {
     },
     applicationDSL: appDSL,
   };
-  
+
   const blob = new Blob([JSON.stringify(exportObj)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
-  
+
   try {
     link.href = url;
     link.download = applicationName + ".json";
@@ -166,7 +168,7 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
     applicationId: appInfo.id,
     appType: AppTypeEnum.Application,
   });
-  
+
   const exportPublicAppToJson = useCallback(() => {
     const appDsl = compInstance?.comp?.toJsonValue();
     exportAppToJson(appDsl);
@@ -177,10 +179,9 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
       mountedRef.current = false;
     };
   }, []);
-
   useEffect(() => {
     if (!mountedRef.current) return;
-    
+
     setExternalEditorState((s) => ({
       ...s,
       history: compInstance?.history,
@@ -206,11 +207,11 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
 
   useEffect(() => {
     if (!mountedRef.current) return;
-    
+
     message.config({
       top: isUserViewMode ? 0 : 48,
     });
-    
+
     return () => {
       message.destroy();
     };
@@ -232,23 +233,24 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
   });
 
   return loading ? (
-    window.location.pathname.split("/")[3] === "admin" ? <div></div> : 
+    window.location.pathname.split("/")[3] === "admin" ? <div></div> :
     <EditorSkeletonView />
-  ) : (
-    <ConfigProvider
-      locale={getAntdLocale(currentUser.uiLanguage)}
+  ) : (<StyleProvider layer>
+      <ConfigProvider theme={{hashed: false, cssVar: {key: 'lowcoder'}}} locale={getAntdLocale(currentUser.uiLanguage)}
       theme={{
         token: {
           fontFamily: `-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Segoe UI", "PingFang SC",
             "Microsoft Yahei", "Hiragino Sans GB", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
             "Segoe UI Symbol", "Noto Color Emoji"`,
         },
-      }}
-    >
-      <ExternalEditorContext.Provider value={externalEditorState}>
-        {compInstance?.comp?.getView()}
-      </ExternalEditorContext.Provider>
-    </ConfigProvider>
+      }}>
+        <OrgCommonSettingsContext.Provider value={getGlobalSettings().orgCommonSettings}>
+          <ExternalEditorContext.Provider value={externalEditorState}>
+            {compInstance?.comp?.getView()}
+          </ExternalEditorContext.Provider>
+        </OrgCommonSettingsContext.Provider>
+      </ConfigProvider>
+    </StyleProvider>
   );
 }, (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);

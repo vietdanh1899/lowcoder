@@ -2,7 +2,7 @@ import { Route, Switch } from "react-router-dom";
 import { default as AntdLayout } from "antd/es/layout";
 import { AppHeader } from "pages/common/header";
 import * as React from "react";
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { HelpDropdown } from "pages/common/help";
 import MainContent from "components/layout/MainContent";
 import SideBar from "components/layout/SideBar";
@@ -11,7 +11,7 @@ import { SideBarSection, SideBarSectionProps } from "./SideBarSection";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { MenuOutlined } from "@ant-design/icons";
-import { Drawer, Button } from "antd";
+import { Button, Drawer } from "antd";
 import { getBrandingSetting } from "@lowcoder-ee/redux/selectors/enterpriseSelectors";
 
 type LayoutProps = {

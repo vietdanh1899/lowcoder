@@ -24,6 +24,7 @@ import { ConfigViewWrapper } from "./styled";
 import { CNRootContainer } from "constants/styleSelectors";
 import styled from "styled-components";
 import { ThemeContext } from "comps/utils/themeContext";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 export const MODULE_LAYOUT_COMP = "@moduleLayoutComp";
 
@@ -138,6 +139,9 @@ export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer
   getPropertyView() {
     return (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(this.children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {this.children.autoScaleCompHeight.propertyView({
             label: trans("module.autoScaleCompHeight"),

@@ -46,7 +46,7 @@ class PackageProcessingQueue {
     public static wait(packageId: string): Promise<void> {
         if (!PackageProcessingQueue.has(packageId)) {
             return Promise.resolve();
-        }   
+        }
         return PackageProcessingQueue.promiseRegistry[packageId];
     }
 
@@ -88,13 +88,16 @@ export async function fetchRegistryWithConfig(request: ServerRequest, response: 
             return response.status(400).send(`Invalid package path: ${path}`);
         }
 
+        let registry;
         if (!request.body.workspaceId && !request.body.npmRegistryConfig) {
-            return response.status(400).send("Missing workspaceId and/or npmRegistryConfig");
+            // return response.status(400).send("Missing workspaceId and/or npmRegistryConfig");
+            registry = NpmRegistryService.DEFAULT_REGISTRY;
         }
-    
-        const {npmRegistries: npmRegistryConfig}: RequestConfig = request.body;
+        else {
+            const { npmRegistries: npmRegistryConfig }: RequestConfig = request.body;
 
-        const registry = NpmRegistryService.getRegistryEntryForPackageWithConfig(pathPackageInfo.packageId, npmRegistryConfig);
+            registry = NpmRegistryService.getRegistryEntryForPackageWithConfig(pathPackageInfo.packageId, npmRegistryConfig);
+        }
 
         const registryResponse = await fetchFromRegistry(path, registry);
         if (!registryResponse.ok) {
@@ -139,21 +142,24 @@ const fetchPackageFileBasePath = "/npm/package";
 export async function fetchPackageFileWithConfig(request: ServerRequest, response: ServerResponse) {
     const path = request.path.replace(fetchPackageFileBasePath, "");
     logger.info(`Fetch file for path with config: ${path}`);
-    
+
     const pathPackageInfo = parsePackageInfoFromPath(path);
     if (!pathPackageInfo) {
         return response.status(400).send(`Invalid package path: ${path}`);
     }
-    
+
+    let registry;
     if (!request.body.workspaceId && !request.body.npmRegistryConfig) {
-        return response.status(400).send("Missing workspaceId and/or npmRegistryConfig");
+        // return response.status(400).send("Missing workspaceId and/or npmRegistryConfig");
+        registry = NpmRegistryService.DEFAULT_REGISTRY;
+    }
+    else {
+        const { npmRegistries: npmRegistryConfig }: RequestConfig = request.body;
+
+        registry = NpmRegistryService.getRegistryEntryForPackageWithConfig(pathPackageInfo.packageId, npmRegistryConfig);
     }
 
-    const {workspaceId, npmRegistries: npmRegistryConfig}: RequestConfig = request.body;
-    const registryConfig: NpmRegistryConfig = npmRegistryConfig;
-    const registry = NpmRegistryService.getRegistryEntryForPackageWithConfig(pathPackageInfo.packageId, registryConfig);
-
-    fetchPackageFileInner(request, response, {workspaceId, registry});
+    await fetchPackageFileInner(request, response, {workspaceId: request.body.workspaceId, registry});
 }
 
 export async function fetchPackageFile(request: ServerRequest, response: ServerResponse) {
@@ -173,16 +179,16 @@ async function fetchPackageFileInner(request: ServerRequest, response: ServerRes
     try {
         const {workspaceId, registry} = config
         logger.info(`Fetch file for workspaceId: ${workspaceId}`);
-        const path = request.path.replace(fetchPackageFileBasePath, "");    
+        const path = request.path.replace(fetchPackageFileBasePath, "");
         const pathPackageInfo = parsePackageInfoFromPath(path);
         if (!pathPackageInfo) {
             return response.status(400).send(`Invalid package path: ${path}`);
         }
-     
+
         logger.debug(`Fetch file for package: ${JSON.stringify(pathPackageInfo)}`);
         const {packageId, version, file} = pathPackageInfo;
         let packageVersion = version;
-    
+
         let packageInfo: PackagesVersionInfo | null = null;
         if (version === "latest") {
             const packageInfo: PackagesVersionInfo|null = await fetchPackageInfo(packageId, registry);
@@ -197,7 +203,7 @@ async function fetchPackageFileInner(request: ServerRequest, response: ServerRes
             logger.info("Waiting for package to be processed", packageId);
             await PackageProcessingQueue.wait(packageId);
         }
-    
+
         const baseDir = `${CACHE_DIR}/${workspaceId ?? "default"}`;
         const packageBaseDir = `${baseDir}/${packageId}/${packageVersion}/package`;
         const packageExists = await fileExists(`${packageBaseDir}/package.json`)
@@ -208,11 +214,11 @@ async function fetchPackageFileInner(request: ServerRequest, response: ServerRes
                 if (!packageInfo) {
                     packageInfo = await fetchPackageInfo(packageId, registry);
                 }
-                
+
                 if (!packageInfo || !packageInfo.versions || !packageInfo.versions[packageVersion]) {
                     return response.status(404).send("Not found");
                 }
-                
+
                 const tarball = packageInfo.versions[packageVersion].dist.tarball;
                 logger.info(`Fetching tarball: ${tarball}`);
                 await fetchAndUnpackTarball(tarball, packageId, packageVersion, registry, baseDir);
@@ -225,13 +231,13 @@ async function fetchPackageFileInner(request: ServerRequest, response: ServerRes
         } else {
             logger.info(`Package already exists, serve from cache: ${packageBaseDir}/${file}`)
         }
-  
+
         // Fallback to index.mjs if index.js is not present
         if (file === "index.js" && !await fileExists(`${packageBaseDir}/${file}`)) {
             logger.debug("Fallback to index.mjs");
             return response.sendFile(`${packageBaseDir}/index.mjs`);
         }
-    
+
         return response.sendFile(pathlib.resolve(`${packageBaseDir}/${file}`));
     } catch (error) {
         logger.error(`Error fetching package file: ${error} ${(error as {stack: string})?.stack?.toString()}`);
@@ -244,7 +250,7 @@ async function fetchPackageFileInner(request: ServerRequest, response: ServerRes
  * Helpers
  */
 
-function parsePackageInfoFromPath(path: string): {packageId: string, organization: string, name: string, version: string, file: string} | undefined { 
+function parsePackageInfoFromPath(path: string): {packageId: string, organization: string, name: string, version: string, file: string} | undefined {
     //@ts-ignore - regex groups
     const packageInfoRegex = /^\/?(?<packageId>(?:@(?<organization>[a-z0-9-~][a-z0-9-._~]*)\/)?(?<name>[a-z0-9-~][a-z0-9-._~]*))(?:@(?<version>[-a-z0-9><=_.^~]+))?(\/(?<file>[^\r\n]*))?$/;
     const matches = path.match(packageInfoRegex);
@@ -255,13 +261,13 @@ function parsePackageInfoFromPath(path: string): {packageId: string, organizatio
     let {packageId, organization, name, version, file} = matches.groups;
     // also test for alpha and beta versions like 0.0.1-beta1
     version = /^\d+\.\d+\.\d+(-[\w\d]+)?/.test(version) ? version : "latest";
-    
+
     return {packageId, organization, name, version, file};
 }
 
 function fetchFromRegistry(urlOrPath: string, config: NpmRegistryConfigEntry): Promise<Response> {
     const registryUrl = config?.registry.url;
-    const headers: {[key: string]: string} = {}; 
+    const headers: {[key: string]: string} = {};
     switch (config?.registry.auth.type) {
         case "none":
             break;
@@ -299,14 +305,14 @@ async function fetchAndUnpackTarball(url: string, packageId: string, packageVers
     if (!await fileExists(baseDir)) {
         await fs.mkdir(baseDir, { recursive: true });
     }
-    
+
     // Fetch tarball
     const response: Response = await fetchFromRegistry(url, config);
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const path = `${baseDir}/${url.split("/").pop()}`;
     await fs.writeFile(path, buffer);
-    
+
     // Unpack tarball
     const destinationPath = `${baseDir}/${packageId}/${packageVersion}`;
     await fs.mkdir(destinationPath, { recursive: true });
