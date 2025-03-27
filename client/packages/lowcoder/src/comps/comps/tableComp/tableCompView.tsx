@@ -381,6 +381,10 @@ const TableTd = styled.td<{
   $tableSize?: string;
   $autoHeight?: boolean;
 }>`
+  .markdown-body {
+      color: ${(props) => props.$style.text};
+  }
+    
   .ant-table-row-expand-icon,
   .ant-table-row-indent {
     display: ${(props) => (props.$isEditing ? "none" : "initial")};
@@ -437,9 +441,6 @@ const TableTd = styled.td<{
     `};
     
     > .ant-badge > .ant-badge-status-text,
-    > div > .markdown-body {
-      color: ${(props) => props.$style.text};
-    }
 
     > div > svg g {
       stroke: ${(props) => props.$style.text};

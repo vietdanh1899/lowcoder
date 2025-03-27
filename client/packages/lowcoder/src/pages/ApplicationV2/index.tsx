@@ -57,8 +57,6 @@ import { fetchFolderElements, updateFolder } from "../../redux/reduxActions/fold
 import { trans } from "../../i18n";
 import { foldersSelector } from "../../redux/selectors/folderSelector";
 import Setting from "pages/setting";
-import { Support } from "pages/support";
-import { Subscription } from "pages/setting/subscriptions"
 // import { TypographyText } from "../../components/TypographyText";
 // import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { isEE } from "util/envUtils";
@@ -69,7 +67,6 @@ import { SubscriptionProductsEnum } from '@lowcoder-ee/constants/subscriptionCon
 import AppEditor from "../editor/AppEditor";
 import { fetchDeploymentIdAction } from "@lowcoder-ee/redux/reduxActions/configActions";
 import { getDeploymentId } from "@lowcoder-ee/redux/selectors/configSelectors";
-import { SimpleSubscriptionContextProvider } from '@lowcoder-ee/util/context/SimpleSubscriptionContext';
 import {LoadingBarHideTrigger} from "@lowcoder-ee/util/hideLoading";
 
 const TabLabel = styled.div`
@@ -154,7 +151,6 @@ export default function ApplicationHome() {
   return (
     <DivStyled>
       <LoadingBarHideTrigger />
-      <SimpleSubscriptionContextProvider>
         <Layout
           sections={[
             {
@@ -212,10 +208,10 @@ export default function ApplicationHome() {
                 },
               ],
             },
-    
+
             {
               items: [
-                
+
                 {
                   text: <TabLabel>{trans("home.queryLibrary")}</TabLabel>,
                   routePath: QUERY_LIBRARY_URL,
@@ -246,32 +242,6 @@ export default function ApplicationHome() {
                   icon: ({ selected, ...otherProps }) => selected ? ( <EnterpriseIcon {...otherProps} width={"24px"}/> ) : ( <EnterpriseIcon {...otherProps} width={"24px"}/> ),
                   visible: ({ user }) => user.orgDev,
                   mobileVisible: false,
-                },
-              ],
-            } : { items: [] },
-
-            !supportSubscription && user.orgDev ? {
-              items: [
-                {
-                  text: <TabLabel>{trans("home.support")}</TabLabel>,
-                  routePath: SUBSCRIPTION_SETTING,
-                  routeComp: Subscription,
-                  routePathExact: false,
-                  icon: ({ selected, ...otherProps }) => selected ? <SupportIcon {...otherProps} width={"24px"}/> : <SupportIcon {...otherProps} width={"24px"}/>,
-                  mobileVisible: true,
-                },
-              ],
-            } : { items: [] },
-
-            supportSubscription && user.orgDev ? {
-              items: [
-                {
-                  text: <TabLabel>{trans("home.support")}</TabLabel>,
-                  routePath: SUPPORT_URL,
-                  routeComp: Support,
-                  routePathExact: false,
-                  icon: ({ selected, ...otherProps }) => selected ? <SupportIcon {...otherProps} width={"24px"}/> : <SupportIcon {...otherProps} width={"24px"}/>,
-                  mobileVisible: true,
                 },
               ],
             } : { items: [] },
@@ -318,7 +288,6 @@ export default function ApplicationHome() {
 
           ]}
         />
-      </SimpleSubscriptionContextProvider>
     </DivStyled>
   );
 }

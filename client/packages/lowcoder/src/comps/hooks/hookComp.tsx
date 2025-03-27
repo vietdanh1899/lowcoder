@@ -91,7 +91,7 @@ const builtInRemoteComps: Omit<RemoteCompInfo, "compName"> = {
   // source: !!REACT_APP_BUNDLE_BUILTIN_PLUGIN ? "bundle" : "npm",
   source: "npm",
   isRemote: true,
-  packageName: "lowcoder-comps",
+  packageName: "@vietdanh1899/lowcoder-comps",
 };
 const HookMap: HookCompMapRawType = {
   title: TitleHookComp,
@@ -112,6 +112,9 @@ const HookMap: HookCompMapRawType = {
   drawer: DrawerComp,
   theme: ThemeComp,
 };
+
+// use void to prevent HookMap from optimization in production build, which will cause the hook to be empty
+void Object.assign({}, HookMap);
 
 export const HookTmpComp = withTypeAndChildren(HookMap, "title", {
   name: SimpleNameComp,

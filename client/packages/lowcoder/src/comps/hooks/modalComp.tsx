@@ -14,7 +14,7 @@ import { Layers } from "constants/Layers";
 import { HintPlaceHolder, Modal, Section, sectionNames } from "lowcoder-design";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
-import { CSSProperties, useCallback } from "react";
+import {CSSProperties, useCallback, useContext} from "react";
 import { ResizeHandle } from "react-resizable";
 import styled, { css } from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -26,6 +26,8 @@ import { SliderControl } from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [
   { label: trans("modalComp.open"), value: "open", description: trans("modalComp.openDesc") },
@@ -116,6 +118,7 @@ let TmpModalComp = (function () {
     (props, dispatch) => {
       const userViewMode = useUserViewMode();
       const appID = useApplicationId();
+      const preloadId = useContext(PreloadIdContext);
       const bodyStyle: CSSProperties = { padding: 0 };
       const width = transToPxSize(props.width || DEFAULT_WIDTH);
       let height = undefined;
@@ -149,7 +152,7 @@ let TmpModalComp = (function () {
         const extractedValues = extractMarginValues(props.style);
         if (extractedValues !== null) {
           paddingValues = extractedValues;
-        } 
+        }
       }
       return (
         <BackgroundColorContext.Provider value={props.style.background}>
@@ -178,7 +181,7 @@ let TmpModalComp = (function () {
                 if (open) props.onEvent("open");
               }}
               zIndex={Layers.modal}
-              modalRender={(node) => <ModalStyled $style={props.style} $modalScrollbar={props.modalScrollbar}>{node}</ModalStyled>}
+              modalRender={(node) => <ModalStyled id={preloadId} $style={props.style} $modalScrollbar={props.modalScrollbar}>{node}</ModalStyled>}
               mask={props.showMask}
               className={clsx(`app-${appID}`, props.className)}
               data-testid={props.dataTestId as string}
@@ -200,6 +203,9 @@ let TmpModalComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("modalComp.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("modalComp.titleAlign"), radioButton: true })}
@@ -207,7 +213,7 @@ let TmpModalComp = (function () {
             label: trans('prop.horizontalGridCells'),
           })}
           {children.autoHeight.getPropertyView()}
-          {!children.autoHeight.getView() && 
+          {!children.autoHeight.getView() &&
             children.modalScrollbar.propertyView({
               label: trans("prop.modalScrollbar")
             })}

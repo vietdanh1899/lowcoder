@@ -8,10 +8,10 @@ import { HookListComp } from "comps/hooks/hookListComp";
 import { QueryListComp } from "comps/queries/queryComp";
 import { NameAndExposingInfo } from "comps/utils/exposingTypes";
 import { handlePromiseAndDispatch } from "util/promiseUtils";
-import { HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState } from "react";
+import {HTMLAttributes, Suspense, lazy, useContext, useEffect, useMemo, useState, useLayoutEffect} from "react";
 import { setFieldsNoTypeCheck } from "util/objectUtils";
 import { AppSettingsComp } from "./appSettingsComp";
-import { PreloadComp } from "./preLoadComp";
+import {PreloadComp, PreloadIdContext} from "./preLoadComp";
 import { TemporaryStateListComp } from "./temporaryStateComp";
 import { TransformerListComp } from "./transformerListComp";
 import UIComp from "./uiComp";
@@ -20,7 +20,7 @@ import { ModuleLayoutCompName } from "constants/compConstants";
 import { defaultTheme as localDefaultTheme } from "constants/themeConstants";
 import { ModuleLoading } from "components/ModuleLoading";
 import EditorSkeletonView from "pages/editor/editorSkeletonView";
-import { getGlobalSettings } from "comps/utils/globalSettings";
+import { OrgCommonSettingsContext } from "comps/utils/globalSettings";
 import { getCurrentTheme } from "comps/utils/themeUtil";
 import { DataChangeResponderListComp } from "./dataChangeResponderComp";
 import { FolderListComp } from "./folderListComp";
@@ -66,7 +66,7 @@ const RootView = React.memo((props: RootViewProps) => {
   const { readOnly } = useContext(ExternalEditorContext);
   const isUserViewMode = useUserViewMode();
   const appThemeId = comp.children.settings.getView().themeId;
-  const { orgCommonSettings } = getGlobalSettings();
+  const orgCommonSettings  = useContext(OrgCommonSettingsContext);
   const themeList = orgCommonSettings?.themeList || [];
   const selectedTheme = getCurrentTheme(themeList, appThemeId);
 
@@ -74,10 +74,17 @@ const RootView = React.memo((props: RootViewProps) => {
     previewTheme?.previewTheme ||
     selectedTheme?.theme ||
     localDefaultTheme;
-  
+
   const themeId = selectedTheme ? selectedTheme.id : (
     previewTheme ? "preview-theme" : 'default-theme-id'
-  ); 
+  );
+
+  useLayoutEffect(() => {
+    if (REACT_APP_MOBILE) {
+      const gridBg = comp.children.settings.getView().gridBg;
+      if (readOnly && gridBg) document.body.style.backgroundColor = gridBg;
+    }
+  }, []);
 
   useEffect(() => {
     const newEditorState = new EditorState(comp, (changeEditorStateFn) => {
@@ -131,10 +138,10 @@ const RootView = React.memo((props: RootViewProps) => {
   }
 
   return (
-    <div {...divProps}
+    <div {...(readOnly && divProps)}
           className={clsx(
-            divProps.id, 
-          )} 
+            divProps.id,
+          )}
        style={{height: '100%'}}>
       <PropertySectionContext.Provider value={propertySectionContextValue}>
         <ThemeContext.Provider value={themeContextValue}>
@@ -144,7 +151,9 @@ const RootView = React.memo((props: RootViewProps) => {
             ))}
             <Suspense fallback={!readOnly || isUserViewMode ? SuspenseFallback : null}>
               <LoadingBarHideTrigger />
-              <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload} />
+              <PreloadIdContext.Provider value={divProps.id}>
+                <EditorView uiComp={comp.children.ui} preloadComp={comp.children.preload}/>
+              </PreloadIdContext.Provider>
             </Suspense>
           </EditorContext.Provider>
         </ThemeContext.Provider>

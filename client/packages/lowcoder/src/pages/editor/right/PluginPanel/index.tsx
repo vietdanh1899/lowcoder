@@ -12,6 +12,8 @@ import { ComListTitle, ExtensionContentWrapper } from "../styledComponent";
 import { EmptyContent } from "components/EmptyContent";
 import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
 import { isPublicApplication } from "@lowcoder-ee/redux/selectors/applicationSelector";
+import axios from "axios";
+import { NpmPackageMeta } from "@lowcoder-ee/types/remoteComp";
 
 const Footer = styled.div`
   display: flex;
@@ -51,7 +53,7 @@ export default function PluginPanel() {
     );
   };
 
-  const handleAddNewPlugin = () => {
+  const handleAddNewPlugin = async () => {
     if (!newPluginName) {
       return;
     }
@@ -67,7 +69,13 @@ export default function PluginPanel() {
       messageInstance.error(trans("npm.pluginExisted"));
       return;
     }
-    const nextNpmPlugins = (commonSettings?.npmPlugins || []).concat(newPluginName);
+    const normalizedPluginName = normalizeNpmPackage(newPluginName);
+    const res = await axios.get<NpmPackageMeta>(`https://registry.npmjs.org/${normalizedPluginName}`);
+    if (res.status >= 400) {
+      return;
+    }
+    const pluginNameWithVersion = `${normalizedPluginName}#${res.data["dist-tags"].latest}`;
+    const nextNpmPlugins = (commonSettings?.npmPlugins || []).concat(pluginNameWithVersion);
     handleSetNpmPlugins(nextNpmPlugins);
     setNewPluginName("");
     showAddModal(false);

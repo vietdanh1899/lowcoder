@@ -63,6 +63,10 @@ import { defaultLayout, GridItemComp, GridItemDataType } from "../gridItemComp";
 import { ThemeContext } from "comps/utils/themeContext";
 import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
 import { ExpandViewContext } from "../tableComp/expansionControl";
+import { Fallback, ReactRunnerView } from "@lowcoder-ee/comps/comps/customReactComp/customReactComp";
+import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
+import { JSONValue } from "@lowcoder-ee/util/jsonTypes";
+import { ErrorBoundary } from "react-error-boundary";
 
 const childrenMap = {
   layout: valueComp<Layout>({}),
@@ -132,6 +136,9 @@ type DispatchProps = { dispatch: DispatchType };
 type ContainerParamProps = {
   layout: Layout;
   items: GridItemsType;
+  enableCodeLayout?: boolean;
+  input?: object;
+  codeLayout?: string;
   positionParams: PositionParams;
   onPositionParamsChange?: (params: PositionParams) => void;
   onLayoutChange?: (Layout: Layout) => void;
@@ -320,15 +327,17 @@ const ItemWrapper = styled.div<{ $disableInteract?: boolean }>`
 
 const GridItemWrapper = React.memo(React.forwardRef(
   (
-    props: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>,
+    props: React.PropsWithChildren<HTMLAttributes<HTMLDivElement> & { compType: string }>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const editorState = useContext(EditorContext);
-    const { children, ...divProps } = props;
+    const { children, compType, ...divProps } = props;
     return (
-      <ItemWrapper ref={ref} $disableInteract={editorState?.disableInteract} {...divProps}>
-        {props.children}
-      </ItemWrapper>
+      <CompContext.Provider value={{ compType }}>
+        <ItemWrapper ref={ref} $disableInteract={editorState?.disableInteract} {...divProps}>
+          {props.children}
+        </ItemWrapper>
+      </CompContext.Provider>
     );
   }
 ));
@@ -466,7 +475,7 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
       if (!refItem || !refItem.comp || refItem.comp !== item.comp) {
         newView[key] = {
           ...item,
-          view: <GridItemWrapper key={key}>{item.view}</GridItemWrapper>,
+          view: <GridItemWrapper compType={item.compType} key={key}>{item.view}</GridItemWrapper>,
         };
       } else {
         newView[key] = itemViewRef.current[key];
@@ -494,6 +503,19 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
   }, [isRowCountLocked, positionParams.rowHeight, onRowCountChange]);
 
   // log.info("rowCount:", currentRowCount, "rowHeight:", currentRowHeight);
+
+  if (props.enableCodeLayout && props.codeLayout)
+    return (
+      <ErrorBoundary FallbackComponent={Fallback}>
+        <ReactRunnerView
+          code={props.codeLayout}
+          input={props.input}
+          itemViews={itemViews}
+          extraLayout={extraLayout}
+          dispatch={props.dispatch}
+        />
+      </ErrorBoundary>
+    );
 
   return (
     <ReactGridLayout
@@ -553,7 +575,7 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
       emptyRows={props.emptyRows}
       maxRows={currentRowCount}
       rowHeight={currentRowHeight}
-      overflow={props.overflow}
+      overflow={props.overflow ?? (props.autoHeight ? "hidden" : "auto")}
       extraHeight={props.extraHeight}
       cols={parseInt(defaultGrid)}
       autoHeight={props.autoHeight}
