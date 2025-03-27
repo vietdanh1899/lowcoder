@@ -59,10 +59,16 @@ public class AuthenticationController implements AuthenticationEndpoints
             @RequestParam(required = false) String authId,
             @RequestParam(required = false) String source,
             @RequestParam String code,
+            @RequestParam(required = false, defaultValue = "false") Boolean isAccessToken,
             @RequestParam(required = false) String invitationId,
             @RequestParam String redirectUrl,
             @RequestParam String orgId,
             ServerWebExchange exchange) {
+        if (isAccessToken)
+            return authenticationApiService.authenticateByAccessToken(authId, source, code, redirectUrl, orgId)
+                    .flatMap(authUser -> authenticationApiService.loginOrRegister(authUser, exchange, invitationId, Boolean.FALSE))
+                    .thenReturn(ResponseView.success(true));
+
         return authenticationApiService.authenticateByOauth2(authId, source, code, redirectUrl, orgId)
                 .flatMap(authUser -> authenticationApiService.loginOrRegister(authUser, exchange, invitationId, Boolean.FALSE))
                 .thenReturn(ResponseView.success(true));

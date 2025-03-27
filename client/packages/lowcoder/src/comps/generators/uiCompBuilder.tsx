@@ -22,7 +22,7 @@ import {
   MethodConfigsType,
   withMethodExposing,
 } from "./withMethodExposing";
-import {Section, controlItem } from "lowcoder-design";
+import {Section, controlItem, WhiteLoading } from "lowcoder-design";
 import { trans } from "i18n";
 import { BoolControl } from "../controls/boolControl";
 import { valueComp, withDefault } from "./simpleGenerators";
@@ -37,6 +37,7 @@ import { useMergeCompStyles } from "@lowcoder-ee/util/hooks";
 
 export type NewChildren<ChildrenCompMap extends Record<string, Comp<unknown>>> =
   ChildrenCompMap & {
+    isLoading: InstanceType<typeof BoolCodeControl>;
     hidden: InstanceType<typeof BoolCodeControl>;
     showDataLoadingIndicators: InstanceType<typeof BoolControl>,
     className: InstanceType<typeof StringControl>;
@@ -100,6 +101,7 @@ export const ExtendedPropertyView = React.memo(<
     <>
       {props.children}
       <Section name={trans("prop.component")}>
+        {props.childrenMap.isLoading?.propertyView({ label: trans("prop.loading") })}
         {props.childrenMap.className?.propertyView({ label: trans("prop.className") })}
         {props.childrenMap.dataTestId?.propertyView({ label: trans("prop.dataTestId") })}
         {props.childrenMap.preventStyleOverwriting?.propertyView({ label: trans("prop.preventOverwriting") })}
@@ -139,6 +141,7 @@ export function uiChildren<
 ): ToConstructor<NewChildren<ChildrenCompMap>> {
   return {
     ...childrenMap,
+    isLoading: BoolCodeControl,
     hidden: BoolCodeControl,
     showDataLoadingIndicators: withDefault(BoolControl, false),
     className: StringControl,
@@ -410,7 +413,7 @@ const UIView = React.memo((props: {
       }}
     >
       <HidableView hidden={childrenProps.hidden as boolean}>
-        {props.viewFn(childrenProps, comp.dispatch)}
+        {childrenProps.isLoading ? <WhiteLoading /> :props.viewFn(childrenProps, comp.dispatch)}
       </HidableView>
     </div>
   );

@@ -18,7 +18,7 @@ import { Layers } from "constants/Layers";
 import { trans } from "i18n";
 import { changeChildAction } from "lowcoder-core";
 import { Drawer, HintPlaceHolder, Section, sectionNames } from "lowcoder-design";
-import { useCallback } from "react";
+import {useCallback, useContext} from "react";
 import { ResizeHandle } from "react-resizable";
 import styled from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -28,6 +28,8 @@ import { title } from "process";
 import { SliderControl } from "../controls/sliderControl";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [closeEvent] as const;
 
@@ -122,6 +124,7 @@ let TmpDrawerComp = (function () {
       const { items, ...otherContainerProps } = props.container;
       const userViewMode = useUserViewMode();
       const appID = useApplicationId();
+      const preloadId = useContext(PreloadIdContext);
       const resizable = !userViewMode && (!isTopBom || !props.autoHeight);
       const onResizeStop = useCallback(
         (
@@ -140,6 +143,7 @@ let TmpDrawerComp = (function () {
         <BackgroundColorContext.Provider value={props.style.background}>
           <DrawerWrapper>
             <StyledDrawer
+              id={preloadId}
               resizable={resizable}
               onResizeStop={onResizeStop}
               rootStyle={props.visible.value ? { overflow: "auto", pointerEvents: "auto" } : {}}
@@ -198,6 +202,7 @@ let TmpDrawerComp = (function () {
                 containerPadding={[DEFAULT_PADDING, DEFAULT_PADDING]}
                 hintPlaceholder={HintPlaceHolder}
                 bgColor={props.style.background}
+                overflow={'auto'}
               />
             </StyledDrawer>
           </DrawerWrapper>
@@ -207,6 +212,9 @@ let TmpDrawerComp = (function () {
   )
     .setPropertyViewFn((children) => (
       <>
+        <Section name={sectionNames.codeLayout}>
+          {getCodeLayoutPropertyView(children.container.children)}
+        </Section>
         <Section name={sectionNames.basic}>
           {children.title.propertyView({ label: trans("drawer.title") })}
           {children.title.getView() && children.titleAlign.propertyView({ label: trans("drawer.titleAlign"), radioButton: true })}

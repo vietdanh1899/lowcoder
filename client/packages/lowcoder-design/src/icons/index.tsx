@@ -1020,3 +1020,4 @@ export { ReactComponent as Flag_cn } from "./flags/4x3/cn.svg";
 export { ReactComponent as Flag_ru } from "./flags/4x3/ru.svg";
 export { ReactComponent as Flag_es } from "./flags/4x3/es.svg";
 export { ReactComponent as Flag_br } from "./flags/4x3/br.svg";
+export { ReactComponent as Flag_vi } from "./flags/4x3/vi.svg";

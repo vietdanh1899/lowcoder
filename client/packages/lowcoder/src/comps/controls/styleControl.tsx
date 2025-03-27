@@ -1119,7 +1119,7 @@ const useThemeStyles = (
   const appSettingsComp = editorState?.getAppSettingsComp();
   const preventAppStylesOverwriting = appSettingsComp?.getView()?.preventAppStylesOverwriting;
   const { appliedThemeId, preventStyleOverwriting } = (comp?.comp || {});
-  const appTheme = isPreviewTheme || isDefaultTheme || (!preventStyleOverwriting && !preventAppStylesOverwriting)
+  const appTheme = isPreviewTheme || isDefaultTheme || (!preventStyleOverwriting)
     ? theme?.theme
     : defaultTheme;
   let compTheme: JSONValue|undefined = {};

@@ -6,16 +6,23 @@ import { simpleMultiComp } from "comps/generators/multi";
 import { ReactNode } from "react";
 import { JSONValue } from "../../../util/jsonTypes";
 import { keyValueListControl } from "../../controls/keyValueListControl";
-import { ParamsJsonControl, ParamsStringControl } from "../../controls/paramsControl";
+import { ParamsBooleanControl, ParamsJsonControl, ParamsStringControl } from "../../controls/paramsControl";
 import { list } from "../../generators/list";
 import { valueComp, withDefault } from "../../generators/simpleGenerators";
-import { FunctionProperty, toQueryView } from "../queryCompUtils";
+import { FunctionProperty, toQueryView, transformList } from "../queryCompUtils";
 import {
   HttpHeaderPropertyView,
   HttpParametersPropertyView,
   HttpPathPropertyView,
+  HttpProxyPropertyView
 } from "./httpQueryConstants";
 import { SimpleNameComp } from "@lowcoder-ee/comps/comps/simpleNameComp";
+import { AbstractNode } from "lowcoder-core";
+import {
+  QUERY_EXECUTION_ERROR,
+  QUERY_EXECUTION_OK,
+} from "@lowcoder-ee/constants/queryConstants";
+import axios, { AxiosResponse } from "axios";
 
 interface VariablesControlParams {
   // variables: string[]; todo support parse variables
@@ -73,6 +80,7 @@ export const VariablesControl = class extends list(VariableControl) {
 };
 
 const childrenMap = {
+  proxy: withDefault(ParamsBooleanControl, false),
   path: ParamsStringControl,
   headers: withDefault(keyValueListControl(), [{ key: "", value: "" }]),
   params: withDefault(keyValueListControl(), [{ key: "", value: "" }]),
@@ -92,7 +100,29 @@ export class GraphqlQuery extends GraphqlTmpQuery {
       ...children.path.getQueryParams(),
       ...children.body.getQueryParams(),
     ];
-    return toQueryView(params);
+
+    return (this.children.proxy.node() as AbstractNode<any>).evalCache.value.text.value ? toQueryView(params) : this.directGraphQL();
+  }
+
+  private directGraphQL() {
+    const variables = transformList((this.children.variables.node() as AbstractNode<any>).evalCache.value);
+    const headers = transformList((this.children.headers.node() as AbstractNode<any>).evalCache.value);
+    const params = transformList((this.children.params.node() as AbstractNode<any>).evalCache.value);
+    const path = (this.children.path.node() as AbstractNode<any>).evalCache.value.text.value;
+    const body = (this.children.body.node() as AbstractNode<any>).evalCache.value.text.value;
+
+    return async () => {
+      try {
+        const response: AxiosResponse<JSONValue> = await axios.post(path, {query: body, variables}, {headers, params});
+        return {
+          data: response.data, success: true, code: QUERY_EXECUTION_OK,
+        };
+      } catch (e) {
+        return {
+          success: false, data: "", code: QUERY_EXECUTION_ERROR, message: (e as any).message || "",
+        };
+      }
+    }
   }
 
   propertyView(props: { datasourceId: string }) {
@@ -111,6 +141,8 @@ const PropertyView = (props: { comp: InstanceType<typeof GraphqlQuery>; datasour
 
   return (
     <>
+      <HttpProxyPropertyView {...props} comp={comp} />
+
       <HttpPathPropertyView {...props} comp={comp} />
 
       <QueryConfigWrapper>

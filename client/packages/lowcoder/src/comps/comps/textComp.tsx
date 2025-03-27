@@ -83,8 +83,19 @@ const getStyle = (style: TextStyleType) => {
 const TextContainer = styled.div<{
   $type: string;
   $styleConfig: TextStyleType;
-  $animationStyle:AnimationStyleType;
+  $verticalAlignment: string;
+  $animationStyle: AnimationStyleType;
 }>`
+  .simplebar-content-wrapper {
+    display: flex;
+    align-items: ${(props) => props.$verticalAlignment};
+  }
+
+  .simplebar-content {
+    width: 100%;
+    ${(props) => props.$styleConfig && getStyle(props.$styleConfig)}
+  }
+
   height: 100%;
   overflow: auto;
   margin: 0;
@@ -213,6 +224,7 @@ const TextView = React.memo((props: ToViewReturn<ChildrenType>) => {
       $animationStyle={props.animationStyle}
       $type={props.type}
       $styleConfig={props.style}
+      $verticalAlignment={props.autoHeight ? "center" : props.verticalAlignment}
       style={{
         justifyContent: props.horizontalAlignment,
         alignItems: props.autoHeight ? "center" : props.verticalAlignment,

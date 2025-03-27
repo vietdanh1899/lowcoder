@@ -87,7 +87,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
   }
 
   useEffect(() => {
-    // click events for JSON/Map mode 
+    // click events for JSON/Map mode
     if (mode === 'ui') return;
 
     const echartsCompInstance = echartsCompRef?.current?.getEchartsInstance();
@@ -116,7 +116,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
   useEffect(() => {
     // click events for UI mode
     if(mode !== 'ui') return;
-    
+
     // bind events
     const echartsCompInstance = echartsCompRef?.current?.getEchartsInstance();
     if (!echartsCompInstance) {
@@ -134,7 +134,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
           data: getSelectedPoints(param, option)
         }
       }));
-      
+
       if (param.fromAction === "select") {
         comp.dispatch(changeChildAction("selectedPoints", getSelectedPoints(param, option), false));
         onUIEvent("select");
@@ -178,7 +178,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
     comp.children.mapInstance.dispatch(changeValueAction(echartsCompInstance))
     onMapEvent('mapReady')
   }
-  
+
   const handleOnMapScriptLoad = () => {
     setMapScriptLoaded(true);
     setTimeout(() => {
@@ -228,6 +228,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
           firstResize.current = false;
         }
       }}
+      targetRef={echartsCompRef}
     >
       {(mode !== 'map' || (mode === 'map' && isMapScriptLoaded)) && (
         <ReactECharts
@@ -238,7 +239,7 @@ ChartTmpComp = withViewFn(ChartTmpComp, (comp) => {
           opts={{ locale: getEchartsLocale() }}
           option={option}
           theme={mode !== 'map' ? themeConfig : undefined}
-          mode={mode}
+          // mode={mode}
         />
       )}
     </ReactResizeDetector>
