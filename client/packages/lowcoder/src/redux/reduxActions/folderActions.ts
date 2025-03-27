@@ -82,7 +82,7 @@ export const fetchFolderElements = (
   payload: FetchFolderElementsPayload
 ): ReduxAction<FetchFolderElementsPayload> => {
   return {
-    type: ReduxActionTypes.FETCH_FOLDER_ELEMENTS_INIT,
+    type: ReduxActionTypes.FETCH_FOLDER_ELEMENTS_STRUCTURE_INIT,
     payload: payload,
   };
 };

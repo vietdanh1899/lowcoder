@@ -92,7 +92,10 @@ export default class EChartsReactCore extends PureComponent<EChartsReactProps> {
   public getEchartsInstance(): ECharts {
     return (
       this.echarts.getInstanceByDom(this.ele) ||
-      this.echarts.init(this.ele, this.props.theme, this.props.opts)
+      this.echarts.init(this.ele, this.props.theme, {
+        renderer: "svg",
+        ...this.props.opts,
+      })
     );
   }
 

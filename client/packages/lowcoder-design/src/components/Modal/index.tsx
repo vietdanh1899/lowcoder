@@ -88,6 +88,7 @@ export function Modal(props: ModalProps) {
 
   return (
     <AntdModal
+      centered
       width={width ?? modalWidth}
       styles={modalStyles}
       {...otherProps}

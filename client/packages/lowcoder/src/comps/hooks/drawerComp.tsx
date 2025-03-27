@@ -18,7 +18,7 @@ import { Layers } from "constants/Layers";
 import { trans } from "i18n";
 import { changeChildAction, DispatchType, RecordConstructorToComp, RecordConstructorToView } from "lowcoder-core";
 import { Drawer, HintPlaceHolder, Section, sectionNames } from "lowcoder-design";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { ResizeHandle } from "react-resizable";
 import styled from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -33,6 +33,8 @@ import { NewChildren } from "../generators/uiCompBuilder";
 import { ToViewReturn } from "../generators/multi";
 import { SimpleContainerComp } from "../comps/containerBase/simpleContainerComp";
 import { JSX } from "react/jsx-runtime";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 
 const EventOptions = [closeEvent] as const;
 
@@ -179,7 +181,7 @@ const DrawerView = React.memo((
   const userViewMode = useUserViewMode();
   const appID = useApplicationId();
   const resizable = useMemo(() => !userViewMode && (!isTopBom || !props.autoHeight), [userViewMode, isTopBom, props.autoHeight]);
-  
+
   const onResizeStop = useCallback(
     (
       e: React.SyntheticEvent,
@@ -194,8 +196,8 @@ const DrawerView = React.memo((
     [props.dispatch, isTopBom]
   );
 
-  const getContainer = useCallback(() => 
-    document.querySelector(`#${CanvasContainerID}`) || document.body, 
+  const getContainer = useCallback(() =>
+    document.querySelector(`#${CanvasContainerID}`) || document.body,
     []
   );
 
@@ -221,7 +223,7 @@ const DrawerView = React.memo((
     mask: props.showMask ? undefined : { background: "transparent" }
   }), [props.style.background, props.showMask]);
 
-  const rootStyle = useMemo(() => 
+  const rootStyle = useMemo(() =>
     props.visible.value ? { overflow: "auto", pointerEvents: "auto" } : {},
     [props.visible.value]
   );

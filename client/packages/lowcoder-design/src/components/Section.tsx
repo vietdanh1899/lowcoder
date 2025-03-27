@@ -179,6 +179,7 @@ Section.displayName = 'Section';
 
 // common section names
 export const sectionNames = {
+  codeLayout: trans("prop.codeLayout"),
   basic: trans("prop.basic"),
   interaction: trans("prop.interaction"),
   advanced: trans("prop.advanced"),

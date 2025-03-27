@@ -187,7 +187,7 @@ const ContainerImg = (props: RecordConstructorToView<typeof childrenMap>) => {
   });
 
   return (
-    <Container 
+    <Container
       ref={conRef}
       $style={props.style}
       $animationStyle={props.animationStyle}

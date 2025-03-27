@@ -3,7 +3,7 @@
  */
 import { CompName } from "components/CompName";
 import { CompNameContext } from "comps/editorState";
-import { withIsLoading, withTypeAndChildren } from "comps/generators";
+import { withIsLoading } from "comps/generators";
 import { ToInstanceType } from "comps/generators/multi";
 import { CompExposingContext } from "comps/generators/withContext";
 import { withErrorBoundary } from "comps/generators/withErrorBoundary";
@@ -24,16 +24,21 @@ import { setFieldsNoTypeCheck, shallowEqual } from "util/objectUtils";
 import { remoteComp } from "./remoteComp/remoteComp";
 import { SimpleNameComp } from "./simpleNameComp";
 import { lazyLoadComp } from "./lazyLoadComp/lazyLoadComp";
+import {LayoutContext} from "@lowcoder-ee/pages/common/header";
+import {ExternalEditorContext, withTypeAndChildrenAbstract} from "lowcoder-sdk";
+import {dequal} from "dequal";
 
 export function defaultLayout(compType: UICompType): UICompLayoutInfo {
   return uiCompRegistry[compType]?.layoutInfo ?? { w: 5, h: 5 };
 }
 
+type ItemLayout = { x?: number; y?: number; w?: number; h?: number; i?: string; onManualItemLayoutChange?: (layout: ItemLayout) => void };
+
 const childrenMap = {
   name: SimpleNameComp,
 };
 
-const TmpComp = withTypeAndChildren<
+const TmpComp = withTypeAndChildrenAbstract<
   Record<string, ExposingMultiCompConstructor>,
   ToInstanceType<typeof childrenMap>
 >(
@@ -66,7 +71,14 @@ const TmpComp = withTypeAndChildren<
   childrenMap
 );
 
-const CachedView = React.memo((props: { comp: Comp; name: string }) => {
+const CachedView = React.memo((props: { comp: Comp & {itemLayout?: ItemLayout}; name: string }) => {
+  const layout = useContext(LayoutContext);
+  const { readOnly } = useContext(ExternalEditorContext);
+
+  if (!readOnly && !dequal(layout, props.comp.itemLayout)) {
+    props.comp.itemLayout = layout;
+  }
+
   return React.useMemo(
     () => (
       <Profiler id={props.name} onRender={profilerCallback}>

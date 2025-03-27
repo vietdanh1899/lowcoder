@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { RecordConstructorToView } from "lowcoder-core";
 import { styleControl } from "comps/controls/styleControl";
-import _ from "lodash";
 import {
   AnimationStyle,
   AnimationStyleType,

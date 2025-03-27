@@ -50,7 +50,8 @@ public class PrivateNpmRegistryController implements PrivateNpmRegistryEndpoint{
     private Mono<ResponseEntity<Resource>> forwardToNodeService(String applicationId, String path, String prefix) {
 
         String withoutLeadingSlash = path.startsWith("/") ? path.substring(1) : path;
-        if(applicationId.equals("none")) {
+//        if(applicationId.equals("none")) {
+        if(true) {
             return sessionUserService.getVisitorOrgMemberCache()
                     .onErrorResume(e -> Mono.just(OrgMember.builder().orgId("default").build()))
                     .flatMap(orgMember -> organizationService.getOrgCommonSettings(orgMember.getOrgId())

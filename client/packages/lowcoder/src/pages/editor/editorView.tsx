@@ -144,11 +144,7 @@ const HookCompContainer = styled.div`
 `;
 
 const ViewBody = styled.div<{ $hideBodyHeader?: boolean; $height?: number }>`
-  height: ${(props) => `calc(${
-    props.$height ? props.$height + "px" : "100vh"
-  } - env(safe-area-inset-bottom) -
-      ${props.$hideBodyHeader ? "0px" : TopHeaderHeight}
-  )`};
+
 `;
 
 const SiderWrapper = styled.div<{
@@ -344,6 +340,22 @@ const aggregationSiderItems = [
   },
 ];
 
+export function getDeviceWidth(deviceType: string, deviceOrientation: string) {
+  if (deviceType === 'tablet' && deviceOrientation === 'portrait') {
+    return 850;
+  }
+  if (deviceType === 'tablet' && deviceOrientation === 'landscape') {
+    return 1100;
+  }
+  if (deviceType === 'mobile' && deviceOrientation === 'portrait') {
+    return 450;
+  }
+  if (deviceType === 'mobile' && deviceOrientation === 'landscape') {
+    return 1200;
+  }
+  return null;
+}
+
 const DeviceWrapper = ({
   deviceType,
   deviceOrientation,
@@ -372,18 +384,7 @@ const DeviceWrapper = ({
   }, [deviceType]);
 
   const deviceWidth = useMemo(() => {
-    if (deviceType === 'tablet' && deviceOrientation === 'portrait') {
-      return 850;
-    }
-    if (deviceType === 'tablet' && deviceOrientation === 'landscape') {
-      return 1100;
-    }
-    if (deviceType === 'mobile' && deviceOrientation === 'portrait') {
-      return 450;
-    }
-    if (deviceType === 'mobile' && deviceOrientation === 'landscape') {
-      return 1200;
-    }
+    return getDeviceWidth(deviceType, deviceOrientation);
   }, [deviceType, deviceOrientation]);
 
   if (!Wrapper) return <>{children}</>;
@@ -515,7 +516,7 @@ function EditorView(props: EditorViewProps) {
         </ViewBody>
       );
     }
-    
+
     return uiComp.getView();
   }, [
     showAppSnapshot,
@@ -585,12 +586,10 @@ function EditorView(props: EditorViewProps) {
               <meta key="iframely:title" property="iframely:title" content="Lowcoder 3" />,
               <meta key="iframely:description" property="iframely:description" content="Lowcoder | rapid App & VideoMeeting builder for everyone." />,
             ]),
-            <link rel="iframely" type="text/html" href={window.location.href} media="(aspect-ratio: 1280/720)"/>,
+            <link key="iframely" rel="iframely" type="text/html" href={window.location.href} media="(aspect-ratio: 1280/720)"/>,
             <link key="preconnect-googleapis" rel="preconnect" href="https://fonts.googleapis.com" />,
             <link key="preconnect-gstatic" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />,
             <link key="font-ubuntu" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet" />,
-            // adding Hubspot Support for Analytics
-            <script key="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/144574215.js" type="text/javascript" id="hs-script-loader"></script>
           ]}
         </Helmet>
         <Suspense fallback={<EditorSkeletonView />}>
@@ -607,7 +606,7 @@ function EditorView(props: EditorViewProps) {
       </CustomShortcutWrapper>
     );
   }
-  
+
   // history mode, display with the right panel, a little trick
   const showRight = panelStatus.right || showAppSnapshot;
 
@@ -638,8 +637,6 @@ function EditorView(props: EditorViewProps) {
         <link key="preconnect-googleapis" rel="preconnect" href="https://fonts.googleapis.com" />,
         <link key="preconnect-gstatic" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />,
         <link key="font-ubuntu" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet" />,
-        // adding Clearbit Support for Analytics
-        <script key="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/144574215.js" type="text/javascript" id="hs-script-loader"></script>
       ]}
     </Helmet>
     <Height100Div
@@ -748,7 +745,7 @@ function EditorView(props: EditorViewProps) {
                         <LeftPreloadIcon />
                         {trans("leftPanel.toolbarPreload")}
                       </PreloadDiv>
-                      
+
                       {props.preloadComp.getJSLibraryPropertyView()}
                     </>
                   )}
@@ -762,7 +759,7 @@ function EditorView(props: EditorViewProps) {
               <EditorWrapper className={editorContentClassName}>
                 <EditorHotKeys disabled={readOnly}>
                   <EditorContainerWithViewMode>
-                    {uiCompView}
+                    {uiCompViewWrapper}
                     <HookCompContainer>{hookCompViews}</HookCompContainer>
                   </EditorContainerWithViewMode>
                 </EditorHotKeys>

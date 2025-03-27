@@ -14,7 +14,7 @@ import { Layers } from "constants/Layers";
 import { HintPlaceHolder, Modal, Section, sectionNames } from "lowcoder-design";
 import { trans } from "i18n";
 import { changeChildAction, DispatchType, RecordConstructorToComp } from "lowcoder-core";
-import { CSSProperties, useCallback, useEffect, useMemo, useRef } from "react";
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useContext } from "react";
 import { ResizeHandle } from "react-resizable";
 import styled, { css } from "styled-components";
 import { useUserViewMode } from "util/hooks";
@@ -26,6 +26,8 @@ import { SliderControl } from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
+import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
 import React from "react";
 import { ToViewReturn } from "../generators/multi";
 import { NewChildren } from "../generators/uiCompBuilder";
@@ -125,6 +127,9 @@ const ModalPropertyView = React.memo((props: {
 }) => {
   return (
   <>
+    <Section name={sectionNames.codeLayout}>
+      {getCodeLayoutPropertyView(children.container.children)}
+    </Section>
     <Section name={sectionNames.basic}>
       {props.children.title.propertyView({ label: trans("modalComp.title") })}
       {props.children.title.getView() && props.children.titleAlign.propertyView({ label: trans("modalComp.titleAlign"), radioButton: true })}
@@ -132,7 +137,7 @@ const ModalPropertyView = React.memo((props: {
         label: trans('prop.horizontalGridCells'),
       })}
       {props.children.autoHeight.getPropertyView()}
-      {!props.children.autoHeight.getView() && 
+      {!props.children.autoHeight.getView() &&
         props.children.modalScrollbar.propertyView({
           label: trans("prop.modalScrollbar")
         })}
@@ -176,18 +181,18 @@ const ModalView = React.memo((
   }, []);
 
   // Memoize body style
-  const bodyStyle = useMemo<CSSProperties>(() => ({ 
+  const bodyStyle = useMemo<CSSProperties>(() => ({
     padding: 0,
     overflow: props.autoHeight ? undefined : "hidden auto"
   }), [props.autoHeight]);
 
   // Memoize width and height
-  const width = useMemo(() => 
+  const width = useMemo(() =>
     transToPxSize(props.width || DEFAULT_WIDTH),
     [props.width]
   );
 
-  const height = useMemo(() => 
+  const height = useMemo(() =>
     !props.autoHeight ? transToPxSize(props.height || DEFAULT_HEIGHT) : undefined,
     [props.autoHeight, props.height]
   );

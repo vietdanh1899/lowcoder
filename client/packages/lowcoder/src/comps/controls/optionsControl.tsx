@@ -1,5 +1,11 @@
 import { ViewDocIcon } from "assets/icons";
-import { ArrayControl, BoolCodeControl, NumberControl, RadiusControl, StringControl } from "comps/controls/codeControl";
+import {
+  ArrayControl,
+  BoolCodeControl,
+  NumberControl,
+  RadiusControl,
+  StringControl,
+} from "comps/controls/codeControl";
 import { BoolControl } from "comps/controls/boolControl";
 import { dropdownControl, LeftRightControl } from "comps/controls/dropdownControl";
 import { IconControl } from "comps/controls/iconControl";
@@ -39,6 +45,10 @@ import { ButtonEventHandlerControl } from "./eventHandlerControl";
 import { ControlItemCompBuilder } from "comps/generators/controlCompBuilder";
 import { ColorControl } from "./colorControl";
 import { reduceInContext } from "../utils/reduceContext";
+import {
+  CodeLayoutChildrenMap,
+  getCodeLayoutPropertyView,
+} from "@lowcoder-ee/comps/controls/codeLayoutControl";
 import { BorderOuterOutlined } from "@ant-design/icons";
 
 // Tag preset color options
@@ -534,6 +544,7 @@ export const DropdownOptionControl = optionsControl(DropdownOption, {
 
 const TabsOption = new MultiCompBuilder(
   {
+    ...CodeLayoutChildrenMap,
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
@@ -545,6 +556,7 @@ const TabsOption = new MultiCompBuilder(
 )
   .setPropertyViewFn((children) => (
     <>
+      {getCodeLayoutPropertyView(children)}
       {children.label.propertyView({ label: trans("label") })}
       {children.key.propertyView({ label: trans("value") })}
       {children.icon.propertyView({ label: trans("icon") })}
@@ -556,7 +568,7 @@ const TabsOption = new MultiCompBuilder(
     </>
   ))
   .build();
-  
+
 
 export const TabsOptionControl = manualOptionsControl(TabsOption, {
   initOptions: [
@@ -610,7 +622,7 @@ const StyledContent = styled.div`
     flex-wrap: wrap;
 
     > div:nth-of-type(1) {
-      flex: 0 0 96px;
+      flex: 1 0 96px;
   
       div {
         line-height: 16px;
@@ -630,9 +642,12 @@ const StyledContent = styled.div`
 
 const ColumnOption = new MultiCompBuilder(
   {
+    ...CodeLayoutChildrenMap,
     id: valueComp<number>(-1),
     label: StringControl,
     key: StringControl,
+    itemCss: StringControl,
+    hide: BoolControl,
     minWidth: withDefault(RadiusControl, ""),
     background: withDefault(ColorControl, ""),
     backgroundImage: withDefault(StringControl, ""),
@@ -646,6 +661,19 @@ const ColumnOption = new MultiCompBuilder(
 )
 .setPropertyViewFn((children) => (
   <StyledContent>
+    {getCodeLayoutPropertyView(children)}
+    {children.label.propertyView({
+      label: trans("label")
+    })}
+    {children.key.propertyView({
+      label: "Key"
+    })}
+    {children.itemCss.propertyView({
+      label: "Grid Item Css"
+    })}
+    {children.hide.propertyView({
+      label: "Hide"
+    })}
     {children.minWidth.propertyView({
       label: trans('responsiveLayout.minWidth'),
       preInputNode: <StyledIcon as={WidthIcon} title="" />,
@@ -816,11 +844,11 @@ TagsCompOptions = class extends TagsCompOptions implements OptionCompProperty {
       <>
         {this.children.label.propertyView({ label: trans("coloredTagOptionControl.tag") })}
         {this.children.icon.propertyView({ label: trans("coloredTagOptionControl.icon") })}
-        {this.children.colorType.propertyView({ 
+        {this.children.colorType.propertyView({
           label: trans("style.styleOptions")
         })}
-        {colorType === "preset" && this.children.presetColor.propertyView({ 
-          label: trans("style.presetColor") 
+        {colorType === "preset" && this.children.presetColor.propertyView({
+          label: trans("style.presetColor")
         })}
         {colorType === "custom" && (
           <>
@@ -841,22 +869,22 @@ TagsCompOptions = class extends TagsCompOptions implements OptionCompProperty {
         })}
         {this.children.radius.propertyView({
           label: trans('style.borderRadius'),
-          preInputNode: <StyledIcon as={IconRadius} title="" />,	
+          preInputNode: <StyledIcon as={IconRadius} title="" />,
           placeholder: '3px',
         })}
         {this.children.margin.propertyView({
           label: trans('style.margin'),
-          preInputNode: <StyledIcon as={ExpandIcon} title="" />,	
+          preInputNode: <StyledIcon as={ExpandIcon} title="" />,
           placeholder: '3px',
         })}
         {this.children.padding.propertyView({
           label: trans('style.padding'),
-          preInputNode: <StyledIcon as={CompressIcon} title="" />,	
+          preInputNode: <StyledIcon as={CompressIcon} title="" />,
           placeholder: '3px',
         })}
         {this.children.width.propertyView({
           label: trans('splitLayout.width'),
-          preInputNode: <StyledIcon as={WidthIcon} title="" />,	
+          preInputNode: <StyledIcon as={WidthIcon} title="" />,
           placeholder: '100px',
         })}
       </>
@@ -866,7 +894,7 @@ TagsCompOptions = class extends TagsCompOptions implements OptionCompProperty {
 
 export const TagsCompOptionsControl = optionsControl(TagsCompOptions, {
   initOptions: [
-    { label: "Option 1", colorType: "default"}, 
+    { label: "Option 1", colorType: "default"},
     { label: "Option 2", colorType: "default"}
   ],
   uniqField: "label",
@@ -900,11 +928,11 @@ ColoredTagOption = class extends ColoredTagOption implements OptionCompProperty 
         {this.children.label.propertyView({ label: trans("coloredTagOptionControl.tag") })}
         {this.children.icon.propertyView({ label: trans("coloredTagOptionControl.icon") })}
         {this.children.colorType.propertyView({ 
-          label: trans("style.colorType"), 
+          label: trans("style.colorType"),
           radioButton: true 
         })}
         {colorType === "preset" && this.children.presetColor.propertyView({ 
-          label: trans("style.presetColor") 
+          label: trans("style.presetColor")
         })}
         {colorType === "custom" && (
           <>

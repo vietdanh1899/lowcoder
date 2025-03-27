@@ -2,6 +2,7 @@ import * as echarts from "echarts";
 import "echarts-wordcloud";
 import { EChartsReactProps, EChartsInstance, EChartsOptionWithMap } from "./types";
 import EChartsReactCore from "./core";
+import {memo} from "react";
 
 /**
  * reference: https://github.com/hustcc/echarts-for-react
@@ -11,11 +12,6 @@ import EChartsReactCore from "./core";
 export type { EChartsReactProps, EChartsOptionWithMap, EChartsInstance };
 
 // export the Component the echarts Object.
-export default class EChartsReact extends EChartsReactCore {
-  constructor(props: EChartsReactProps) {
-    super(props);
+const EChartsReact = memo(EChartsReactCore)
 
-    // initialize as echarts package
-    this.echarts = echarts;
-  }
-}
+export default EChartsReact;
