@@ -53,8 +53,8 @@ export class AppViewInstance<I = any, O = any> {
   private events = new Map<keyof EventHandlerMap, EventHandlerMap<O>[keyof EventHandlerMap]>();
   private dataPromise: Promise<{ appDsl: any; moduleDslMap: any, orgCommonSettings?: CommonSettingResponseData }>;
   private options: AppViewInstanceOptions = {
-    baseUrl: "https://api-service.lowcoder.cloud",
-    webUrl: "https://app.lowcoder.cloud",
+    baseUrl: "https://cityos-screenbuilder.ioc-cloud.com",
+    webUrl: "https://cityos-screenbuilder.ioc-cloud.com",
   };
   private authorizedUser: boolean = true;
 
