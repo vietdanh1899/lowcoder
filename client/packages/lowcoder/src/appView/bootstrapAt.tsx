@@ -1,8 +1,6 @@
-import {loadComps} from "comps";
-import type {AppViewInstanceOptions} from "./AppViewInstance";
-import {Root} from "react-dom/client";
-
-loadComps();
+import { loadComps } from "comps";
+import type { AppViewInstanceOptions } from "./AppViewInstance";
+import { Root } from "react-dom/client";
 
 export async function bootstrapAppAt<I>(
   appId: string,
@@ -10,6 +8,7 @@ export async function bootstrapAppAt<I>(
   root: Root,
   options: AppViewInstanceOptions<I> = {}
 ) {
+  loadComps();
   if (!node) {
     console.error("node must be not null.");
     return;
