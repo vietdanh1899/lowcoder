@@ -314,7 +314,7 @@ export const CompSelectionWrapper = React.memo((props: {
     props.hidden,
     props.isSelected,
     props.isSelectable,
-  ]);  
+  ]);
 
   const zIndex = useMemo(() => {
     return props.isSelected
@@ -402,7 +402,9 @@ export const CompSelectionWrapper = React.memo((props: {
             }
             refreshMode="debounce"
             refreshRate={0}
-            onResize={props.onInnerResize}
+            onResize={(width?: number, height?: number) => {
+              if (height || width) props.onInnerResize(width, height);
+            }}
             observerOptions={{ box: "border-box" }}
           >
             {({targetRef}) =>
