@@ -344,7 +344,7 @@ export const CompSelectionWrapper = React.memo((props: {
     props.hidden,
     props.isSelected,
     props.isSelectable,
-  ]);  
+  ]);
 
   const zIndex = useMemo(() => {
     return props.isSelected
@@ -422,7 +422,9 @@ export const CompSelectionWrapper = React.memo((props: {
         {needResizeDetector && (
           <ResizableChildren
             compType={props.compType}
-            onInnerResize={props.onInnerResize}
+            onInnerResize={(width?: number, height?: number) => {
+              if (height || width) props.onInnerResize(width, height);
+            }}
           >
             <>{props.children}</>
           </ResizableChildren>
