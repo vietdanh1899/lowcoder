@@ -24,6 +24,7 @@ import { isEqual } from "lodash";
 import { DEFAULT_GRID_COLUMNS, DEFAULT_ROW_COUNT, DEFAULT_ROW_HEIGHT } from "@lowcoder-ee/layout/calculateUtils";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import { getDeviceWidth } from "@lowcoder-ee/pages/editor/editorView";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
 
 const UICompContainer = styled.div<{
   $maxWidth?: number;
@@ -246,13 +247,14 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
     rowHeight: parseInt(defaultRowHeight),
   }), [props.positionParams, defaultGrid, defaultRowHeight]);
 
+  const preloadId = useContext(PreloadIdContext);
   if (readOnly) {
     return (
       <UICompContainer
         $maxWidth={maxWidth}
         $rowCount={defaultRowCount}
         readOnly={true}
-        className={CNRootContainer}
+        className={`${CNRootContainer} ${preloadId}`}
         $bgColor={bgColor}
         $bgImage={bgImage}
         $bgImageSize={bgImageSize}
@@ -285,7 +287,7 @@ export const CanvasView = React.memo((props: ContainerBaseProps) => {
         <UICompContainer
           $maxWidth={maxWidth}
           $rowCount={defaultRowCount}
-          className={CNRootContainer}
+          className={`${CNRootContainer} ${preloadId}`}
           $bgColor={bgColor}
           $bgImage={bgImage}
           $bgImageSize={bgImageSize}

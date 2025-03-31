@@ -139,9 +139,6 @@ const RootView = React.memo((props: RootViewProps) => {
 
   return (
     <div {...(readOnly && divProps)}
-          className={clsx(
-            divProps.id,
-          )}
        style={{height: '100%'}}>
       <PropertySectionContext.Provider value={propertySectionContextValue}>
         <ThemeContext.Provider value={themeContextValue}>
