@@ -25,6 +25,7 @@ import { CNRootContainer } from "constants/styleSelectors";
 import styled from "styled-components";
 import { ThemeContext } from "comps/utils/themeContext";
 import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
+import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
 
 export const MODULE_LAYOUT_COMP = "@moduleLayoutComp";
 
@@ -66,9 +67,10 @@ function ModuleLayoutView(props: IProps) {
   const defaultGrid = useContext(ThemeContext)?.theme?.gridColumns || "24"; //Added By Aqib Mirza
   const { readOnly } = useContext(ExternalEditorContext);
 
+  const preloadId = useContext(PreloadIdContext);
   if (readOnly) {
     return (
-      <ModulePreviewWrapper className={CNRootContainer}>{props.containerView}</ModulePreviewWrapper>
+      <ModulePreviewWrapper className={`${CNRootContainer} ${preloadId}`}>{props.containerView}</ModulePreviewWrapper>
     );
   }
 
