@@ -9,10 +9,11 @@ import { Provider } from "react-redux";
 import { Route, Router } from "react-router";
 import { reduxStore } from "redux/store/store";
 import { ExternalEditorContext } from "util/context/ExternalEditorContext";
-import {CommonSettingResponseData} from "@lowcoder-ee/api/commonSettingApi";
-import {OrgCommonSettingsContext} from "lowcoder-sdk";
-import {ConfigProvider} from "antd";
-import { px2remTransformer, StyleProvider } from '@ant-design/cssinjs';
+import { CommonSettingResponseData } from "@lowcoder-ee/api/commonSettingApi";
+import { OrgCommonSettingsContext } from "lowcoder-sdk";
+import { ConfigProvider } from "antd";
+import { px2remTransformer, StyleProvider } from "@ant-design/cssinjs";
+import { ReduxActionTypes } from "@lowcoder-ee/constants/reduxActionConstants";
 
 const px2rem = px2remTransformer({
   rootValue: 32, // 32px = 1rem; @default 16
@@ -47,6 +48,13 @@ const hideLoader = () => document.querySelector(".skeleton-container")?.classLis
 
 export function AppView(props: AppViewProps) {
   const { dsl, moduleDsl, appId, moduleInputs, onCompChange, onModuleEventTriggered } = props;
+
+  useEffect(() => {
+    reduxStore.dispatch({
+      type: ReduxActionTypes.FETCH_COMMON_SETTING_SUCCESS,
+      payload: { data: props.orgCommonSettings },
+    });
+  }, [props.orgCommonSettings]);
 
   const onModuleEventTriggeredRef = useRef(onModuleEventTriggered);
   onModuleEventTriggeredRef.current = onModuleEventTriggered;
