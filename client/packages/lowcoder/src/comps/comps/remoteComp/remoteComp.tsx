@@ -132,7 +132,7 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
       }
       let finalLoader = loader;
       if (!loader) {
-        finalLoader = !REACT_APP_MOBILE ? loaders[remoteInfo.source] : loaders.bundle;
+        finalLoader = loaders[remoteInfo.source]
       }
       if (!finalLoader) {
         log.error("loader not found, remote info:", remoteInfo);

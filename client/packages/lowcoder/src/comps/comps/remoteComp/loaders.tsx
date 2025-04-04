@@ -42,8 +42,7 @@ async function bundleLoader(
   remoteInfo: RemoteCompInfo
 ): Promise<CompConstructor | null> {
   const { packageName, packageVersion = "latest", compName } = remoteInfo;
-  const entry = !REACT_APP_MOBILE ? `/${packageName}/${packageVersion}/index.js?v=${REACT_APP_COMMIT_ID}`
-    : `../${packageName}/${packageVersion}/index.js`.replace("@", "");
+  const entry = `/${packageName}/${packageVersion}/index.js`.replace("@", "");
   const module = await import(
     /* @vite-ignore */
     /* webpackIgnore: true */
