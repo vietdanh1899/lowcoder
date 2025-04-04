@@ -396,7 +396,7 @@ export const CompSelectionWrapper = React.memo((props: {
               || props.compType === 'pageLayout'
               || props.compType === 'splitLayout'
               || props.compType === 'floatTextContainer'
-              || props.compType === 'tabbedContainer'
+              // || props.compType === 'tabbedContainer'
               || props.compType === 'collapsibleContainer'
               || props.compType === 'container'
             }
