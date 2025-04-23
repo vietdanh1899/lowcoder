@@ -10,6 +10,27 @@ export type CompTree = {
   itemOrder?: Array<string>;
 };
 
+
+export const getTreeGroupItem = (name: string, comp: any): any => {
+  return {
+    children: {
+      name: {
+        getView: () => name,
+      },
+      compType: {
+        getView: () => comp.type,
+      },
+      comp: {
+        realSimpleContainer: () => comp.realSimpleContainer(),
+        exposingInfo: () => ({}),
+        exposingNode: () => ({}),
+      },
+    },
+    getView: () => {},
+    exposingInfo: () => ({ methods: {} }),
+  };
+};
+
 export function getCompTree(compMap: Record<string, CompItemType>): CompTree {
   let children: Record<string, CompTree> = _.mapValues(
     compMap,
