@@ -317,6 +317,7 @@ export const LeftContent = (props: LeftContentProps) => {
     node: EventDataNode<DataNode>,
     uiCompInfos: CompInfo[]
   ) => {
+    if ((node.key as string).includes("-")) return;
     uiCollapseClick(node.title + "");
     const data = uiCompInfos.find((item) => item.name === node.title);
     if (!node.children?.length && data && Object.keys(data.data)?.length && node.selected) {
@@ -381,7 +382,7 @@ export const LeftContent = (props: LeftContentProps) => {
       <Node key={node.key}>
         <span>
           <span>{node.title} </span>
-          {data && !!Object.keys(data.data)?.length && (
+          {data && data.data && !!Object.keys(data.data)?.length && (
             info?.show ? (
               <Tooltip
                 placement="right"

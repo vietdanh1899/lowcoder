@@ -17,7 +17,7 @@ import type UIComp from "comps/comps/uiComp";
 import { getTreeNodeByKey } from "util/objectUtils";
 import { TopHeaderHeight } from "constants/style";
 import { trans } from "i18n";
-import { CompTree } from "comps/comps/containerBase";
+import { CompTree, IContainer } from "comps/comps/containerBase";
 import { CompStateIcon } from "./editorConstants";
 import type { UICompType } from "comps/uiCompRegistry";
 import { DirectoryTreeStyle, Node } from "./styledComponents";
@@ -34,12 +34,15 @@ import { default as Menu } from "antd/es/menu";
 import { default as Space } from "antd/es/space";
 import { default as Switch } from "antd/es/switch";
 import { MenuProps } from "antd/es/menu";
-import type { InputRef } from 'antd';
+import { InputRef, Tree, TreeProps } from "antd";
 import {
   saveCollisionStatus,
 } from "util/localStorageUtil";
 import { default as DownOutlined } from "@ant-design/icons/DownOutlined";
 import ThemeSettingsSelector from "components/ThemeSettingsSelector";
+import { changeChildAction, deferAction, deleteCompAction, wrapChildAction } from "lowcoder-core";
+import { addMapCompChildAction } from "lowcoder-sdk";
+import { GridItemComp } from "@lowcoder-ee/comps/comps/gridItemComp";
 
 export type DisabledCollisionStatus = "true" | "false"; // "true" means collision is not enabled - Layering works, "false" means collision is enabled - Layering does not work
 export type ToggleCollisionStatus = (collisionStatus?: DisabledCollisionStatus) => void;
@@ -53,13 +56,15 @@ const DropdownLeftShow = () => (
 );
 
 type NodeItem = {
-  key: string;
-  title: string;
+  key?: string;
+  title?: string;
   type?: UICompType;
   children: NodeItem[];
   pos?: number;
   disabled?: boolean;
   fixed?: boolean;
+  comp?: any;
+  allowDropChild?: boolean;
 };
 
 const items: MenuProps['items'] = [
@@ -149,6 +154,30 @@ const CustomDropdown = styled(Dropdown)`
   }
 `;
 
+const getCheckedKeysInTree = (tree: NodeItem[], selectedCompNames: string[]): string[] => {
+  return tree.reduce((acc: string[], node: NodeItem) => {
+    if (selectedCompNames.includes(node.title || "")) {
+      acc.push(node.key || "");
+    }
+    if (node.children) {
+      acc = acc.concat(getCheckedKeysInTree(node.children, selectedCompNames));
+    }
+    return acc;
+  }, []);
+};
+
+const findNodeByPos = (nodes: NodeItem[], pos: string): NodeItem => {
+  const posArr = pos
+    .split("-")
+    .slice(1)
+    .map((p) => Number(p));
+  let currentNode = { children: nodes };
+  for (let i = 0; i < posArr.length; i++) {
+    currentNode = currentNode.children[posArr[i]];
+  }
+  return currentNode;
+};
+
 export const LeftLayersContent = (props: LeftLayersContentProps) => {
   const { uiComp } = props;
   const editorState = useContext(EditorContext);
@@ -182,32 +211,48 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
     setCollisionStatus(checked);
   }
 
-  const getTree = (tree: CompTree, result: NodeItem[], key?: string) => {
+  const getTree = (dslString: string, tree: CompTree, result: NodeItem[], key?: string) => {
     const { items, children } = tree;
     if (Object.keys(items).length) {
       for (const i in items) {
+        const patternString = `{\\s*(?:[^{}]*?\\"i\\"\\s*:\\s*\\"${i}\\")[^{}]*?\\"pos\\"\\s*:\\s*(\\d+)[^{}]*?}`;
+        const regex = new RegExp(patternString);
+
+        // Execute the regex search
+        const match = regex.exec(dslString);
+
+        // Extract the 'pos' value if found
+        let posValue = null;
+        if (match !== null) {
+          // match[0] is the full matched string
+          // match[1] is the content of the first capturing group (\d+)
+          const posValueStr = match[1];
+          posValue = parseInt(posValueStr, 10); // Convert string to integer (base 10)
+        }
         const info: NodeItem = {
           title: items[i].children.name.getView(),
           type: items[i].children.compType.getView() as UICompType,
           key: i,
+          comp: items[i],
+          allowDropChild: Boolean((items[i].children.comp as unknown as IContainer)?.realSimpleContainer?.()),
+          pos: _.isNumber(posValue) ? posValue : undefined,
           children: [],
         };
         if (key) {
           const parent = getTreeNodeByKey(result, key);
-          info.disabled = true;
-          parent?.children.push(info);
+          if (info.key?.includes("-")) parent.allowDropChild = false;
+          parent.children = _.sortBy([...parent.children, info], "pos");
         } else {
           result.push(info);
         }
       }
-      // result = _.sortBy(result, [(x) => x.title]);
     }
     if (Object.keys(children).length) {
       for (const i in children) {
-        getTree(children[i], result, i);
+        getTree(dslString, children[i], result, i);
       }
     }
-    return result;
+    return _.sortBy(result, 'pos');
   };
 
   const uiCollapseClick = useCallback(
@@ -216,17 +261,6 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
     },
     [editorState]
   );
-
-  const getTreeNode = (node: NodeItem, uiCompInfos: CompInfo[]) => {
-    const data = uiCompInfos.find((item) => item.name === node.title);
-    return (
-      <Node>
-        <span>
-          <span>{node.title}</span>
-        </span>
-      </Node>
-    );
-  };
 
   const [componentTreeData, setComponentTreeData] = useState<NodeItem[]>([]);
 
@@ -239,27 +273,9 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
 
   const getTreeUIData = () => {
     const tree = editorState.getUIComp().getTree();
-    const explorerData: NodeItem[] = getTree(tree, []);
     const dsl = editorState.rootComp.toJsonValue();
-
-    if (dsl.ui.compType === "module") {
-      explorerData.forEach(data => {
-        data['pos'] = dsl.ui.comp.container.layout[data.key].pos;
-      })
-    }
-    else {
-      explorerData.forEach(data => {
-        data['pos'] = dsl.ui.layout[data.key].pos;
-      })
-    }
-
-    explorerData.sort((a, b) => {
-      const aPos = a?.pos || 0;
-      const bPos = b?.pos || 0;
-      if (aPos < bPos) return -1;
-      if (aPos > bPos) return 1;
-      return 0;
-    });
+    const dslString = JSON.stringify(dsl);
+    const explorerData: NodeItem[] = getTree(dslString, tree, []);
 
     return explorerData;
   }
@@ -277,68 +293,121 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
     }
   };
 
-  const handleDrop = (info: { node: { key: any; pos: string; }; dragNode: { key: any; pos: string; }; }) => {
-    const dropPos = info.node.pos.split('-');
-    const dragPos = info.dragNode.pos.split('-');
+  const handleDrop: TreeProps<NodeItem>["onDrop"] = (info) => {
+    if (info.dragNode.key.toString().includes("-")) return;
+    const dropKey = info.node.key;
+    const dragKey = info.dragNode.key;
+    const dropPos = (info.node.pos as string).split("-");
+    const dragPos = (info.dragNode.pos as string).split("-");
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]); // the drop position relative to the drop node, inside 0, top -1, bottom 1
 
-    if (dropPos.length === dragPos.length) {
-      setComponentTreeData(prevData => {
-        let newTreeData = cloneDeep(prevData);
-        const dropIndex = Number(dropPos[dropPos.length - 1]);
-        const dragIndex = Number(dragPos[dragPos.length - 1]);
-        const parentNodePos = dropPos.slice(0, -1).join('-');
-
-        // TODO: handle drag and drop for childen of root (container components for example)
-        // findNodeByPos does not work yet
-        const parentNode = parentNodePos === "0" ? { children: newTreeData } : findNodeByPos(newTreeData, parentNodePos);
-    
-        if (parentNode && parentNode.children) {
-          const draggedNodeIndex = parentNode.children.findIndex(node => node.key === info.dragNode.key);
-          if (draggedNodeIndex !== -1) {
-            const [draggedNode] = parentNode.children.splice(draggedNodeIndex, 1);
-            parentNode.children.splice(dropIndex > dragIndex ? dropIndex - 1 : dropIndex, 0, draggedNode);
-          }
+    const loop = (
+      data: NodeItem[],
+      key: React.Key,
+      callback: (node: NodeItem, i: number, data: NodeItem[]) => void
+    ) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].key === key) {
+          return callback(data[i], i, data);
         }
-
-        const dsl = editorState.rootComp.toJsonValue();
-        let layout: any = {};
-        if(dsl.ui.compType === 'module') {
-          parentNode.children.forEach((data, index) => {
-            layout[data.key] = {
-              ...dsl.ui.comp.container.layout[data.key],
-              pos: index,
-            };
-          })
-          const moduleLayoutComp = editorState.rootComp.children.ui.getModuleLayoutComp();
-          moduleLayoutComp?.children.container.dispatchChangeValueAction({
-            ...dsl.ui.comp.container,
-            layout,
-          })
-        } else {
-          parentNode.children.forEach((data, index) => {
-            layout[data.key] = {
-              ...dsl.ui.layout[data.key],
-              pos: index,
-            };
-          })
-  
-          editorState.rootComp.children.ui.dispatchChangeValueAction({
-            ...dsl.ui,
-            layout,
-          })
+        if (data[i].children) {
+          loop(data[i].children!, key, callback);
         }
-        return newTreeData;
+      }
+    };
+    const data = [...componentTreeData];
+
+    // Find dragObject
+    let dragObj: NodeItem;
+    loop(data, dragKey, (item, index, arr) => {
+      arr.splice(index, 1);
+      dragObj = item;
+    });
+
+    let dropParentArray: NodeItem[] = [];
+    if (!info.dropToGap) {
+      // Drop on the content
+      loop(data, dropKey, (item) => {
+        item.children = item.children || [];
+        // where to insert. New item was inserted to the start of the array in this example, but can be anywhere
+        item.children.unshift(dragObj);
+        dropParentArray = item.children;
       });
+    } else {
+      let i: number;
+      loop(data, dropKey, (_item, index, arr) => {
+        dropParentArray = arr;
+        i = index;
+      });
+      if (dropPosition === -1) {
+        // Drop on the top of the drop node
+        dropParentArray.splice(i!, 0, dragObj!);
+      } else {
+        // Drop on the bottom of the drop node
+        dropParentArray.splice(i! + 1, 0, dragObj!);
+      }
     }
-  };
-  
-  const findNodeByPos = (nodes: NodeItem[], pos: string): { children: NodeItem[] } => {
-    const posArr = pos.split('-').map(p => Number(p));
-    let currentNode = { children: nodes };
-    for (let i = 0; i < posArr.length; i++) {
-      currentNode = currentNode.children[posArr[i]];
+    setComponentTreeData(data);
+
+    const dragParentNodePos = dragPos.slice(0, -1).join("-");
+    const dsl = editorState.rootComp.toJsonValue();
+    const dragRealSimpleContainer =
+      dragParentNodePos === "0"
+        ? dsl.ui.compType === "module"
+          ? editorState.rootComp.children.ui.getModuleLayoutComp()?.children.container
+          : editorState.rootComp.children.ui
+        : findNodeByPos(componentTreeData, dragParentNodePos).comp.children.comp.realSimpleContainer();
+
+    // Same parent
+    if ([dropPos.slice(0, -1).join("-"), dropPos.join("-")].includes(dragPos.slice(0, -1).join("-"))) {
+      let layout: any = {};
+      dropParentArray.forEach((data, index) => {
+        layout[data.key!] = {
+          ...dragRealSimpleContainer.children.layout.value[data.key!],
+          pos: index,
+        };
+      });
+      dragRealSimpleContainer.children.layout.dispatchChangeValueAction(layout);
     }
-    return currentNode;
+    // Different parent
+    else {
+      const dropParentNodePos = !info.dropToGap ? info.node.pos : dropPos.slice(0, -1).join("-");
+      const dropRealSimpleContainer =
+        dropParentNodePos === "0"
+          ? dsl.ui.compType === "module"
+            ? editorState.rootComp.children.ui.getModuleLayoutComp()?.children.container
+            : editorState.rootComp.children.ui
+          : findNodeByPos(componentTreeData, dropParentNodePos).comp.children.comp.realSimpleContainer();
+
+      const dropDispatch = dropRealSimpleContainer.dispatch;
+      const dropLayout = dropRealSimpleContainer.children.layout.value;
+
+      const sourceDispatch = dragRealSimpleContainer.dispatch;
+      const items = { [dragKey]: info.dragNode };
+      const keys = Object.keys(items);
+
+      const dragLayout = dragRealSimpleContainer.children.layout.value;
+
+      // 1. Delete old Comp
+      sourceDispatch(deferAction(changeChildAction("layout", _.omit(dragLayout, keys), true)));
+      keys.forEach((key) =>
+        sourceDispatch(deferAction(wrapChildAction("items", wrapChildAction(key, deleteCompAction()))))
+      );
+      // 2. Add a new Comp
+      for (const [key, item] of Object.entries(items)) {
+        if (item.comp) {
+          dropDispatch(deferAction(wrapChildAction("items", addMapCompChildAction(key, item.comp))));
+        }
+      }
+      let layout: any = {};
+      dropParentArray.forEach((data, index) => {
+        layout[data.key!] = {
+          ...(dropLayout[data.key!] || dragLayout[data.key!]),
+          pos: index,
+        };
+      });
+      dropDispatch(deferAction(changeChildAction("layout", layout, true)));
+    }
   };
 
   // here we handle the checked keys of the component tree
@@ -423,16 +492,11 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
   // sync selected components with checked keys
   useEffect(() => {
     setCheckedKeys([]);
-    const selectedComponentsOnCanvas: string[] = [];
     const compTree = editorState.getUIComp().getTree();
-    const explorerData: NodeItem[] = getTree(compTree, []);
-    for (let value of editorState.selectedCompNames) {
-      for (let key of explorerData) {
-        if (key.title === value) {
-          selectedComponentsOnCanvas.push(key.key);
-        }
-      }
-    }
+    const dsl = editorState.rootComp.toJsonValue();
+    const dslString = JSON.stringify(dsl);
+    const explorerData: NodeItem[] = getTree(dslString, compTree, []);
+    const selectedComponentsOnCanvas: string[] = getCheckedKeysInTree(explorerData, Array.from(editorState.selectedCompNames));
     setCheckedKeys(selectedComponentsOnCanvas);
   }, [editorState]);
 
@@ -446,7 +510,7 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
     setCheckedKeys(checkedKeys);
     const checkedComponents = new Set<string>();
     for (let key of e.checkedNodes){
-      checkedComponents.add(key.title);
+      if (!key.key.includes("-")) checkedComponents.add(key.title);
     }
     editorState.setSelectedCompNames(checkedComponents, "leftPanel");
   }
@@ -515,7 +579,14 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
           />
         </div>
 
-        <DirectoryTreeStyle
+        <Tree
+          showLine={true}
+          allowDrop={({ dropNode, dropPosition }) => {
+            if ((dropNode as NodeItem).comp instanceof GridItemComp)
+              return dropPosition !== 0 || Boolean((dropNode as NodeItem).allowDropChild);
+            // Group layout, allow drop child, not allow drop sibling
+            else return dropPosition === 0;
+          }}
           checkable={true}
           onCheck={onCheck}
           selectable={false}
@@ -524,15 +595,8 @@ export const LeftLayersContent = (props: LeftLayersContentProps) => {
           onDragEnter={handleDragEnter}
           onDrop={(info) => handleDrop(info)}
           treeData={componentTreeData}
-          icon={(props: any) => props.type && (
-            <div style={{ margin: '16px 5px 0 -3px'}}> 
-              {CompStateIcon[props.type as UICompType] || <LeftCommon />}
-            </div>
-          )}
-          switcherIcon={(props: any) => props.expanded ? <FoldedIcon /> : <UnfoldIcon />}
           expandedKeys={expandedKeys}
           onExpand={(keys) => setExpandedKeys(keys)}
-          titleRender={(nodeData) => getTreeNode(nodeData as NodeItem, uiCompInfos)}
         />
 
         <div style={{margin:"10px 0px"}}> 

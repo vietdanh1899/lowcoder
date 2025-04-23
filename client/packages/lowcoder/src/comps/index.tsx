@@ -1769,7 +1769,7 @@ export var uiCompMap: Registry = {
     comp: TextComp,
     layoutInfo: {
       w: 6,
-      h: 24,
+      h: 5,
     },
   },
 };

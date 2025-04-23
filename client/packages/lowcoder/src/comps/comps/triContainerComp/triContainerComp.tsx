@@ -29,6 +29,8 @@ import { trans } from "i18n";
 import { ControlNode } from "lowcoder-design";
 import { SliderControl } from "@lowcoder-ee/comps/controls/sliderControl";
 import { useMergeCompStyles } from "@lowcoder-ee/util/hooks";
+import { genRandomKey } from "lowcoder-sdk";
+import { getTreeGroupItem } from "../containerBase/utils";
 
 const childrenMap = {
   header: SimpleContainerComp,
@@ -62,6 +64,7 @@ const TriContainerBaseComp = migrateOldData(
 
 export class TriContainerComp extends TriContainerBaseComp implements IContainer {
   scrollbars: any;
+  objectId = genRandomKey();
   private allContainers() {
     return [
       this.children.header,
@@ -75,7 +78,18 @@ export class TriContainerComp extends TriContainerBaseComp implements IContainer
     return this.allContainers().find((container) => container.realSimpleContainer(key));
   }
   getCompTree(): CompTree {
-    return mergeCompTrees(this.allContainers().map((c) => c.getCompTree()));
+    return {
+      items: {
+        [`header-${this.objectId}`]: getTreeGroupItem(`header`, this.children.header),
+        [`body-${this.objectId}`]: getTreeGroupItem(`body`, this.children.body.getView()["0"].children.view),
+        [`footer-${this.objectId}`]: getTreeGroupItem(`footer`, this.children.footer),
+      },
+      children: {
+        [`header-${this.objectId}`]: this.children.header.getCompTree(),
+        [`body-${this.objectId}`]: Object.values(this.children.body.getView()).map((c) => c.children.view)[0].getCompTree(),
+        [`footer-${this.objectId}`]: this.children.footer.getCompTree(),
+      }
+    }
   }
   findContainer(key: string): IContainer | undefined {
     for (const container of this.allContainers()) {

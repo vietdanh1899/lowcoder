@@ -25,7 +25,7 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { IContainer } from "../containerBase/iContainer";
 import { SimpleContainerComp } from "../containerBase/simpleContainerComp";
-import { CompTree, mergeCompTrees } from "../containerBase/utils";
+import { CompTree, getTreeGroupItem } from "../containerBase/utils";
 import {
   ContainerBaseProps,
   gridItemCompToGridItems,
@@ -45,6 +45,7 @@ import { DisabledContext } from "comps/generators/uiCompBuilder";
 import { SliderControl } from "@lowcoder-ee/comps/controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import { useScreenInfo } from "../../hooks/screenInfoComp";
+import { genRandomKey } from "lowcoder-sdk";
 
 
 const RowWrapper = styled(Row)<{
@@ -366,6 +367,8 @@ export const ResponsiveLayoutBaseComp = (function () {
 })();
 
 class ResponsiveLayoutImplComp extends ResponsiveLayoutBaseComp implements IContainer {
+  objectId = genRandomKey();
+
   private syncContainers(): this {
     const columns = this.children.columns.getView();
     const ids: Set<string> = new Set(columns.map((column) => String(column.id)));
@@ -435,8 +438,17 @@ class ResponsiveLayoutImplComp extends ResponsiveLayoutBaseComp implements ICont
 
   getCompTree(): CompTree {
     const containerMap = this.children.containers.getView();
-    const compTrees = Object.values(containerMap).map((container) => container.getCompTree());
-    return mergeCompTrees(compTrees);
+    const columnMap = this.children.columns.getView();
+    return {
+      items: _.mapKeys(
+        _.mapValues(_.keyBy(columnMap, "id"), (value, key) => getTreeGroupItem(value.key, containerMap[key])),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+      children: _.mapKeys(
+        _.mapValues(containerMap, (value) => value.getCompTree()),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+    };
   }
 
   findContainer(key: string): IContainer | undefined {
