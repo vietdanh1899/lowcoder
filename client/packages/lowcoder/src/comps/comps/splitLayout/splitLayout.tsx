@@ -23,7 +23,7 @@ import { DisabledContext } from "comps/generators/uiCompBuilder";
 import { JSONObject, JSONValue } from "util/jsonTypes";
 import { IContainer } from "../containerBase/iContainer";
 import { SimpleContainerComp } from "../containerBase/simpleContainerComp";
-import { CompTree, mergeCompTrees } from "../containerBase/utils";
+import { CompTree, getTreeGroupItem } from "../containerBase/utils";
 import { NameGenerator } from "comps/utils";
 import { AutoHeightControl } from "comps/controls/autoHeightControl";
 import { messageInstance } from "lowcoder-design/src/components/GlobalInstances";
@@ -36,6 +36,7 @@ import {
   HorizontalIcon,
   VerticalIcon,
 } from "lowcoder-design/src/icons";
+import { genRandomKey } from "lowcoder-sdk";
 
 const SplitPanelWrapper = styled(Splitter.Panel)`
   overflow: hidden;
@@ -217,6 +218,8 @@ export const SplitLayoutBaseComp = (function () {
 })();
 
 class SplitLayoutImplComp extends SplitLayoutBaseComp implements IContainer {
+  objectId = genRandomKey();
+
   private syncContainers(): this {
     const columns = this.children.columns.getView();
     const ids: Set<string> = new Set(columns.map((column) => String(column.id)));
@@ -286,8 +289,17 @@ class SplitLayoutImplComp extends SplitLayoutBaseComp implements IContainer {
 
   getCompTree(): CompTree {
     const containerMap = this.children.containers.getView();
-    const compTrees = Object.values(containerMap).map((container) => container.getCompTree());
-    return mergeCompTrees(compTrees);
+    const columnMap = this.children.columns.getView();
+    return {
+      items: _.mapKeys(
+        _.mapValues(_.keyBy(columnMap, "id"), (value, key) => getTreeGroupItem(value.key, containerMap[key])),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+      children: _.mapKeys(
+        _.mapValues(containerMap, (value) => value.getCompTree()),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+    };
   }
 
   findContainer(key: string): IContainer | undefined {

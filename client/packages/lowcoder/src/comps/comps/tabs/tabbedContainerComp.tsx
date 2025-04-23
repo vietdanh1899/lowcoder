@@ -19,7 +19,7 @@ import React, { useCallback, useContext, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { IContainer } from "../containerBase/iContainer";
 import { SimpleContainerComp } from "../containerBase/simpleContainerComp";
-import { CompTree, mergeCompTrees } from "../containerBase/utils";
+import { CompTree, getTreeGroupItem } from "../containerBase/utils";
 import {
   ContainerBaseProps,
   gridItemCompToGridItems,
@@ -37,6 +37,7 @@ import { BoolControl } from "comps/controls/boolControl";
 import { PositionControl } from "comps/controls/dropdownControl";
 import { SliderControl } from "@lowcoder-ee/comps/controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
+import { genRandomKey } from "lowcoder-sdk";
 
 const EVENT_OPTIONS = [
   {
@@ -366,6 +367,8 @@ export const TabbedContainerBaseComp = (function () {
 })();
 
 class TabbedContainerImplComp extends TabbedContainerBaseComp implements IContainer {
+  objectId = genRandomKey();
+
   private syncContainers(): this {
     const tabs = this.children.tabs.getView();
     const ids: Set<string> = new Set(tabs.map((tab) => String(tab.id)));
@@ -439,8 +442,17 @@ class TabbedContainerImplComp extends TabbedContainerBaseComp implements IContai
 
   getCompTree(): CompTree {
     const containerMap = this.children.containers.getView();
-    const compTrees = Object.values(containerMap).map((container) => container.getCompTree());
-    return mergeCompTrees(compTrees);
+    const columnMap = this.children.tabs.getView();
+    return {
+      items: _.mapKeys(
+        _.mapValues(_.keyBy(columnMap, "id"), (value, key) => getTreeGroupItem(value.key, containerMap[key])),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+      children: _.mapKeys(
+        _.mapValues(containerMap, (value) => value.getCompTree()),
+        (_value, key) => `${key}-${this.objectId}`
+      ),
+    };
   }
 
   findContainer(key: string): IContainer | undefined {
