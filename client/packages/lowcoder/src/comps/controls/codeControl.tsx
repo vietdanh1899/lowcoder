@@ -55,6 +55,7 @@ import { JSONObject, JSONValue } from "util/jsonTypes";
 import { setFieldsNoTypeCheck, shallowEqual, toType } from "util/objectUtils";
 import { toReadableString } from "util/stringUtils";
 import { ControlLayout, ControlParams } from "./controlParams";
+import { ToggleCodeArea } from "@lowcoder-ee/base/codeEditor/codeEditor";
 
 const CodeEditor = lazy(
   () => import("base/codeEditor/codeEditor")
@@ -186,44 +187,14 @@ export function codeControl<
     }
 
     codeEditor(params: ControlParams) {
-      const cardContent = params.disableCard
-        ? ""
-        : getCardContent(this.unevaledValue, this.valueAndMsg, codeControlParams);
-      const { key, ...restParams } = params;
       return (
-        <EditorContext.Consumer>
-          {(editorState) => (
-            <CompExposingContext.Consumer>
-              {(exposingData) => (
-                <>
-                  <Suspense fallback={null}>
-                    <CodeEditor
-                      key={key}
-                      {...restParams}
-                      bordered
-                      value={this.unevaledValue}
-                      codeType={codeType}
-                      cardTitle={toCardTitle(codeControlParams?.expectedType, this.valueAndMsg.value)}
-                      cardContent={cardContent}
-                      onChange={this.handleChange}
-                      hasError={this.valueAndMsg?.hasError()}
-                      segments={this.valueAndMsg?.extra?.segments}
-                      exposingData={{
-                        ...exposingDataForAutoComplete(
-                          editorState?.nameAndExposingInfo(),
-                          evalWithMethods
-                        ),
-                        ...exposingData,
-                      }}
-                      boostExposingData={exposingData}
-                      enableClickCompName={editorState?.forceShowGrid}
-                    />
-                  </Suspense>
-                </>
-              )}
-            </CompExposingContext.Consumer>
-          )}
-        </EditorContext.Consumer>
+        <ToggleCodeArea
+          codeControlParams={codeControlParams}
+          params={params}
+          value={this.unevaledValue}
+          onChange={this.handleChange}
+          valueAndMsg={this.valueAndMsg}
+        />
       );
     }
 
@@ -235,7 +206,7 @@ export function codeControl<
   return CodeControl;
 }
 
-function toCardTitle(expectedType?: string, value?: unknown) {
+export function toCardTitle(expectedType?: string, value?: unknown) {
   const type = expectedType ?? toType(value);
   if (type === "RegExp") {
     return type;
@@ -249,7 +220,7 @@ function toCardTitle(expectedType?: string, value?: unknown) {
   return type;
 }
 
-function getCardContent<T>(
+export function getCardContent<T>(
   unevaledValue: string,
   valueAndMsg: ValueAndMsg<T>,
   params?: CodeControlParams<T>
