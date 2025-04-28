@@ -701,71 +701,71 @@ export const TableComp = withExposingConfigs(TableTmpComp, [
     },
     trans("table.selectedRowsDesc")
   ),
-  new CompDepsConfig(
-    "selectedIndex",
-    (comp) => {
-      return {
-        oriDisplayData: comp.oriDisplayDataNode(),
-        selectedRowKey: comp.children.selection.children.selectedRowKey.node(),
-      };
-    },
-    (input) => {
-      return toDisplayIndex(input.oriDisplayData, input.selectedRowKey);
-    },
-    trans("table.selectedIndexDesc")
-  ),
-  new CompDepsConfig(
-    "selectedIndexes",
-    (comp) => {
-      return {
-        oriDisplayData: comp.oriDisplayDataNode(),
-        selectedRowKeys: comp.children.selection.children.selectedRowKeys.node(),
-      };
-    },
-    (input) => {
-      return input.selectedRowKeys.flatMap((key: string) => {
-        const result = toDisplayIndex(input.oriDisplayData, key);
-        return result === undefined ? [] : [result];
-      });
-    },
-    trans("table.selectedIndexDesc")
-  ),
-  new CompDepsConfig(
-    "changeSet",
-    (comp) => ({
-      changeSet: comp.changeSetNode(),
-    }),
-    (input) => input.changeSet,
-    trans("table.changeSetDesc")
-  ),
-  new CompDepsConfig(
-    "insertSet",
-    (comp) => ({
-      insertSet: comp.insertSetNode(),
-    }),
-    (input) => input.insertSet,
-    trans("table.changeSetDesc")
-  ),
-  new CompDepsConfig(
-    "toUpdateRows",
-    (comp) => ({
-      toUpdateRows: comp.toUpdateRowsNode(),
-    }),
-    (input) => {
-      return input.toUpdateRows;
-    },
-    trans("table.toUpdateRowsDesc")
-  ),
-  new CompDepsConfig(
-    "toInsertRows",
-    (comp) => ({
-      toInsertRows: comp.toInsertRowsNode(),
-    }),
-    (input) => {
-      return input.toInsertRows;
-    },
-    trans("table.toUpdateRowsDesc")
-  ),
+  // new CompDepsConfig(
+  //   "selectedIndex",
+  //   (comp) => {
+  //     return {
+  //       oriDisplayData: comp.oriDisplayDataNode(),
+  //       selectedRowKey: comp.children.selection.children.selectedRowKey.node(),
+  //     };
+  //   },
+  //   (input) => {
+  //     return toDisplayIndex(input.oriDisplayData, input.selectedRowKey);
+  //   },
+  //   trans("table.selectedIndexDesc")
+  // ),
+  // new CompDepsConfig(
+  //   "selectedIndexes",
+  //   (comp) => {
+  //     return {
+  //       oriDisplayData: comp.oriDisplayDataNode(),
+  //       selectedRowKeys: comp.children.selection.children.selectedRowKeys.node(),
+  //     };
+  //   },
+  //   (input) => {
+  //     return input.selectedRowKeys.flatMap((key: string) => {
+  //       const result = toDisplayIndex(input.oriDisplayData, key);
+  //       return result === undefined ? [] : [result];
+  //     });
+  //   },
+  //   trans("table.selectedIndexDesc")
+  // ),
+  // new CompDepsConfig(
+  //   "changeSet",
+  //   (comp) => ({
+  //     changeSet: comp.changeSetNode(),
+  //   }),
+  //   (input) => input.changeSet,
+  //   trans("table.changeSetDesc")
+  // ),
+  // new CompDepsConfig(
+  //   "insertSet",
+  //   (comp) => ({
+  //     insertSet: comp.insertSetNode(),
+  //   }),
+  //   (input) => input.insertSet,
+  //   trans("table.changeSetDesc")
+  // ),
+  // new CompDepsConfig(
+  //   "toUpdateRows",
+  //   (comp) => ({
+  //     toUpdateRows: comp.toUpdateRowsNode(),
+  //   }),
+  //   (input) => {
+  //     return input.toUpdateRows;
+  //   },
+  //   trans("table.toUpdateRowsDesc")
+  // ),
+  // new CompDepsConfig(
+  //   "toInsertRows",
+  //   (comp) => ({
+  //     toInsertRows: comp.toInsertRowsNode(),
+  //   }),
+  //   (input) => {
+  //     return input.toInsertRows;
+  //   },
+  //   trans("table.toUpdateRowsDesc")
+  // ),
   new DepsConfig(
     "pageNo",
     (children) => {
@@ -849,37 +849,37 @@ export const TableComp = withExposingConfigs(TableTmpComp, [
     },
     trans("table.pageOffsetDesc")
   ),
-  new CompDepsConfig(
-    "displayData",
-    (comp) => {
-      return {
-        oriDisplayData: comp.oriDisplayDataNode(),
-        dataIndexes: comp.children.columns.getColumnsNode("dataIndex"),
-        titles: comp.children.columns.getColumnsNode("title"),
-        // --> hide
-        hides: comp.children.columns.getColumnsNode("hide"),
-        tempHides: comp.children.columns.getColumnsNode("tempHide"),
-        columnSetting: comp.children.toolbar.children.columnSetting.node(),
-        // <-- hide
-      };
-    },
-    (input) => {
-      const dataIndexTitleDict = _(input.dataIndexes)
-        .pickBy(
-          (_1, idx) =>
-            !columnHide({
-              hide: input.hides[idx].value,
-              tempHide: input.tempHides[idx],
-              enableColumnSetting: input.columnSetting.value,
-            })
-        )
-        .mapValues((_dataIndex, idx) => input.titles[idx]?.value)
-        .mapKeys((_title, idx) => input.dataIndexes[idx])
-        .value();
-      return transformDispalyData(input.oriDisplayData, dataIndexTitleDict);
-    },
-    trans("table.displayDataDesc")
-  ),
+  // new CompDepsConfig(
+  //   "displayData",
+  //   (comp) => {
+  //     return {
+  //       oriDisplayData: comp.oriDisplayDataNode(),
+  //       dataIndexes: comp.children.columns.getColumnsNode("dataIndex"),
+  //       titles: comp.children.columns.getColumnsNode("title"),
+  //       // --> hide
+  //       hides: comp.children.columns.getColumnsNode("hide"),
+  //       tempHides: comp.children.columns.getColumnsNode("tempHide"),
+  //       columnSetting: comp.children.toolbar.children.columnSetting.node(),
+  //       // <-- hide
+  //     };
+  //   },
+  //   (input) => {
+  //     const dataIndexTitleDict = _(input.dataIndexes)
+  //       .pickBy(
+  //         (_1, idx) =>
+  //           !columnHide({
+  //             hide: input.hides[idx].value,
+  //             tempHide: input.tempHides[idx],
+  //             enableColumnSetting: input.columnSetting.value,
+  //           })
+  //       )
+  //       .mapValues((_dataIndex, idx) => input.titles[idx]?.value)
+  //       .mapKeys((_title, idx) => input.dataIndexes[idx])
+  //       .value();
+  //     return transformDispalyData(input.oriDisplayData, dataIndexTitleDict);
+  //   },
+  //   trans("table.displayDataDesc")
+  // ),
   new DepsConfig(
     "filter",
     (children) => {

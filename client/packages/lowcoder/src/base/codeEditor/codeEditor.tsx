@@ -1,6 +1,6 @@
 import React, {
   MutableRefObject,
-  ReactNode,
+  ReactNode, Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -15,6 +15,10 @@ import type { CodeEditorProps, StyleName } from "./codeEditorTypes";
 import { useClickCompNameEffect } from "./clickCompName";
 import { Layers } from "../../constants/Layers";
 import { debounce } from "lodash";
+import { Button, Input } from "antd";
+import { CodepenOutlined, FileTextOutlined } from "@ant-design/icons";
+import { CompExposingContext, EditorContext, getCardContent, toCardTitle } from "lowcoder-sdk";
+import { exposingDataForAutoComplete } from "@lowcoder-ee/comps/utils/exposingTypes";
 
 type StyleConfig = {
   minHeight: string;
@@ -380,6 +384,65 @@ function CodeEditorForPanel(props: CodeEditorProps) {
         $enableClickCompName={props.enableClickCompName}
       />
     </CodeEditorCommon>
+  );
+}
+
+export function ToggleCodeArea(props: any) {
+  const [textMode, setTextMode] = useState(true);
+  return (
+    <div style={{ position: "relative" }}>
+      <Button
+        type="text"
+        style={{ position: "absolute", right: 0, top: 0, zIndex: 99 }}
+        icon={textMode ? <CodepenOutlined /> : <FileTextOutlined />}
+        onClick={() => setTextMode(!textMode)}
+      ></Button>
+      {textMode ? (
+        <Input style={{ width: "100%" }} value={props.value} onFocus={() => setTextMode(false)}></Input>
+      ) : (
+        <CodeControlCodeEditor {...props} />
+      )}
+    </div>
+  );
+}
+
+export function CodeControlCodeEditor({ params, codeControlParams, value, onChange, valueAndMsg }: any) {
+  const { codeType, evalWithMethods = false } = codeControlParams || {};
+  const cardContent = params.disableCard
+    ? ""
+    : getCardContent(value, valueAndMsg, codeControlParams);
+
+
+  return (
+    <EditorContext.Consumer>
+      {(editorState) => (
+        <CompExposingContext.Consumer>
+          {(exposingData) => (
+            <>
+              <Suspense fallback={null}>
+                <CodeEditor
+                  {...params}
+                  bordered
+                  value={value}
+                  codeType={codeType}
+                  cardTitle={toCardTitle(codeControlParams?.expectedType, valueAndMsg.value)}
+                  cardContent={cardContent}
+                  onChange={onChange}
+                  hasError={valueAndMsg?.hasError()}
+                  segments={valueAndMsg?.extra?.segments}
+                  exposingData={{
+                    ...exposingDataForAutoComplete(editorState?.nameAndExposingInfo(), evalWithMethods),
+                    ...exposingData,
+                  }}
+                  boostExposingData={exposingData}
+                  enableClickCompName={editorState?.forceShowGrid}
+                />
+              </Suspense>
+            </>
+          )}
+        </CompExposingContext.Consumer>
+      )}
+    </EditorContext.Consumer>
   );
 }
 
