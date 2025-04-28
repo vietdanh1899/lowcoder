@@ -105,7 +105,7 @@ function ColorItem(props: {
   function defaultFocus() {
     const el = inputRef.current as HTMLElement;
     const inputEl = el.getElementsByClassName("cm-content")[0] as HTMLElement;
-    inputEl.focus();
+    inputEl?.focus?.();
   }
 
   useEffect(() => {
