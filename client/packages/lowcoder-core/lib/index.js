@@ -1782,7 +1782,7 @@ var CodeNode = /** @class */ (function (_super) {
                     return;
                 // wait for lazy loaded comps to load before executing query on page load
                 if (value && !Object.keys(value).length && paths.size) {
-                    isFetching_1 = true;
+                    isFetching_1 = false;
                     ready_1 = false;
                 }
                 if (_.has(value, IS_FETCHING_FIELD)) {
