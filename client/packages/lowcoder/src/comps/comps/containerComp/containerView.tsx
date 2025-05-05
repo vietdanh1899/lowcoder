@@ -64,8 +64,6 @@ import { ThemeContext } from "comps/utils/themeContext";
 import { defaultTheme } from "@lowcoder-ee/constants/themeConstants";
 import { ExpandViewContext } from "../tableComp/expansionControl";
 import { Fallback, ReactRunnerView } from "@lowcoder-ee/comps/comps/customReactComp/customReactComp";
-import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
-import { JSONValue } from "@lowcoder-ee/util/jsonTypes";
 import { ErrorBoundary } from "react-error-boundary";
 
 const childrenMap = {
@@ -327,17 +325,15 @@ const ItemWrapper = styled.div<{ $disableInteract?: boolean }>`
 
 const GridItemWrapper = React.memo(React.forwardRef(
   (
-    props: React.PropsWithChildren<HTMLAttributes<HTMLDivElement> & { compType: string }>,
+    props: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const editorState = useContext(EditorContext);
-    const { children, compType, ...divProps } = props;
+    const { children, ...divProps } = props;
     return (
-      <CompContext.Provider value={{ compType }}>
-        <ItemWrapper ref={ref} $disableInteract={editorState?.disableInteract} {...divProps}>
-          {props.children}
-        </ItemWrapper>
-      </CompContext.Provider>
+      <ItemWrapper ref={ref} $disableInteract={editorState?.disableInteract} {...divProps}>
+        {props.children}
+      </ItemWrapper>
     );
   }
 ));
@@ -475,7 +471,7 @@ export const InnerGrid = React.memo((props: ViewPropsWithSelect) => {
       if (!refItem || !refItem.comp || refItem.comp !== item.comp) {
         newView[key] = {
           ...item,
-          view: <GridItemWrapper compType={item.compType} key={key}>{item.view}</GridItemWrapper>,
+          view: <GridItemWrapper key={key}>{item.view}</GridItemWrapper>,
         };
       } else {
         newView[key] = itemViewRef.current[key];

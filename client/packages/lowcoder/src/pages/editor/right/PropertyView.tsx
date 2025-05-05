@@ -6,7 +6,6 @@ import { SelectedComps } from "lowcoder-design";
 import { ScrollBar } from "lowcoder-design";
 import { ReactNode, useContext } from "react";
 import { trans } from "i18n";
-import { CompContext } from "@lowcoder-ee/comps/utils/compContext";
 
 const ScrollWrapper = (props: { children: ReactNode }) => (
   <ScrollBar>
@@ -27,12 +26,7 @@ export default function PropertyView(props: PropertyViewProps) {
 
   let propertyView;
   if (selectedComp) {
-    const selectedCompType: string = (selectedComp as any).children.compType.getView();
-    return (
-      <CompContext.Provider value={{ compType: selectedCompType }}>
-        {selectedComp.getPropertyView()}
-      </CompContext.Provider>
-    );
+    return <>{selectedComp.getPropertyView()}</>;
   } else if (selectedCompNames.size > 1) {
     propertyView = (
       <SelectedComps
