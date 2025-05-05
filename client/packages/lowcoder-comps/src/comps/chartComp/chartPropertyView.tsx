@@ -13,6 +13,7 @@ import {
 } from "lowcoder-sdk";
 import { trans } from "i18n/comps";
 import { examplesUrl, mapExamplesUrl, mapOptionUrl, optionUrl } from "./chartConfigs/chartUrls";
+import { showDataLoadingIndicatorsPropertyView } from "lowcoder-sdk";
 
 export function chartPropertyView(
   children: ChartCompChildrenType,
@@ -110,6 +111,7 @@ export function chartPropertyView(
         <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
           {children.onEvent.propertyView()}
         </div>
+        {showDataLoadingIndicatorsPropertyView(children)}
       </Section>
       <Section name={sectionNames.layout}>
         {children.echartsTitleConfig.getPropertyView()}
@@ -178,6 +180,7 @@ export function chartPropertyView(
       </Section>
       <Section name={sectionNames.interaction}>
         {children.onEvent.propertyView()}
+        {showDataLoadingIndicatorsPropertyView(children)}
       </Section>
       <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
     </>
@@ -231,6 +234,7 @@ export function chartPropertyView(
         <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
           {children.onEvent.propertyView()}
         </div>
+        {showDataLoadingIndicatorsPropertyView(children)}
       </Section>
       <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
     </>
