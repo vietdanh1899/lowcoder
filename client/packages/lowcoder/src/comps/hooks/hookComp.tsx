@@ -88,10 +88,10 @@ const TitleHookComp = withPropertyViewFn(TitleTmp2Comp, (comp) => {
   );
 });
 const builtInRemoteComps: Omit<RemoteCompInfo, "compName"> = {
-  // source: !!REACT_APP_BUNDLE_BUILTIN_PLUGIN ? "bundle" : "npm",
-  source: "npm",
+  source: !!REACT_APP_BUNDLE_BUILTIN_PLUGIN ? "bundle" : "npm",
+  // source: "npm",
   isRemote: true,
-  packageName: "@vietdanh1899/lowcoder-comps",
+  packageName: "lowcoder-comps",
 };
 const HookMap: HookCompMapRawType = {
   title: TitleHookComp,
