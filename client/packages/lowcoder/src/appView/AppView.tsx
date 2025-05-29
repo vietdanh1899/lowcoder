@@ -90,6 +90,11 @@ export function AppView(props: AppViewProps) {
   }, [comp]);
 
   useEffect(() => {
+    if (moduleInputs?.language) {
+      // set the language for the trans hook
+      comp?.children.settings.children.previewLanguage.dispatchChangeValueAction(moduleInputs?.language as any);
+    }
+
     const moduleLayoutComp = comp?.children.ui.getModuleLayoutComp();
     if (!moduleLayoutComp || !moduleInputs) {
       return;

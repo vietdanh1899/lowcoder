@@ -14,6 +14,7 @@ import { CompParams } from "lowcoder-core";
 const defaultHookListValue = [
   // { compType: "title", name: "title" },
   // { compType: "windowSize", name: "windowSize" },
+  { compType: "trans", name: "t"},
   { compType: "urlParams", name: "url" },
   { compType: "dayJsLib", name: "dayjs" },
   { compType: "lodashJsLib", name: "_" },
