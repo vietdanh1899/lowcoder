@@ -61,6 +61,7 @@ import { getCommonSettings } from "@lowcoder-ee/redux/selectors/commonSettingSel
 import { isEqual, noop } from "lodash";
 import { AppSettingContext, AppSettingType } from "@lowcoder-ee/comps/utils/appSettingContext";
 import Flex from "antd/es/flex";
+import { Select } from "antd";
 // import { BottomSkeleton } from "./bottom/BottomContent";
 
 const Header = lazy(
@@ -714,6 +715,22 @@ function EditorView(props: EditorViewProps) {
                         <LeftPreloadIcon />
                         {trans("leftPanel.toolbarPreload")}
                       </PreloadDiv>
+                      <Flex gap={2}>
+                        <div>I18n language</div>
+                      <Select
+                        style={{flexGrow: 1}}
+                        defaultValue={
+                          appSettingsComp.children.previewLanguage.getView()
+                        }
+                        options={Object.keys(appSettingsComp.children.i18n.getView()).map(lang => ({label: lang, value: lang}))}
+                        onChange={(value) => {
+                          appSettingsComp.children.previewLanguage.dispatchChangeValueAction(value);
+                        }}
+                      />
+                      </Flex>
+                      {appSettingsComp.children.i18n.propertyView({
+                        label: "I18n resource",
+                      })}
 
                       {props.preloadComp.getJSLibraryPropertyView()}
                     </>

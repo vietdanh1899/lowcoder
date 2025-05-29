@@ -37,6 +37,7 @@ import { ThemeComp } from "./themeComp";
 import UrlParamsHookComp from "./UrlParamsHookComp";
 import { UtilsComp } from "./utilsComp";
 import { ScreenInfoHookComp } from "./screenInfoComp";
+import { TransComp } from "@lowcoder-ee/comps/hooks/transComp";
 
 window._ = _;
 window.dayjs = dayjs;
@@ -96,6 +97,7 @@ const builtInRemoteComps: Omit<RemoteCompInfo, "compName"> = {
 const HookMap: HookCompMapRawType = {
   title: TitleHookComp,
   windowSize: WindowSizeComp,
+  trans: TransComp,
   currentTime: CurrentTimeHookComp,
   lodashJsLib: LodashJsLib,
   dayJsLib: DayJsLib,

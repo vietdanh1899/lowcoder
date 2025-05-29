@@ -14,7 +14,7 @@ import { default as Divider } from "antd/es/divider";
 import { THEME_SETTING } from "constants/routesURL";
 import { CustomShortcutsComp } from "./customShortcutsComp";
 import { DEFAULT_THEMEID } from "comps/utils/themeUtil";
-import { NumberControl, RangeControl, StringControl } from "comps/controls/codeControl";
+import { jsonObjectControl, NumberControl, RangeControl, StringControl } from "comps/controls/codeControl";
 import { IconControl } from "comps/controls/iconControl";
 import { dropdownControl } from "comps/controls/dropdownControl";
 import { ApplicationCategoriesEnum } from "constants/applicationConstants";
@@ -205,6 +205,12 @@ const AppCategories = Object.keys(ApplicationCategoriesEnum).map(
 )
 
 const childrenMap = {
+  previewLanguage: valueComp<string>("en"),
+  i18n: jsonObjectControl({
+    en: {
+    },
+    vi: {}
+  }),
   title: withDefault(StringControl, ''),
   description: withDefault(StringControl, ''),
   icon: IconControl,

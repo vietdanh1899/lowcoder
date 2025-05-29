@@ -6,6 +6,7 @@ const AllHookComp = [
   // "meeting",
   "title",
   "windowSize",
+  "trans",
   "currentTime",
   "lodashJsLib",
   "dayJsLib",
@@ -37,6 +38,9 @@ const HookCompConfig: Record<
     category?: "hide" | "ui" | "hook";
   }
 > = {
+  trans: {
+    category: "hide",
+  },
   modal: {
     category: "ui",
     singleton: false,
