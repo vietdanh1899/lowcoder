@@ -15173,6 +15173,7 @@ coolshapes-react@lowcoder-org/coolshapes-react:
     react-router: ^5.2.1
     react-router-dom: ^5.3.0
     react-signature-canvas: ^1.0.6
+    react-simple-i18n: ^2.0.0
     react-sortable-hoc: ^2.0.0
     react-test-renderer: ^18.1.0
     react-use: ^17.3.2
@@ -18858,6 +18859,16 @@ coolshapes-react@lowcoder-org/coolshapes-react:
     react: 0.14 - 18
     react-dom: 0.14 - 18
   checksum: 4fe5f0c41162f7c26dd5e8dc8305583016f75eb95a3f6c1207b6234d20b7e3348033e20d26f9f8d0d59c57a63a1679e27e4e5d285f2537ea25f8cc73f3626c71
+  languageName: node
+  linkType: hard
+
+"react-simple-i18n@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-simple-i18n@npm:2.0.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: b2d1005024b0f0eb66864dce5e9fc7fb12c3e1a21c07239b3ec11de3e0266fba8134b07e6db35c39d71aacf87f3cf4f27c28f57d817ad43f1f5a76c9ab9d53b8
   languageName: node
   linkType: hard
 
