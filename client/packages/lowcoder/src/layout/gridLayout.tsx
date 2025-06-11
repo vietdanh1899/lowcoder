@@ -1093,8 +1093,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
             if (height) this.innerHeight = height;
           }}
         >
-          {({targetRef}) =>
-          <div style={contentStyle} ref={targetRef as RefObject<HTMLDivElement>}>
+          <div style={contentStyle}>
             {showGridLines && this.gridLines()}
             {mounted &&
               layouts.map((item) => {
@@ -1106,7 +1105,6 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
             }
             {this.hintPlaceholder()}
           </div>
-          }
         </ResizeWrapper>
       </LayoutContainer>
     );

@@ -61,7 +61,6 @@ import { getNpmPackageMeta } from "./comps/utils/remote";
 import { packageMetaReadyAction, setLowcoderCompsLoading } from "./redux/reduxActions/npmPluginActions";
 import { fetchBrandingSetting } from "./redux/reduxActions/enterpriseActions";
 import { EnterpriseProvider } from "./util/context/EnterpriseContext";
-import { SimpleSubscriptionContextProvider } from "./util/context/SimpleSubscriptionContext";
 import { getBrandingSetting } from "./redux/selectors/enterpriseSelectors";
 import { fetchSubscriptionsAction } from "./redux/reduxActions/subscriptionActions";
 
@@ -313,7 +312,7 @@ class AppIndex extends React.Component<AppIndexProps, any> {
               media="(aspect-ratio: 1280/720)"
             />,
           ]}
-          {((isLowCoderDomain || isLocalhost) && !Boolean(this.props.brandingFontFamily)) && [
+          {((true) && !Boolean(this.props.brandingFontFamily)) && [
             <link
               key="preconnect-googleapis"
               rel="preconnect"
@@ -388,7 +387,6 @@ class AppIndex extends React.Component<AppIndexProps, any> {
                   ]
                 }
               >
-                <SimpleSubscriptionContextProvider>
                   <Switch>
                     <LazyRoute
                       fallback="layout"
@@ -418,7 +416,6 @@ class AppIndex extends React.Component<AppIndexProps, any> {
                       component={LazyApplicationHome}
                     />
                   </Switch>
-                </SimpleSubscriptionContextProvider>
               </Route>
               <LazyRoute exact path={ADMIN_AUTH_URL} component={LazyUserAuthComp} />
               <LazyRoute path={USER_AUTH_URL} component={LazyUserAuthComp} />
