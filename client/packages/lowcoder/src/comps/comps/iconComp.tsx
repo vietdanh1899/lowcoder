@@ -90,7 +90,21 @@ const childrenMap = {
 };
 
 const IconView = (props: RecordConstructorToView<typeof childrenMap>) => {
-  const { width, height, ref: conRef } = useResizeDetector();
+  const conRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (height && width) {
+      onResize();
+    }
+  }, [height, width]);
+
+  const onResize = () => {
+    const container = conRef.current;
+    setWidth(container?.clientWidth ?? 0);
+    setHeight(container?.clientHeight ?? 0);
+  };
 
   useResizeDetector({
     targetRef: conRef,

@@ -56,7 +56,6 @@ import Setting from "pages/setting";
 import { getSubscriptions } from 'redux/selectors/subscriptionSelectors';
 import { SubscriptionProductsEnum } from '@lowcoder-ee/constants/subscriptionConstants';
 import { EnterpriseProvider } from "@lowcoder-ee/util/context/EnterpriseContext";
-import { SimpleSubscriptionContextProvider } from "@lowcoder-ee/util/context/SimpleSubscriptionContext";
 import { selectIsLicenseActive } from "redux/selectors/enterpriseSelectors";
 
 
@@ -217,20 +216,6 @@ export default function ApplicationHome() {
               },
 
               // Show Subscription if not yet subscribed else Support Pages
-
-              {
-                items: [
-                  {
-                    text: <TabLabel>{trans("home.support")}</TabLabel>,
-                    routePath: supportSubscription ? SUPPORT_URL : SUBSCRIPTION_SETTING,
-                    routeComp: supportSubscription ? Support : Setting,
-                    routePathExact: false,
-                    icon: ({ selected, ...otherProps }) => <SupportIcon {...otherProps} width={"24px"} />,
-                    mobileVisible: true,
-                    visible: ({ user }) => user.orgDev
-                  }
-                ]
-              },
 
               {
                 items: [

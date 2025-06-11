@@ -180,7 +180,6 @@ export function SettingHome() {
         {selectKey === SettingPageEnum.AppUsage && <AppUsage />}
         {selectKey === SettingPageEnum.AuditLog && <AuditLog />}
         {selectKey === SettingPageEnum.Branding && <Branding />}
-        {selectKey === SettingPageEnum.Subscription && <Subscription />}
       </TwoColumnSettingPageContent>
 
       <HubspotModal
