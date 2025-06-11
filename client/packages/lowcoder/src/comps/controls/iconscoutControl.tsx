@@ -30,7 +30,6 @@ import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import Badge from "antd/es/badge";
 import { CrownFilled } from "@ant-design/icons";
 import { SUBSCRIPTION_SETTING } from "@lowcoder-ee/constants/routesURL";
-import { useSimpleSubscriptionContext } from "@lowcoder-ee/util/context/SimpleSubscriptionContext";
 import { SubscriptionProductsEnum } from "@lowcoder-ee/constants/subscriptionConstants";
 
 const ButtonWrapper = styled.div`
@@ -233,14 +232,6 @@ export const IconPicker = (props: {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const { subscriptions } = useSimpleSubscriptionContext();
-
-  const mediaPackSubscription = useMemo(() => 
-    subscriptions.find(
-      sub => sub.product === SubscriptionProductsEnum.MEDIAPACKAGE && sub.status === 'active'
-    ),
-    [subscriptions]
-  );
   
   const onChangeRef = useRef(props.onChange);
   onChangeRef.current = props.onChange;
@@ -392,20 +383,7 @@ export const IconPicker = (props: {
                 key={icon.uuid}
                 tabIndex={0}
                 onClick={() => {
-                  if (!mediaPackSubscription) {
-                    CustomModal.confirm({
-                      title: trans("iconScout.buySubscriptionTitle"),
-                      content: trans("iconScout.buySubscriptionContent"),
-                      onConfirm: () => {
-                        window.open(SUBSCRIPTION_SETTING, "_blank");
-                      },
-                      confirmBtnType: "primary",
-                      okText: trans("iconScout.buySubscriptionButton"),
-                    });
-                    return;
-                  }
-  
-                  fetchDownloadUrl(
+                    fetchDownloadUrl(
                     icon.uuid,
                     props.assetType === AssetType.ICON ? icon.urls.png_64 : icon.urls.thumb,
                   );
@@ -437,7 +415,7 @@ export const IconPicker = (props: {
         </IconRow>
       );
     },
-    [columnNum, mediaPackSubscription, props.assetType, fetchDownloadUrl, searchResults]
+    [columnNum, props.assetType, fetchDownloadUrl, searchResults]
   );
 
   const popupTitle = useMemo(() => {

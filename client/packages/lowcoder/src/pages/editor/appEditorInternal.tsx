@@ -236,8 +236,9 @@ export const AppEditorInternalView = React.memo((props: AppEditorInternalViewPro
     window.location.pathname.split("/")[3] === "admin" ? <div></div> :
     <EditorSkeletonView />
   ) : (<StyleProvider layer>
-      <ConfigProvider theme={{hashed: false, cssVar: {key: 'lowcoder'}}} locale={getAntdLocale(currentUser.uiLanguage)}
+      <ConfigProvider locale={getAntdLocale(currentUser.uiLanguage)}
       theme={{
+        hashed: false, cssVar: {key: 'lowcoder'},
         token: {
           fontFamily: `-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Segoe UI", "PingFang SC",
             "Microsoft Yahei", "Hiragino Sans GB", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",

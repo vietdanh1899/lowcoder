@@ -48,7 +48,7 @@ export const ColorSelect = (props: ColorSelectProps) => {
 
   useEffect(() => {
     if (color !== selectedColor) {
-      const value = getGradientObject("#ffffff");
+      const value = getGradientObject();
       if (!value?.isGradient) {
         return throttleChange(toHex(selectedColor));
       }
