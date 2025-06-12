@@ -26,8 +26,8 @@ import { SliderControl } from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
-import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
 import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
+import { default as AntdModal } from "antd/es/modal";
 import React from "react";
 import { ToViewReturn } from "../generators/multi";
 import { NewChildren } from "../generators/uiCompBuilder";
@@ -64,7 +64,7 @@ const getStyle = (style: ModalStyleType, modalScrollbar: boolean) => {
   `;
 };
 
-const StyledModal = styled(Modal)<{$titleAlign?: string}>`
+const StyledModal = styled(AntdModal)<{$titleAlign?: string}>`
   .ant-modal-title {
     margin: 0px 20px !important;
     text-align: ${(props) => props.$titleAlign || "center"};
@@ -128,7 +128,7 @@ const ModalPropertyView = React.memo((props: {
   return (
   <>
     <Section name={sectionNames.codeLayout}>
-      {getCodeLayoutPropertyView(children.container.children)}
+      {getCodeLayoutPropertyView(props.children.container.children)}
     </Section>
     <Section name={sectionNames.basic}>
       {props.children.title.propertyView({ label: trans("modalComp.title") })}
@@ -269,8 +269,8 @@ const ModalView = React.memo((
         <StyledModal
           closable={props.toggleClose}
           height={height}
-          resizeHandles={resizeHandles}
-          onResizeStop={onResizeStop}
+          // resizeHandles={resizeHandles}
+          // onResizeStop={onResizeStop}
           open={props.visible.value}
           maskClosable={props.maskClosable}
           focusTriggerAfterClose={false}
