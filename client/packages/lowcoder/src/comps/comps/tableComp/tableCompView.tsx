@@ -572,6 +572,7 @@ const TableCellView = React.memo((props: {
   rowColorFn: RowColorViewType;
   rowHeightFn: RowHeightViewType;
   cellColorFn: CellColorViewType;
+  textColorFn: CellColorViewType;
   rowIndex: number;
   children: any;
   columnsStyle: TableColumnStyleType;
@@ -589,6 +590,7 @@ const TableCellView = React.memo((props: {
     rowColorFn,
     rowHeightFn,
     cellColorFn,
+    textColorFn,
     children,
     columnsStyle,
     columnStyle,
@@ -622,11 +624,15 @@ const TableCellView = React.memo((props: {
       currentCell: record[title],
       currentRow: record,
     });
+    const textColor = textColorFn({
+      currentCell: record[title],
+      currentRow: record,
+    });
 
     return {
       background: cellColor || rowColor || columnStyle.background || columnsStyle.background,
       margin: columnStyle.margin || columnsStyle.margin,
-      text: columnStyle.text || columnsStyle.text,
+      text: textColor || columnStyle.text || columnsStyle.text,
       border: columnStyle.border || columnsStyle.border,
       radius: columnStyle.radius || columnsStyle.radius,
       // borderWidth: columnStyle.borderWidth || columnsStyle.borderWidth,
@@ -636,7 +642,7 @@ const TableCellView = React.memo((props: {
       fontStyle: columnsStyle.fontStyle || columnStyle.fontStyle,
       rowHeight: rowHeight,
     };
-  }, [record, rowIndex, title, rowColorFn, rowHeightFn, cellColorFn, columnStyle, columnsStyle]);
+  }, [record, rowIndex, title, rowColorFn, rowHeightFn, cellColorFn, textColorFn, columnStyle, columnsStyle]);
 
   let tdView;
   if (!record) {
@@ -737,6 +743,7 @@ function ResizeableTableComp<RecordType extends object>(props: CustomTableProps<
       rowColorFn,
       rowHeightFn,
       cellColorFn: col.cellColorFn,
+      textColorFn: col.textColorFn,
       rowIndex: index,
       columnsStyle,
       columnStyle: col.style,
