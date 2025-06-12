@@ -283,6 +283,7 @@ export type CustomColumnType<RecordType> = ColumnType<RecordType> & {
   style: TableColumnStyleType;
   linkStyle: TableColumnLinkStyleType;
   cellColorFn: CellColorViewType;
+  textColorFn: CellColorViewType;
 };
 
 /**
@@ -353,7 +354,7 @@ export function columnsToAntdFormat(
       style: {
         background: column.background,
         margin: column.margin,
-        text: column.text,
+        text: "",
         border: column.border,
         radius: column.radius,
         textSize: column.textSize,
@@ -368,6 +369,7 @@ export function columnsToAntdFormat(
         activeText: column.linkActiveColor,
       },
       cellColorFn: column.cellColor,
+      textColorFn: column.text,
       onWidthResize: column.onWidthResize,
       render: (value: any, record: RecordType, index: number) => {
         const row = _.omit(record, OB_ROW_ORI_INDEX);
