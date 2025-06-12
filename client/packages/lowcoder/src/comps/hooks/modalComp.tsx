@@ -26,8 +26,8 @@ import { SliderControl } from "../controls/sliderControl";
 import { getBackgroundStyle } from "@lowcoder-ee/util/styleUtils";
 import clsx from "clsx";
 import { useApplicationId } from "util/hooks";
-import { PreloadIdContext } from "@lowcoder-ee/comps/comps/preLoadComp";
 import { getCodeLayoutPropertyView } from "@lowcoder-ee/comps/controls/codeLayoutControl";
+import { default as AntdModal } from "antd/es/modal";
 
 const EventOptions = [
   { label: trans("modalComp.open"), value: "open", description: trans("modalComp.openDesc") },
@@ -60,7 +60,7 @@ const getStyle = (style: ModalStyleType, modalScrollbar: boolean) => {
   `;
 };
 
-const StyledModal = styled(Modal)<{$titleAlign?: string}>`
+const StyledModal = styled(AntdModal)<{$titleAlign?: string}>`
   .ant-modal-title {
     margin: 0px 20px !important;
     text-align: ${(props) => props.$titleAlign || "center"};
@@ -215,14 +215,14 @@ let TmpModalComp = (function () {
             <StyledModal
               closable={props.toggleClose}
               height={height}
-              resizeHandles={resizeHandles}
-              onResizeStop={onResizeStop}
+              // resizeHandles={resizeHandles}
+              // onResizeStop={onResizeStop}
               open={props.visible.value}
               maskClosable={props.maskClosable}
               focusTriggerAfterClose={false}
-              getContainer={getContainer}
+              getContainer={document.querySelector(`#${CanvasContainerID}`) as HTMLElement || document.body }
               footer={null}
-              styles={{body: bodyStyle}}
+              styles={{body: bodyStyle, content: {height}}}
               title={props.title}
               $titleAlign={props.titleAlign}
               width={width}
