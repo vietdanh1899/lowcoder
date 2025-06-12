@@ -63,6 +63,30 @@ const columnFixOptions = [
   },
 ] as const;
 
+const ColorControlWithContext = (label: string) => {
+  const CellColorTempComp = withContext(
+    new MultiCompBuilder({ color: ColorControl }, (props) => props.color)
+      .setPropertyViewFn((children) =>
+        children.color.propertyView({
+          label: label,
+        })
+      )
+      .build(),
+    ["currentCell", "currentRow"] as const
+  );
+
+  // @ts-ignore
+  class CellColorComp extends CellColorTempComp {
+    override getPropertyView() {
+      return controlItem({ filterText: label }, super.getPropertyView());
+    }
+  }
+
+  return CellColorComp;
+}
+
+const TextColorComp = ColorControlWithContext("Text");
+
 const cellColorLabel = trans("table.cellColor");
 const CellColorTempComp = withContext(
   new MultiCompBuilder({ color: ColorOrBoolCodeControl }, (props) => props.color)
@@ -137,7 +161,7 @@ export const columnChildrenMap = {
   editable: BoolControl,
   background: withDefault(ColorControl, ""),
   margin: withDefault(RadiusControl, ""),
-  text: withDefault(ColorControl, ""),
+  text: TextColorComp,
   border: withDefault(ColorControl, ""),
   borderWidth: withDefault(RadiusControl, ""),
   radius: withDefault(RadiusControl, ""),
@@ -307,9 +331,7 @@ const ColumnPropertyView = React.memo(({
           {comp.children.background.propertyView({
             label: trans('style.background'),
           })}
-          {columnType !== 'link' && comp.children.text.propertyView({
-            label: trans('text'),
-          })}
+          {columnType !== 'link' && comp.children.text.getPropertyView()}
           {comp.children.border.propertyView({
             label: trans('style.border')
           })}
@@ -362,6 +384,15 @@ export class ColumnComp extends ColumnInitComp {
         "cellColor",
         comp.children.cellColor.reduce(
           CellColorComp.changeContextDataAction({
+            currentCell: undefined,
+            currentRow: {},
+          })
+        )
+      );
+      comp = comp.setChild(
+        "text",
+        comp.children.text.reduce(
+          TextColorComp.changeContextDataAction({
             currentCell: undefined,
             currentRow: {},
           })
