@@ -196,6 +196,400 @@ import { ContainerComp as FloatTextContainerComp } from "./comps/containerComp/t
 import { ReactComponent as ReactSvgIcon } from "./comps/customReactComp/react-icon.svg";
 import EchartsComp  from "./comps/chartComp"
 import { MultiTagsComp } from "./comps/tagsComp/tagsCompView";
+import PCalendar from "comps/comps/primereactComp/components/p-core/Calendar";
+import Button from "comps/comps/primereactComp/components/core/Button";
+import Timeline from "comps/comps/primereactComp/components/core/Timeline";
+import Tag from "comps/comps/primereactComp/components/core/Tag";
+import Dropdown from "comps/comps/primereactComp/components/core/Dropdown";
+import Table from "comps/comps/primereactComp/components/core/Table";
+import InputText from "comps/comps/primereactComp/components/core/InputText";
+import InputTextArea from "comps/comps/primereactComp/components/core/InputTextArea";
+import InputNumber from "comps/comps/primereactComp/components/core/InputNumber";
+import InputSwitch from "comps/comps/primereactComp/components/core/InputSwitch";
+import MultiSelect from "comps/comps/primereactComp/components/core/MultiSelect";
+import TreeSelect from "comps/comps/primereactComp/components/core/TreeSelect";
+import Calendar from "comps/comps/primereactComp/components/core/Calendar";
+import AutoComplete from "comps/comps/primereactComp/components/core/AutoComplete";
+import Divider from "comps/comps/primereactComp/components/core/Divider";
+import Password from "comps/comps/primereactComp/components/core/Password";
+import Paginator from "comps/comps/primereactComp/components/core/Paginator";
+import RadioButton from "comps/comps/primereactComp/components/core/RadioButton";
+import Label from "comps/comps/primereactComp/components/common/Label";
+import InternalStyle from "comps/comps/primereactComp/components/core/InternalStyle";
+import File from "comps/comps/primereactComp/components/core/File";
+import CascadeSelect from "comps/comps/primereactComp/components/p-core/CascadeSelect";
+import Checkbox from "comps/comps/primereactComp/components/p-core/Checkbox";
+import Chips from "comps/comps/primereactComp/components/p-core/Chips";
+import ColorPicker from "comps/comps/primereactComp/components/p-core/ColorPicker";
+import InputOtp from "comps/comps/primereactComp/components/p-core/InputOtp";
+import Editor from "comps/comps/primereactComp/components/p-core/Editor";
+import Knob from "comps/comps/primereactComp/components/p-core/Knob";
+import ListBox from "comps/comps/primereactComp/components/p-core/ListBox";
+import Rating from "comps/comps/primereactComp/components/p-core/Rating";
+import SelectButton from "comps/comps/primereactComp/components/p-core/SelectButton";
+import Slider from "comps/comps/primereactComp/components/p-core/Slider";
+import SpeedDial from "comps/comps/primereactComp/components/p-core/SpeedDial";
+import Select from "comps/comps/primereactComp/components/p-core/Select";
+import OrganizationChart from "comps/comps/primereactComp/components/p-core/OrganizationChart";
+import Avatar from "comps/comps/primereactComp/components/p-core/Avatar";
+import ProgressBar from "comps/comps/primereactComp/components/p-core/ProgressBar";
+import Badge from "comps/comps/primereactComp/components/p-core/Badge";
+import Skeleton from "comps/comps/primereactComp/components/p-core/Skeleton";
+import { ReactComponent as PrimereactIcon } from "comps/comps/primereactComp/primereact.svg";
+
+const primereactCompMap = {
+  "primereact-pCalendar": {
+    name: "P-Calendar",
+    categories: ["primereact"],
+    withoutLoading: true,
+    description: "Calendar Component",
+    layoutInfo: { w: 6, h: 6 },
+    icon: PrimereactIcon,
+    comp: PCalendar,
+  },
+  "primereact-button": {
+    name: "Button",
+    icon: PrimereactIcon,
+    description: "Button Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Button,
+  },
+  "primereact-timeline": {
+    name: "Timeline",
+    icon: PrimereactIcon,
+    description: "Timeline Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Timeline,
+  },
+  "primereact-tag": {
+    name: "Tag",
+    icon: PrimereactIcon,
+    description: "Tag Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Tag,
+  },
+  "primereact-dropdown": {
+    name: "Dropdown",
+    icon: PrimereactIcon,
+    description: "Dropdown Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Dropdown,
+  },
+  "primereact-table": {
+    name: "Table",
+    icon: PrimereactIcon,
+    description: "Table Component",
+    layoutInfo: { w: 18, h: 18 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Table,
+  },
+  "primereact-inputtext": {
+    name: "InputText",
+    icon: PrimereactIcon,
+    description: "InputText Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InputText,
+  },
+  "primereact-inputtextarea": {
+    name: "InputTextArea",
+    icon: PrimereactIcon,
+    description: "InputTextArea Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InputTextArea,
+  },
+  "primereact-inputnumber": {
+    name: "InputNumber",
+    icon: PrimereactIcon,
+    description: "InputNumber Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InputNumber,
+  },
+  "primereact-inputswitch": {
+    name: "InputSwitch",
+    icon: PrimereactIcon,
+    description: "InputSwitch Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InputSwitch,
+  },
+  "primereact-multiselect": {
+    name: "MultiSelect",
+    icon: PrimereactIcon,
+    description: "MultiSelect Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: MultiSelect,
+  },
+  "primereact-treeselect": {
+    name: "TreeSelect",
+    icon: PrimereactIcon,
+    description: "TreeSelect Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: TreeSelect,
+  },
+  "primereact-calendar": {
+    name: "Old Calendar (deprecated)",
+    icon: PrimereactIcon,
+    description: "Calendar Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Calendar,
+  },
+  "primereact-autocomplete": {
+    name: "AutoComplete",
+    icon: PrimereactIcon,
+    description: "AutoComplete Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: AutoComplete,
+  },
+  "primereact-divider": {
+    name: "Divider",
+    icon: PrimereactIcon,
+    description: "Divider Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Divider,
+  },
+  "primereact-password": {
+    name: "Password",
+    icon: PrimereactIcon,
+    description: "Password Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Password,
+  },
+  "primereact-paginator": {
+    name: "Paginator",
+    icon: PrimereactIcon,
+    description: "Paginator Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Paginator,
+  },
+  "primereact-radiobutton": {
+    name: "RadioButton",
+    icon: PrimereactIcon,
+    description: "RadioButton Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: RadioButton,
+  },
+  "primereact-label": {
+    name: "Label",
+    icon: PrimereactIcon,
+    description: "Label Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Label,
+  },
+  "primereact-internalstyle": {
+    name: "InternalStyle",
+    icon: PrimereactIcon,
+    description: "InternalStyle Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InternalStyle,
+  },
+  "primereact-file": {
+    name: "File",
+    icon: PrimereactIcon,
+    description: "File Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: File,
+  },
+  "primereact-cascadeselect": {
+    name: "CascadeSelect",
+    icon: PrimereactIcon,
+    description: "CascadeSelect Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: CascadeSelect,
+  },
+  "primereact-checkbox": {
+    name: "Checkbox",
+    icon: PrimereactIcon,
+    description: "Checkbox Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Checkbox,
+  },
+  "primereact-chips": {
+    name: "Chips",
+    icon: PrimereactIcon,
+    description: "Chips Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Chips,
+  },
+  "primereact-colorpicker": {
+    name: "ColorPicker",
+    icon: PrimereactIcon,
+    description: "ColorPicker Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: ColorPicker,
+  },
+  "primereact-inputotp": {
+    name: "InputOtp",
+    icon: PrimereactIcon,
+    description: "InputOtp Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: InputOtp,
+  },
+  "primereact-editor": {
+    name: "Editor",
+    icon: PrimereactIcon,
+    description: "Editor Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Editor,
+  },
+  "primereact-knob": {
+    name: "Knob",
+    icon: PrimereactIcon,
+    description: "Knob Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Knob,
+  },
+  "primereact-listbox": {
+    name: "ListBox",
+    icon: PrimereactIcon,
+    description: "ListBox Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: ListBox,
+  },
+  "primereact-rating": {
+    name: "Rating",
+    icon: PrimereactIcon,
+    description: "Rating Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Rating,
+  },
+  "primereact-selectbutton": {
+    name: "SelectButton",
+    icon: PrimereactIcon,
+    description: "SelectButton Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: SelectButton,
+  },
+  "primereact-slider": {
+    name: "Slider",
+    icon: PrimereactIcon,
+    description: "Slider Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Slider,
+  },
+  "primereact-speeddial": {
+    name: "SpeedDial",
+    icon: PrimereactIcon,
+    description: "SpeedDial Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: SpeedDial,
+  },
+  "primereact-select": {
+    name: "Select",
+    icon: PrimereactIcon,
+    description: "Select Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Select,
+  },
+  "primereact-organizationchart": {
+    name: "Organization Chart",
+    icon: PrimereactIcon,
+    description: "OrganizationChart Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: OrganizationChart,
+  },
+  "primereact-avatar": {
+    name: "Avatar",
+    icon: PrimereactIcon,
+    description: "Avatar Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Avatar,
+  },
+  "primereact-progressbar": {
+    name: "ProgressBar",
+    icon: PrimereactIcon,
+    description: "ProgressBar Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: ProgressBar,
+  },
+  "primereact-badge": {
+    name: "Badge",
+    icon: PrimereactIcon,
+    description: "Badge Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Badge,
+  },
+  "primereact-skeleton": {
+    name: "Skeleton",
+    icon: PrimereactIcon,
+    description: "Skeleton Component",
+    layoutInfo: { w: 6, h: 6 },
+    withoutLoading: true,
+    categories: ["primereact"],
+    comp: Skeleton,
+  },
+};
 
 type Registry = {
   [key in UICompType]?: UICompManifest;
@@ -567,8 +961,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 50,
-      // static: true,
+      h: 50, // static: true,
       delayCollision: true,
     },
     defaultDataFn: defaultPageLayoutData,
@@ -614,8 +1007,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 25,
-      // static: true,
+      h: 25, // static: true,
       delayCollision: true,
     },
     defaultDataFn: defaultContainerData,
@@ -644,8 +1036,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 25,
-      // static: true,
+      h: 25, // static: true,
       delayCollision: true,
     },
   },
@@ -660,8 +1051,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 25,
-      // static: true,
+      h: 25, // static: true,
       delayCollision: true,
     },
     defaultDataFn: defaultCollapsibleContainerData,
@@ -677,8 +1067,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 25,
-      // static: true,
+      h: 25, // static: true,
       delayCollision: true,
     },
     defaultDataFn: defaultContainerData,
@@ -962,8 +1351,7 @@ export var uiCompMap: Registry = {
     withoutLoading: true,
     layoutInfo: {
       w: 12,
-      h: 50,
-      // static: true,
+      h: 50, // static: true,
       delayCollision: true,
     },
     defaultDataFn: defaultFormData,
@@ -1078,11 +1466,8 @@ export var uiCompMap: Registry = {
     description: trans("uiComp.autoCompleteCompDesc"),
     categories: ["forms"],
     icon: AutoCompleteCompIcon,
-    keywords: cnchar
-      .spell(trans("uiComp.autoCompleteCompName"), "first", "low")
-      .toString(),
-    comp: AutoCompleteComp,
-    //   lazyLoad: true,
+    keywords: cnchar.spell(trans("uiComp.autoCompleteCompName"), "first", "low").toString(),
+    comp: AutoCompleteComp, //   lazyLoad: true,
     // compName: "AutoCompleteComp",
     // compPath: "comps/autoCompleteComp/autoCompleteComp",
     layoutInfo: {
@@ -1789,9 +2174,12 @@ export var uiCompMap: Registry = {
       h: 5,
     },
   },
+
+  ...primereactCompMap,
 };
 
 let compLoaded = false;
+
 export function loadComps() {
   if (!uiCompMap || compLoaded) return;
   const entries = Object.entries(uiCompMap);
