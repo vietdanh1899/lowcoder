@@ -988,7 +988,8 @@ export const en = {
     "itemHandling": "Item & Signature Handling",
     "multimedia": "Multimedia & Animation",
     "integration": "Integration & Extension",
-    "legacy" : "Legacy & Deprecated"
+    "legacy" : "Legacy & Deprecated",
+    "primereact": "Primereact"
   },
   "uiComp": {
     "autoCompleteCompName": "Auto Complete",
