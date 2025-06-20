@@ -194,6 +194,7 @@ import { ModalComp } from "./hooks/modalComp";
 import { defaultCollapsibleContainerData } from "./comps/containerComp/collapsibleContainerComp";
 import { ContainerComp as FloatTextContainerComp } from "./comps/containerComp/textContainerComp";
 import { ReactComponent as ReactSvgIcon } from "./comps/customReactComp/react-icon.svg";
+import EchartsComp  from "./comps/chartComp"
 
 type Registry = {
   [key in UICompType]?: UICompManifest;
@@ -216,7 +217,8 @@ export var uiCompMap: Registry = {
     description: trans("uiComp.chartCompDesc"),
     categories: ["legacy"],
     icon: ChartCompIcon,
-    comp: remoteComp({ ...builtInRemoteComps, compName: "chart" }),
+    comp: EchartsComp,
+    withoutLoading: true,
     keywords: trans("uiComp.chartCompKeywords"),
     layoutInfo: {
       w: 12,
@@ -269,7 +271,7 @@ export var uiCompMap: Registry = {
   pieChart: {
     name: trans("uiComp.pieChartCompName"),
     enName: "Pie Chart",
-    description: trans("uiComp.piehartCompDesc"),
+    description: trans("uiComp.pieChartCompDesc"),
     categories: ["dashboards"],
     icon: PieChartCompIcon,
     comp: remoteComp({ ...builtInRemoteComps, compName: "pieChart" }),
