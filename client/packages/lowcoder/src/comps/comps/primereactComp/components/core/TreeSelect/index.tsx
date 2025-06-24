@@ -10,9 +10,9 @@ import {
   stringExposingStateControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 import { TreeSelect } from "primereact/treeselect";
 

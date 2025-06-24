@@ -8,9 +8,9 @@ import {
   numberExposingStateControl,
   Section,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Paginator } from "primereact/paginator";
 
 const defStaticProps = {

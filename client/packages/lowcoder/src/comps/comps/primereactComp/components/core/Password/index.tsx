@@ -13,9 +13,9 @@ import {
   Section,
   stringExposingStateControl,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Password } from "primereact/password";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 

@@ -6,9 +6,9 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Divider } from "primereact/divider";
 
 const defStaticProps = {

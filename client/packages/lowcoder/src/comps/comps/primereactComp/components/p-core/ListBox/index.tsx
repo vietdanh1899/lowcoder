@@ -9,10 +9,9 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
-
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { ListBox } from "primereact/listbox";
 
 export const defStaticProps = { optionLabel: "name" };

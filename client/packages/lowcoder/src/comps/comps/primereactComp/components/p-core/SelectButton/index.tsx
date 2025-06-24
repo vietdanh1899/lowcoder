@@ -9,11 +9,10 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
-
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { SelectButton } from "primereact/selectbutton";
 
 export const defStaticProps = { optionLabel: "name" };

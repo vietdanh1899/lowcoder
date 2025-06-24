@@ -7,9 +7,9 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { OrganizationChart } from "primereact/organizationchart";
 
 export const defStaticProps = {};

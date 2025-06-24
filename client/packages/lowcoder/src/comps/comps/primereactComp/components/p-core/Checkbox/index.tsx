@@ -8,9 +8,9 @@ import {
   Section,
   stringExposingStateControl,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Checkbox } from "primereact/checkbox";
 
 const defStaticProps = {};

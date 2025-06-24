@@ -11,9 +11,9 @@ import {
   Section,
   stringExposingStateControl,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 import { Calendar, CalendarProps } from "primereact/calendar";
 import React, { useEffect, useRef } from "react";

@@ -91,13 +91,12 @@ const ContainWrapper = styled.div<{
 
 const ColWrapper = styled(Col)<{
   $itemCss?: string;
-  $hide?: boolean;
   $style: ResponsiveLayoutColStyleType | undefined,
   $minWidth?: string,
   $matchColumnsHeight: boolean,
 }>`
   min-width: ${(props) => props.$minWidth || 'auto'};
-  > div {
+  //> div {
     height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'auto'};
     border-radius: ${(props) => props.$style?.radius};
     border-width: ${(props) => props.$style?.borderWidth};
@@ -107,9 +106,8 @@ const ColWrapper = styled(Col)<{
     padding: ${(props) => props.$style?.padding};
     ${props => props.$style && getBackgroundStyle(props.$style)};
     box-shadow: ${(props) => props.$style?.boxShadow};
-    ${(props) => props.$itemCss};
-    ${(props) => props.$hide && "visibility: hidden;"}
-  }
+  //}
+  ${(props) => props.$itemCss};
 `;
 
 const childrenMap = {
@@ -240,7 +238,6 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                 const containerProps = containers[id].children;
                 const noOfColumns = columns.length;
                 const itemCss = String(column.itemCss);
-                const hide = Boolean(column.hide);
                 return (
                   <React.Fragment key={id}>
                     <BackgroundColorContext.Provider value={props.columnStyle.background}>
@@ -250,7 +247,6 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                         $minWidth={column.minWidth}
                         $matchColumnsHeight={matchColumnsHeight}
                         $itemCss={itemCss}
-                        $hide={hide}
                       >
                         <ColumnContainer
                           layout={containerProps.layout.getView()}
