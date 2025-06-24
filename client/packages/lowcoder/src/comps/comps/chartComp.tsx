@@ -316,7 +316,9 @@ let ChartTmpComp = new UICompBuilder(chartJsonModeChildren, (props) => {
   useEffect(() => {
     if (!echartsCompRef) return;
 
-    echartsCompRef.setOption(props.echartsOption);
+    echartsCompRef.setOption(props.echartsOption, {
+      lazyUpdate: true,
+    });
   }, [echartsCompRef, JSON.stringify(props.echartsOption)]);
 
   return <div ref={containerRef} style={{ height: "100%" }}></div>;
