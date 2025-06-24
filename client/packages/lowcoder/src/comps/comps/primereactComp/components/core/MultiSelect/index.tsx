@@ -11,9 +11,9 @@ import {
   stringExposingStateControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { MultiSelect } from "primereact/multiselect";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 

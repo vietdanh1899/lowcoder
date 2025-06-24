@@ -9,10 +9,10 @@ import {
   StringControl,
   stringExposingStateControl,
   TacoMarkDown,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { styled } from "styled-components";
 
 const TextContainer = styled.div`

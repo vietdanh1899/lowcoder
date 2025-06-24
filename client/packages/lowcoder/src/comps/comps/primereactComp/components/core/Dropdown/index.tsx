@@ -12,9 +12,9 @@ import {
   stringExposingStateControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 import _ from "lodash";

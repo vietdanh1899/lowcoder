@@ -10,9 +10,9 @@ import {
   NameConfigHidden,
   Section,
   stringExposingStateControl,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Dropdown } from "primereact/dropdown";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 

@@ -8,10 +8,10 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Button } from "primereact/button";
 
 export const defStaticProps = {

@@ -12,10 +12,10 @@ import {
   stringExposingStateControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";

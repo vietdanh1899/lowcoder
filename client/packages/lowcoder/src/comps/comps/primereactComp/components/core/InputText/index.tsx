@@ -14,9 +14,9 @@ import {
   Section,
   stringExposingStateControl,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { InputText, InputTextProps } from "primereact/inputtext";
 import { ChangeEvent, ForwardedRef, forwardRef, KeyboardEvent, useEffect, useRef, useState } from "react";
 import _ from "lodash";

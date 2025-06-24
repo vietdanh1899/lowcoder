@@ -7,10 +7,10 @@ import {
   StringControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Timeline } from "primereact/timeline";
 
 const defStaticProps = { align: "left" };

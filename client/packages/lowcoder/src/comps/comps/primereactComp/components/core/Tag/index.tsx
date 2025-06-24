@@ -7,10 +7,10 @@ import {
   Section,
   StringControl,
   toJSONObject,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { Tag } from "primereact/tag";
 
 const defStaticProps = { severity: "success" };

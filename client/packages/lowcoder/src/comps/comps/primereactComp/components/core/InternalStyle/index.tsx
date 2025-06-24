@@ -3,10 +3,10 @@ import {
   controlItem,
   Section,
   stringExposingStateControl,
-  UICompBuilder,
   withDefault,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { useEffect } from "react";
 
 let InternalStyleCompBase = (function () {

@@ -14,9 +14,9 @@ import {
   stringExposingStateControl,
   toJSONObject,
   toJSONObjectArray,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { AutoComplete } from "primereact/autocomplete";
 import LabelWrapper from "../../../components/common/LabelWrapper";
 import { ChangeEvent } from "react";

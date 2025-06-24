@@ -5,8 +5,8 @@ import {
   Section,
   ThemeContext,
   toObject,
-  UICompBuilder,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import * as echarts from "echarts";
 import { EChartsType } from "echarts";
 import { useContext, useEffect, useRef, useState } from "react";

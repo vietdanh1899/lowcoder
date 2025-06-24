@@ -7,10 +7,9 @@ import {
   NameConfigHidden,
   Section,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
-
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { SpeedDial } from "primereact/speeddial";
 
 export const defStaticProps = {};

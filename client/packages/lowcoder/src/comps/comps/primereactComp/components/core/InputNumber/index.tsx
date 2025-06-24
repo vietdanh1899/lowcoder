@@ -14,9 +14,9 @@ import {
   Section,
   stringExposingStateControl,
   toJSONObject,
-  UICompBuilder,
   withExposingConfigs,
 } from "lowcoder-sdk";
+import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { InputNumber } from "primereact/inputnumber";
 
 const defStaticProps = {
