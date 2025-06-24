@@ -404,7 +404,6 @@ const primereactCompMap = {
     icon: PrimereactIcon,
     description: "Label Component",
     layoutInfo: { w: 6, h: 6 },
-    withoutLoading: true,
     categories: ["primereact"],
     comp: Label,
   },
@@ -612,7 +611,6 @@ export var uiCompMap: Registry = {
     categories: ["legacy"],
     icon: ChartCompIcon,
     comp: EchartsComp,
-    withoutLoading: true,
     keywords: trans("uiComp.chartCompKeywords"),
     layoutInfo: {
       w: 12,

@@ -1,13 +1,12 @@
 import { css } from "styled-components";
-import { lazy, Suspense, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 // import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import type { Options as ReactMarkdownOptions, Components } from "react-markdown";
+import type { Components, Options as ReactMarkdownOptions } from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import type { Pluggable } from "unified";
-
-const ReactMarkdown = lazy(() => import('react-markdown'));
 
 export const markdownCompCss = css`
   .markdown-body {
@@ -90,7 +89,7 @@ export const TacoMarkDown = memo((props: TacoMarkDownProps) => {
   const remarkPlugins = useMemo(() => [remarkGfm] as Pluggable[], []);
 
   return (
-    <Suspense fallback={<div className="markdown-body">Loading...</div>}>
+    // <Suspense fallback={<div className="markdown-body">Loading...</div>}>
       <ReactMarkdown
         remarkPlugins={remarkPlugins}
         components={components}
@@ -100,7 +99,7 @@ export const TacoMarkDown = memo((props: TacoMarkDownProps) => {
       >
         {children}
       </ReactMarkdown>
-    </Suspense>
+    // </Suspense>
   );
 });
 
