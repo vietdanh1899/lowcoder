@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     lazy: async () => ({ Component: (await import("./micro/index")).default }),
   },
   {
-    path: "/",
+    path: "*",
     lazy: async () => {
       return { Component: (await import("./App")).default };
     },
