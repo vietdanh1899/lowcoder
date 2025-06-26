@@ -13,6 +13,10 @@ export default defineConfig({
           src: "src/micro/*",
           dest: "micro",
         },
+        {
+          src: "package.json",
+          dest: "",
+        },
       ],
     }),
   ],

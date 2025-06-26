@@ -72,7 +72,7 @@ const isValidGradient = (color?: string) => {
 
 const isValidColor = (str?: string) => {
   if (!str) return false;
-  return colord(str).isValid();
+  return CSS.supports('color', str);
 };
 
 export const isDarkColor = (colorStr: string) => {
