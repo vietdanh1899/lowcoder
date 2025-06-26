@@ -97,7 +97,7 @@ const ColWrapper = styled(Col)<{
 }>`
   min-width: ${(props) => props.$minWidth || 'auto'};
   //> div {
-    height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'auto'};
+    height: ${(props) => props.$matchColumnsHeight ? `calc(100% - ${props.$style?.padding || 0} - ${props.$style?.padding || 0})` : 'fit-content'};
     border-radius: ${(props) => props.$style?.radius};
     border-width: ${(props) => props.$style?.borderWidth};
     border-color: ${(props) => props.$style?.border};
@@ -132,7 +132,7 @@ const childrenMap = {
 type ViewProps = RecordConstructorToView<typeof childrenMap>;
 type ColumnLayoutProps = ViewProps & { dispatch: DispatchType };
 type ColumnContainerProps = Omit<ContainerBaseProps, "style"> & {
-  style: ResponsiveLayoutColStyleType,
+  // style: ResponsiveLayoutColStyleType,
 };
 
 const ColumnContainer = (props: ColumnContainerProps) => {
@@ -142,7 +142,7 @@ const ColumnContainer = (props: ColumnContainerProps) => {
       emptyRows={15}
       hintPlaceholder={HintPlaceHolder}
       radius={"0"}
-      style={props.style}
+      // style={props.style}
       enableGridLines={false}
     />
   );
@@ -255,7 +255,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                           positionParams={containerProps.positionParams.getView()}
                           dispatch={childDispatch}
                           autoHeight={props.autoHeight}
-                          style={columnStyle}
+                          // style={columnStyle}
                         />
                       </ColWrapper>
                     </BackgroundColorContext.Provider>
