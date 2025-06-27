@@ -228,7 +228,6 @@ import Rating from "comps/comps/primereactComp/components/p-core/Rating";
 import SelectButton from "comps/comps/primereactComp/components/p-core/SelectButton";
 import Slider from "comps/comps/primereactComp/components/p-core/Slider";
 import SpeedDial from "comps/comps/primereactComp/components/p-core/SpeedDial";
-import Select from "comps/comps/primereactComp/components/p-core/Select";
 import OrganizationChart from "comps/comps/primereactComp/components/p-core/OrganizationChart";
 import Avatar from "comps/comps/primereactComp/components/p-core/Avatar";
 import ProgressBar from "comps/comps/primereactComp/components/p-core/ProgressBar";
@@ -237,7 +236,7 @@ import Skeleton from "comps/comps/primereactComp/components/p-core/Skeleton";
 import { ReactComponent as PrimereactIcon } from "comps/comps/primereactComp/primereact.svg";
 
 const primereactCompMap = {
-  "primereact-pCalendar": {
+  "primereact$pCalendar": {
     name: "P-Calendar",
     categories: ["primereact"],
     withoutLoading: true,
@@ -246,7 +245,7 @@ const primereactCompMap = {
     icon: PrimereactIcon,
     comp: PCalendar,
   },
-  "primereact-button": {
+  "primereact$button": {
     name: "Button",
     icon: PrimereactIcon,
     description: "Button Component",
@@ -255,7 +254,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Button,
   },
-  "primereact-timeline": {
+  "primereact$timeline": {
     name: "Timeline",
     icon: PrimereactIcon,
     description: "Timeline Component",
@@ -264,7 +263,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Timeline,
   },
-  "primereact-tag": {
+  "primereact$tag": {
     name: "Tag",
     icon: PrimereactIcon,
     description: "Tag Component",
@@ -273,7 +272,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Tag,
   },
-  "primereact-dropdown": {
+  "primereact$dropdown": {
     name: "Dropdown",
     icon: PrimereactIcon,
     description: "Dropdown Component",
@@ -282,7 +281,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Dropdown,
   },
-  "primereact-table": {
+  "primereact$table": {
     name: "Table",
     icon: PrimereactIcon,
     description: "Table Component",
@@ -291,7 +290,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Table,
   },
-  "primereact-inputtext": {
+  "primereact$inputtext": {
     name: "InputText",
     icon: PrimereactIcon,
     description: "InputText Component",
@@ -300,7 +299,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InputText,
   },
-  "primereact-inputtextarea": {
+  "primereact$inputtextarea": {
     name: "InputTextArea",
     icon: PrimereactIcon,
     description: "InputTextArea Component",
@@ -309,7 +308,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InputTextArea,
   },
-  "primereact-inputnumber": {
+  "primereact$inputnumber": {
     name: "InputNumber",
     icon: PrimereactIcon,
     description: "InputNumber Component",
@@ -318,7 +317,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InputNumber,
   },
-  "primereact-inputswitch": {
+  "primereact$inputswitch": {
     name: "InputSwitch",
     icon: PrimereactIcon,
     description: "InputSwitch Component",
@@ -327,7 +326,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InputSwitch,
   },
-  "primereact-multiselect": {
+  "primereact$multiselect": {
     name: "MultiSelect",
     icon: PrimereactIcon,
     description: "MultiSelect Component",
@@ -336,7 +335,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: MultiSelect,
   },
-  "primereact-treeselect": {
+  "primereact$treeselect": {
     name: "TreeSelect",
     icon: PrimereactIcon,
     description: "TreeSelect Component",
@@ -345,7 +344,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: TreeSelect,
   },
-  "primereact-calendar": {
+  "primereact$calendar": {
     name: "Old Calendar (deprecated)",
     icon: PrimereactIcon,
     description: "Calendar Component",
@@ -354,7 +353,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Calendar,
   },
-  "primereact-autocomplete": {
+  "primereact$autocomplete": {
     name: "AutoComplete",
     icon: PrimereactIcon,
     description: "AutoComplete Component",
@@ -363,7 +362,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: AutoComplete,
   },
-  "primereact-divider": {
+  "primereact$divider": {
     name: "Divider",
     icon: PrimereactIcon,
     description: "Divider Component",
@@ -372,7 +371,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Divider,
   },
-  "primereact-password": {
+  "primereact$password": {
     name: "Password",
     icon: PrimereactIcon,
     description: "Password Component",
@@ -381,7 +380,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Password,
   },
-  "primereact-paginator": {
+  "primereact$paginator": {
     name: "Paginator",
     icon: PrimereactIcon,
     description: "Paginator Component",
@@ -390,7 +389,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Paginator,
   },
-  "primereact-radiobutton": {
+  "primereact$radiobutton": {
     name: "RadioButton",
     icon: PrimereactIcon,
     description: "RadioButton Component",
@@ -399,7 +398,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: RadioButton,
   },
-  "primereact-label": {
+  "primereact$label": {
     name: "Label",
     icon: PrimereactIcon,
     description: "Label Component",
@@ -407,7 +406,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Label,
   },
-  "primereact-internalstyle": {
+  "primereact$internalstyle": {
     name: "InternalStyle",
     icon: PrimereactIcon,
     description: "InternalStyle Component",
@@ -416,7 +415,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InternalStyle,
   },
-  "primereact-file": {
+  "primereact$file": {
     name: "File",
     icon: PrimereactIcon,
     description: "File Component",
@@ -425,7 +424,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: File,
   },
-  "primereact-cascadeselect": {
+  "primereact$cascadeselect": {
     name: "CascadeSelect",
     icon: PrimereactIcon,
     description: "CascadeSelect Component",
@@ -434,7 +433,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: CascadeSelect,
   },
-  "primereact-checkbox": {
+  "primereact$checkbox": {
     name: "Checkbox",
     icon: PrimereactIcon,
     description: "Checkbox Component",
@@ -443,7 +442,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Checkbox,
   },
-  "primereact-chips": {
+  "primereact$chips": {
     name: "Chips",
     icon: PrimereactIcon,
     description: "Chips Component",
@@ -452,7 +451,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Chips,
   },
-  "primereact-colorpicker": {
+  "primereact$colorpicker": {
     name: "ColorPicker",
     icon: PrimereactIcon,
     description: "ColorPicker Component",
@@ -461,7 +460,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: ColorPicker,
   },
-  "primereact-inputotp": {
+  "primereact$inputotp": {
     name: "InputOtp",
     icon: PrimereactIcon,
     description: "InputOtp Component",
@@ -470,7 +469,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: InputOtp,
   },
-  "primereact-editor": {
+  "primereact$editor": {
     name: "Editor",
     icon: PrimereactIcon,
     description: "Editor Component",
@@ -479,7 +478,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Editor,
   },
-  "primereact-knob": {
+  "primereact$knob": {
     name: "Knob",
     icon: PrimereactIcon,
     description: "Knob Component",
@@ -488,7 +487,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Knob,
   },
-  "primereact-listbox": {
+  "primereact$listbox": {
     name: "ListBox",
     icon: PrimereactIcon,
     description: "ListBox Component",
@@ -497,7 +496,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: ListBox,
   },
-  "primereact-rating": {
+  "primereact$rating": {
     name: "Rating",
     icon: PrimereactIcon,
     description: "Rating Component",
@@ -506,7 +505,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Rating,
   },
-  "primereact-selectbutton": {
+  "primereact$selectbutton": {
     name: "SelectButton",
     icon: PrimereactIcon,
     description: "SelectButton Component",
@@ -515,7 +514,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: SelectButton,
   },
-  "primereact-slider": {
+  "primereact$slider": {
     name: "Slider",
     icon: PrimereactIcon,
     description: "Slider Component",
@@ -524,7 +523,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Slider,
   },
-  "primereact-speeddial": {
+  "primereact$speeddial": {
     name: "SpeedDial",
     icon: PrimereactIcon,
     description: "SpeedDial Component",
@@ -533,16 +532,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: SpeedDial,
   },
-  "primereact-select": {
-    name: "Select",
-    icon: PrimereactIcon,
-    description: "Select Component",
-    layoutInfo: { w: 6, h: 6 },
-    withoutLoading: true,
-    categories: ["primereact"],
-    comp: Select,
-  },
-  "primereact-organizationchart": {
+  "primereact$organizationchart": {
     name: "Organization Chart",
     icon: PrimereactIcon,
     description: "OrganizationChart Component",
@@ -551,7 +541,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: OrganizationChart,
   },
-  "primereact-avatar": {
+  "primereact$avatar": {
     name: "Avatar",
     icon: PrimereactIcon,
     description: "Avatar Component",
@@ -560,7 +550,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Avatar,
   },
-  "primereact-progressbar": {
+  "primereact$progressbar": {
     name: "ProgressBar",
     icon: PrimereactIcon,
     description: "ProgressBar Component",
@@ -569,7 +559,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: ProgressBar,
   },
-  "primereact-badge": {
+  "primereact$badge": {
     name: "Badge",
     icon: PrimereactIcon,
     description: "Badge Component",
@@ -578,7 +568,7 @@ const primereactCompMap = {
     categories: ["primereact"],
     comp: Badge,
   },
-  "primereact-skeleton": {
+  "primereact$skeleton": {
     name: "Skeleton",
     icon: PrimereactIcon,
     description: "Skeleton Component",

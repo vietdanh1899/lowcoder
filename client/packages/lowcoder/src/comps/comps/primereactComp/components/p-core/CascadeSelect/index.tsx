@@ -120,7 +120,6 @@ const defOptions = [
 let CascadeSelectCompBase = (function () {
   const childrenMap = {
     staticProps: jsonControl(toJSONObject, defStaticProps),
-    defaultValue: jsonObjectExposingStateControl("defaultValue", defValue),
     value: jsonObjectExposingStateControl("value", defValue),
     label: stringExposingStateControl("label", ""),
     error: stringExposingStateControl("error", ""),
@@ -160,7 +159,7 @@ let CascadeSelectCompBase = (function () {
         <>
           <Section name="Basic">
             {children.staticProps.propertyView({ label: "Static Props" })}
-            {children.defaultValue.propertyView({ label: "Default Value" })}
+            {children.value.propertyView({ label: "Default Value" })}
             {children.options.propertyView({ label: "Options" })}
           </Section>
           <Section name="Interaction">{hiddenPropertyView(children)}</Section>
