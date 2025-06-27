@@ -55,7 +55,6 @@ const FilterClearIcon: IconType<DropdownProps> = (options) => (
 
 const childrenMap = {
   staticProps: jsonControl(toJSONObject, defStaticProps),
-  defaultValue: jsonObjectExposingStateControl("defaultValue", defValue),
   value: jsonObjectExposingStateControl("value", defValue),
   label: stringExposingStateControl("label", ""),
   error: stringExposingStateControl("error", ""),
@@ -82,10 +81,6 @@ const DropdownView = (props: any) => {
       document.removeEventListener("mouseup", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    props.value.onChange?.(props.defaultValue?.value);
-  }, [JSON.stringify(props.defaultValue?.value)]);
 
   const options = useMemo(() => props.options, [JSON.stringify(props.options)]);
   const staticProps = useMemo(() => props.staticProps, [JSON.stringify(props.staticProps)]);
@@ -141,7 +136,7 @@ const DropdownCompBase = new UICompBuilder(childrenMap, (props: any) => {
       <>
         <Section name="Basic">
           {children.staticProps.propertyView({ label: "Static Props" })}
-          {children.defaultValue.propertyView({ label: "Default Value" })}
+          {children.value.propertyView({ label: "Default Value" })}
           {children.options.propertyView({ label: "Options" })}
         </Section>
         <Section name="Interaction">{hiddenPropertyView(children)}</Section>
@@ -186,12 +181,10 @@ const exposingConfigs = [
 // separate defaultValue and value for old components
 export function fixOldInputCompData(oldData: any) {
   if (!oldData) return oldData;
-  if (Boolean(oldData.value) && !Boolean(oldData.defaultValue)) {
-    const value = oldData.value;
+  if (Boolean(oldData.defaultValue)) {
     return {
       ...oldData,
-      defaultValue: value,
-      value: "",
+      value: oldData.defaultValue,
     };
   }
   return oldData;

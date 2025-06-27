@@ -30,7 +30,6 @@ import Rating from './components/p-core/Rating';
 import SelectButton from './components/p-core/SelectButton';
 import Slider from './components/p-core/Slider';
 import SpeedDial from './components/p-core/SpeedDial';
-import Select from './components/p-core/Select';
 import OrganizationChart from './components/p-core/OrganizationChart';
 import Avatar from './components/p-core/Avatar';
 import ProgressBar from './components/p-core/ProgressBar';
@@ -104,5 +103,4 @@ export default {
   progressbar: ProgressBar,
   badge: Badge,
   skeleton: Skeleton,
-  select: Select,
 };
