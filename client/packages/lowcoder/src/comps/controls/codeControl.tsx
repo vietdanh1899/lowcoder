@@ -411,7 +411,7 @@ export const ColorCodeControl = codeControl<string>(
       return valueString;
     }
     if (CSS.supports('color', valueString)) {
-      return isValidColor(valueString) ? toHex(valueString) : valueString;
+      return valueString;
     }
     if (isThemeColorKey(valueString)) {
       return valueString;
