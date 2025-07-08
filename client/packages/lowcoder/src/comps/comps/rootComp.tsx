@@ -75,6 +75,7 @@ const RootView = React.memo((props: RootViewProps) => {
   const orgCommonSettings  = useContext(OrgCommonSettingsContext);
   const themeList = orgCommonSettings?.themeList || [];
   const selectedTheme = getCurrentTheme(themeList, appThemeId);
+  const iocTheme = comp.children.settings.children.iocTheme.value;
 
   const theme =
     previewTheme?.previewTheme ||
@@ -91,6 +92,26 @@ const RootView = React.memo((props: RootViewProps) => {
       if (readOnly && gridBg) document.body.style.backgroundColor = gridBg;
     }
   }, []);
+
+  useEffect(() => {
+    if (readOnly) return;
+
+    let styleSheet = document.querySelector(`#ioc-theme`);
+    if (!iocTheme) {
+      styleSheet?.remove();
+      return;
+    }
+
+    if (!styleSheet) {
+      styleSheet = document.createElement("style");
+      styleSheet.id = `ioc-theme`;
+      document.head.appendChild(styleSheet);
+    }
+    styleSheet.textContent = `
+    @import url('https://cdn.jsdelivr.net/npm/@vietdanh1899/ioc@latest/styles.css');
+    @import url('https://cdn.jsdelivr.net/npm/@vietdanh1899/ioc@latest/theme/ioc-${iocTheme}/theme.css');
+`;
+  }, [iocTheme, readOnly]);
 
   useEffect(() => {
     return () => {

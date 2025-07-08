@@ -745,17 +745,31 @@ function EditorView(props: EditorViewProps) {
                         {trans("leftPanel.toolbarPreload")}
                       </PreloadDiv>
                       <Flex gap={2}>
+                        <div>Preview IOC Theme</div>
+                        <Select
+                          style={{flexGrow: 1}}
+                          allowClear
+                          defaultValue={
+                            appSettingsComp.children.iocTheme.getView()
+                          }
+                          options={[{label: 'light', value: 'light'}, {label: 'dark', value: 'dark'}]}
+                          onChange={(value) => {
+                            appSettingsComp.children.iocTheme.dispatchChangeValueAction(value);
+                          }}
+                        />
+                      </Flex>
+                      <Flex gap={2}>
                         <div>I18n language</div>
-                      <Select
-                        style={{flexGrow: 1}}
-                        defaultValue={
-                          appSettingsComp.children.previewLanguage.getView()
-                        }
-                        options={Object.keys(appSettingsComp.children.i18n.getView()).map(lang => ({label: lang, value: lang}))}
-                        onChange={(value) => {
-                          appSettingsComp.children.previewLanguage.dispatchChangeValueAction(value);
-                        }}
-                      />
+                        <Select
+                          style={{flexGrow: 1}}
+                          defaultValue={
+                            appSettingsComp.children.previewLanguage.getView()
+                          }
+                          options={Object.keys(appSettingsComp.children.i18n.getView()).map(lang => ({label: lang, value: lang}))}
+                          onChange={(value) => {
+                            appSettingsComp.children.previewLanguage.dispatchChangeValueAction(value);
+                          }}
+                        />
                       </Flex>
                       {appSettingsComp.children.i18n.propertyView({
                         label: "I18n resource",

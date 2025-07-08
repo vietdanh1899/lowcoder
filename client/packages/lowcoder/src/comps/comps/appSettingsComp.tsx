@@ -211,6 +211,7 @@ const childrenMap = {
     },
     vi: {}
   }),
+  iocTheme: valueComp<string | undefined>(undefined),
   title: withDefault(StringControl, ''),
   description: withDefault(StringControl, ''),
   icon: IconControl,
