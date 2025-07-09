@@ -232,6 +232,8 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
               rowGap,
             }}>
               {columns.map(column => {
+                if (column.hidden) return null;
+
                 const id = String(column.id);
                 const childDispatch = wrapDispatch(wrapDispatch(dispatch, "containers"), id);
                 if(!containers[id]) return null
@@ -243,7 +245,19 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                     <BackgroundColorContext.Provider value={props.columnStyle.background}>
                       <ColWrapper
                         key={id}
-                        $style={props.columnStyle}
+                        $style={_.mergeWith(
+                          {},
+                          props.columnStyle,
+                          {
+                            background: column.background,
+                            backgroundImage: column.backgroundImage,
+                            border: column.border,
+                            radius: column.radius,
+                            margin: column.margin,
+                            padding: column.padding,
+                          },
+                          (a, b) => (!!b ? b : a)
+                        )}
                         $minWidth={column.minWidth}
                         $matchColumnsHeight={matchColumnsHeight}
                         $itemCss={itemCss}
@@ -260,7 +274,7 @@ const ColumnLayout = (props: ColumnLayoutProps) => {
                       </ColWrapper>
                     </BackgroundColorContext.Provider>
                   </React.Fragment>
-                )
+                );
               })
               }
             </ContainWrapper>
