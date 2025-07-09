@@ -414,7 +414,12 @@ const UIView = React.memo((props: {
       }}
     >
       <HidableView hidden={childrenProps.hidden as boolean}>
-        {childrenProps.isLoading ? <WhiteLoading /> :props.viewFn(childrenProps, comp.dispatch)}
+        <>
+          {childrenProps.isLoading && <WhiteLoading />}
+          <div style={{ height: "100%", visibility: !childrenProps.isLoading ? "visible" : "hidden" }}>
+            {props.viewFn(childrenProps, comp.dispatch)}
+          </div>
+        </>
       </HidableView>
     </div>
   );
