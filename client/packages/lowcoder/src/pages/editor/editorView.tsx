@@ -64,7 +64,9 @@ import { isEqual, noop } from "lodash";
 import { AppSettingContext, AppSettingType } from "@lowcoder-ee/comps/utils/appSettingContext";
 import { getBrandingSetting } from "@lowcoder-ee/redux/selectors/enterpriseSelectors";
 import Flex from "antd/es/flex";
-import { Select } from "antd";
+import { ConfigProvider, Select, theme } from "antd";
+import { getAntdLocale } from "@lowcoder-ee/i18n/antdLocale";
+import { getCurrentUser } from "@lowcoder-ee/redux/selectors/usersSelectors";
 // import { BottomSkeleton } from "./bottom/BottomContent";
 
 const Header = lazy(
@@ -431,7 +433,8 @@ function EditorView(props: EditorViewProps) {
   const isViewMode = params.viewMode === 'view';
 
   const appSettingsComp = editorState.getAppSettingsComp();
-  const { showHeaderInPublic } = appSettingsComp.getView();
+  const { showHeaderInPublic, previewLanguage, iocTheme } = appSettingsComp.getView();
+  const currentUser = useSelector(getCurrentUser);
 
   const togglePanel: TogglePanel = useCallback(
     (key) => {
@@ -562,10 +565,17 @@ function EditorView(props: EditorViewProps) {
   const isLocalhost = window.location.hostname === 'localhost';
   if (readOnly && hideHeader) {
     return (
+      <ConfigProvider
+        locale={getAntdLocale(previewLanguage || currentUser.uiLanguage)}
+        theme={{
+          algorithm: iocTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          hashed: false, cssVar: {key: 'lowcoder'}
+        }}>
       <CustomShortcutWrapper>
         {uiComp.getView()}
         <div style={{ zIndex: Layers.hooksCompContainer }}>{hookCompViews}</div>
       </CustomShortcutWrapper>
+      </ConfigProvider>
     );
   }
 
@@ -591,6 +601,12 @@ function EditorView(props: EditorViewProps) {
         </Helmet>
         <Suspense fallback={<EditorSkeletonView />}>
           {!hideBodyHeader && <PreviewHeader />}
+          <ConfigProvider
+            locale={getAntdLocale(previewLanguage || currentUser.uiLanguage)}
+            theme={{
+              algorithm: iocTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+              hashed: false, cssVar: {key: 'lowcoder'}
+            }}>
           <EditorContainerWithViewMode>
             <ViewBody $hideBodyHeader={hideBodyHeader} $height={height}>
               {uiCompViewWrapper}
@@ -599,6 +615,7 @@ function EditorView(props: EditorViewProps) {
               {hookCompViews}
             </div>
           </EditorContainerWithViewMode>
+          </ConfigProvider>
         </Suspense>
       </CustomShortcutWrapper>
     );
@@ -785,6 +802,12 @@ function EditorView(props: EditorViewProps) {
               )}
             </Suspense>
             <MiddlePanel>
+              <ConfigProvider
+                locale={getAntdLocale(previewLanguage || currentUser.uiLanguage)}
+                theme={{
+                  algorithm: iocTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+                  hashed: false, cssVar: {key: 'lowcoder'}
+                }}>
               <EditorWrapper className={editorContentClassName}>
                 <EditorHotKeys disabled={readOnly}>
                   <EditorContainerWithViewMode>
@@ -793,6 +816,7 @@ function EditorView(props: EditorViewProps) {
                   </EditorContainerWithViewMode>
                 </EditorHotKeys>
               </EditorWrapper>
+              </ConfigProvider>
               <Suspense fallback={<BottomSkeleton />}>
                 {panelStatus.bottom && editorModeStatus !== "layout" && <Bottom />}
               </Suspense>
