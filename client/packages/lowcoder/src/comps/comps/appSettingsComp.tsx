@@ -205,7 +205,7 @@ const AppCategories = Object.keys(ApplicationCategoriesEnum).map(
 )
 
 const childrenMap = {
-  previewLanguage: valueComp<string>("en"),
+  previewLanguage: valueComp<string>("vi"),
   i18n: jsonObjectControl({
     en: {
     },
