@@ -53,8 +53,8 @@ const TypographyText = styled(AntdTypographyText)`
   width: 100%;
 `;
 
-export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, modify?: boolean, mode?: string }) => {
-  const {setModify, modify, resources, mode} = props
+export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, modify?: boolean, mode?: string, isSortModify?: boolean }) => {
+  const {setModify, modify, resources, mode, isSortModify} = props
   const dispatch = useDispatch();
 
   const { folderId } = useParams<{ folderId: string }>();
@@ -203,6 +203,7 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
             dataIndex: "lastModifyTime",
             ellipsis: true,
             width: "192px",
+            defaultSortOrder: isSortModify ? 'descend' : null,
             sorter: (a: any, b: any) => {
               if (a.lastModifyTime === b.lastModifyTime) {
                 return 0;

@@ -3918,6 +3918,7 @@ export const en = {
     "yourOrg": "Your Organization",
     "orgHomeTitle": "Organization Homepage",
     "appMarketplace": "Application Marketplace",
+    "recent": "Recent",
     "allApplications": "Your Apps",
     "allModules": "Your Modules",
     "allFolders": "Your Folders",

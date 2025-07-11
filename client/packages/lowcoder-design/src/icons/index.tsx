@@ -257,6 +257,7 @@ export { ReactComponent as FavoritesIcon } from "./v1/icon-application-favorites
 export { ReactComponent as HomeSettingIcon } from "./remix/settings-4-line.svg";
 export { ReactComponent as EnterpriseIcon } from "./remix/shield-star-line.svg";
 export { ReactComponent as VerticalIcon } from "./remix/vertical.svg";
+export { ReactComponent as HistoryIcon } from "./remix/history-fill.svg";
 export { ReactComponent as HorizontalIcon } from "./remix/horizontal.svg";
 
 // Social Sharing
