@@ -30,6 +30,7 @@ import {
   ORG_AUTH_RESET_PASSWORD_URL,
   ADMIN_AUTH_URL,
   PUBLIC_APP_EDITOR_URL,
+  RECENT_URL,
 } from "constants/routesURL";
 import React, { useEffect, useMemo } from "react";
 import { createRoot } from "react-dom/client";
@@ -369,6 +370,7 @@ class AppIndex extends React.Component<AppIndexProps, any> {
                     USER_PROFILE_URL,
                     NEWS_URL,
                     ORG_HOME_URL,
+                    RECENT_URL,
                     ALL_APPLICATIONS_URL,
                     DATASOURCE_CREATE_URL,
                     DATASOURCE_EDIT_URL,
@@ -396,6 +398,7 @@ class AppIndex extends React.Component<AppIndexProps, any> {
                         USER_PROFILE_URL,
                         NEWS_URL,
                         ORG_HOME_URL,
+                        RECENT_URL,
                         ALL_APPLICATIONS_URL,
                         DATASOURCE_CREATE_URL,
                         DATASOURCE_EDIT_URL,

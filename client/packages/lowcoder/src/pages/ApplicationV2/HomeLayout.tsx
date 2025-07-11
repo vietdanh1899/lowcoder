@@ -159,7 +159,7 @@ const BreadcrumbItem = styled.div`
   cursor: pointer;
 `;
 
-const SkeletonStyle = styled(Skeleton)`
+export const SkeletonStyle = styled(Skeleton)`
   margin: 80px 36px;
 
   .ant-skeleton-content .ant-skeleton-paragraph > li {

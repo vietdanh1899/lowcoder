@@ -42,6 +42,7 @@ export const SUBSCRIPTION_INFO = `${SUBSCRIPTION_SETTING}/info/:productId`;
 
 export const SUPPORT_DETAIL = `${SUPPORT_URL}/details/:ticketId`;
 
+export const RECENT_URL = "/recent"
 export const ALL_APPLICATIONS_URL = "/apps";
 export const ADMIN_APP_URL = "/ee/:applicationId/:viewMode";
 export const APPLICATION_MARKETPLACE_URL = `https://app.lowcoder.cloud/apps`;

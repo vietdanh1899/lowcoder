@@ -3292,6 +3292,7 @@ export const vi = {
     yourOrg: "Tổ chức của bạn",
     orgHomeTitle: "Trang chủ của tổ chức",
     appMarketplace: "Thị trường ứng dụng",
+    recent: "Gần đây",
     allApplications: "Ứng dụng của bạn",
     allModules: "Module của bạn",
     allFolders: "Thư mục của bạn",

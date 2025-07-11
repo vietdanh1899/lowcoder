@@ -49,8 +49,8 @@ const EditBtn = styled(TacoButton)`
   height: 24px;
 `;
 
-export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, modify?: boolean, mode?: string }) => {
-  const {setModify, modify, resources, mode} = props
+export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, modify?: boolean, mode?: string, isSortModify?: boolean }) => {
+  const {setModify, modify, resources, mode, isSortModify} = props
   const dispatch = useDispatch();
   const { folderId } = useParams<{ folderId: string }>();
 
@@ -81,7 +81,7 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
       dispatch(
         updateAppMetaAction({ applicationId: currentRes.id, name: values.appName || currentRes.name, folderId: folderId })
       );
-      
+
       setUpdateModalVisible(false);
       setTimeout(() => {
         setModify(!modify);
@@ -96,7 +96,7 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
 
   return (
     <>
-      {currentRes && 
+      {currentRes &&
         <UpdateAppModal
         visible={updateModalVisible}
         onCancel={() => setUpdateModalVisible(false)}
@@ -145,16 +145,16 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
               const Icon = HomeResInfo[item.type].icon;
               return (
                 <NameWrapper>
-                  {item?.icon ? 
-                    <MultiIconDisplay 
-                    identifier={item.icon && typeof item.icon === 'string' ? item.icon : '/icon:antd/appstoreoutlined'} 
-                    width="30px" 
-                    height="30px" 
-                    style={{ 
-                      marginRight: "6px", 
-                      flexShrink: 0, 
-                      color: "#b766db" 
-                      }} 
+                  {item?.icon ?
+                    <MultiIconDisplay
+                    identifier={item.icon && typeof item.icon === 'string' ? item.icon : '/icon:antd/appstoreoutlined'}
+                    width="30px"
+                    height="30px"
+                    style={{
+                      marginRight: "6px",
+                      flexShrink: 0,
+                      color: "#b766db"
+                      }}
                     /> : Icon && (
                     <BrandedIcon>
                       <Icon
@@ -164,7 +164,7 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
                       />
                     </BrandedIcon>
                   )}
-                  <StyledTypographyText> 
+                  <StyledTypographyText>
                     {item.title || item.name}
                   </StyledTypographyText>
                 </NameWrapper>
@@ -218,6 +218,7 @@ export const HomeTableView = (props: { resources: HomeRes[], setModify?: any, mo
             dataIndex: "lastModifyTime",
             ellipsis: true,
             width: "192px",
+            defaultSortOrder: isSortModify ? 'descend' : null,
             sorter: (a: any, b: any) => {
               if (a.lastModifyTime === b.lastModifyTime) {
                 return 0;

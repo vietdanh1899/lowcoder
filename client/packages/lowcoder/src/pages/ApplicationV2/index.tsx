@@ -12,6 +12,7 @@ import {
   ORG_HOME_URL,
   SUBSCRIPTION_SETTING,
   ENVIRONMENT_SETTING,
+  RECENT_URL,
 } from "constants/routesURL";
 import { getUser, isFetchingUser } from "redux/selectors/usersSelectors";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,7 @@ import {
   AppsIcon,
   EnterpriseIcon,
   UserIcon,
+  HistoryIcon,
 } from "lowcoder-design";
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { fetchHomeData } from "redux/reduxActions/applicationActions";
@@ -65,6 +67,7 @@ import AppEditor from "../editor/AppEditor";
 import { fetchDeploymentIdAction } from "@lowcoder-ee/redux/reduxActions/configActions";
 import { getDeploymentId } from "@lowcoder-ee/redux/selectors/configSelectors";
 import {LoadingBarHideTrigger} from "@lowcoder-ee/util/hideLoading";
+import { RecentView } from "@lowcoder-ee/pages/ApplicationV2/RecentView";
 
 const TabLabel = styled.div`
   font-weight: 500;
@@ -167,7 +170,16 @@ export default function ApplicationHome() {
                   },
                 ]
               },
-
+              {
+                items: [
+                  {
+                    text: <TabLabel>{trans("home.recent")}</TabLabel>,
+                    routePath: RECENT_URL,
+                    routeComp: RecentView,
+                    icon: ({ selected, ...otherProps }) => selected ? <HistoryIcon {...otherProps} width={"24px"}/> : <HistoryIcon {...otherProps} width={"24px"}/>,
+                  },
+                ],
+              },
               {
                 items: [
                   {
