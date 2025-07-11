@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
-declare module "primereact"
+declare module "primereact";
+declare module "unidecode";
 declare module "*.svg" {
   import * as React from "react";
 

@@ -107,6 +107,10 @@ export function* moveToFolderSaga(action: ReduxActionWithCallbacks<MoveToFolderP
 
 export function* fetchFolderElementsSaga(action: ReduxAction<FetchFolderElementsPayload>) {
   try {
+    yield put({
+      type: ReduxActionTypes.FETCH_FOLDER_ELEMENTS_INIT,
+      payload: {},
+    });
     const response: AxiosResponse<GenericApiResponse<(ApplicationMeta | FolderMeta)[]>> =
       yield FolderApi.fetchFolderElements(action.payload);
     const isValidResponse: boolean = validateResponse(response);

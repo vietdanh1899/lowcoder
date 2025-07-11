@@ -37,6 +37,7 @@ import { checkIsMobile } from "util/commonUtils";
 import { default as Divider } from "antd/es/divider";
 import { ApplicationCategoriesEnum } from "constants/applicationConstants";
 import { Pagination } from 'antd';
+import unidecode from 'unidecode';
 
 const Wrapper = styled.div`
   display: flex;
@@ -150,7 +151,7 @@ const FilterDropdown = styled(Select)`
 
 const FilterMenuItem = styled.div`
   display: flex;
-  align-items: left;
+  align-items: start;
   height: 29px;
   width: 100%;
 `;
@@ -308,6 +309,12 @@ export interface HomeLayoutProps {
   modify?: boolean;
 }
 
+function normalizeString(value?: string): string {
+  if (!value) return "";
+
+  return unidecode(value.replaceAll(' ', '')).toLowerCase();
+}
+
 export function HomeLayout(props: HomeLayoutProps) {
   const mounted = useRef(true);
   const { breadcrumb = [],
@@ -424,15 +431,22 @@ export function HomeLayout(props: HomeLayoutProps) {
   const resList = useMemo(() => {
     return displayElements
       .filter((e) => {
-        if (!visibility) {
+        // if (!visibility) {
           if (searchValue) {
-            const lowerCaseSearchValue = searchValue.toLocaleLowerCase();
-            return e.name?.toLocaleLowerCase().includes(lowerCaseSearchValue) ||
-                e.createBy?.toLocaleLowerCase().includes(lowerCaseSearchValue);
+            const lowerCaseSearchValue = normalizeString(searchValue);
+            return (
+              normalizeString(e.name).includes(lowerCaseSearchValue) ||
+              normalizeString(e.createBy).includes(lowerCaseSearchValue) ||
+              (e as FolderMeta).subApplications?.some(
+                (e) =>
+                  normalizeString(e.name).includes(lowerCaseSearchValue) ||
+                  normalizeString(e.createBy).includes(lowerCaseSearchValue)
+              )
+            );
           }
           return true;
-        }
-        return true;
+        // }
+        // return true;
       })
       .filter((e) => {
         if(!visibility) {
@@ -719,18 +733,18 @@ export function HomeLayout(props: HomeLayoutProps) {
                 </>
               )}
             </ContentWrapper>
-            {visibility && resList.length ? <div>
-              <PaginationLayout>
-                <Pagination
-                    current={currentPage}
-                    pageSize={pageSize}
-                    onChange={handlePageChange}
-                    onShowSizeChange={handlePageSizeChange}
-                    total={total}
-                    showSizeChanger
-                />
-              </PaginationLayout>
-            </div> : null}
+            {/*{visibility && resList.length ? <div>*/}
+            {/*  <PaginationLayout>*/}
+            {/*    <Pagination*/}
+            {/*        current={currentPage}*/}
+            {/*        pageSize={pageSize}*/}
+            {/*        onChange={handlePageChange}*/}
+            {/*        onShowSizeChange={handlePageSizeChange}*/}
+            {/*        total={total}*/}
+            {/*        showSizeChanger*/}
+            {/*    />*/}
+            {/*  </PaginationLayout>*/}
+            {/*</div> : null}*/}
           </Card>  
           
         </HomeView>
