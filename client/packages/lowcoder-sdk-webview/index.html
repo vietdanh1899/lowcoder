@@ -4,7 +4,6 @@
     <style>
         @layer tailwind-base, antd, lowcoder-sdk, primereact, primeng, tailwind-utilities;
     </style>
-    <link href="/ioc-styles.css" rel="stylesheet"/>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const moduleInputsQuery = urlParams.get('moduleInputs');
@@ -14,10 +13,17 @@
         } catch (e) {
             console.error(e);
         }
-        const newThemeElement = document.createElement("style");
-        newThemeElement.innerHTML = `@import url('./theme/ioc-${input?.colorScheme ?? "light"}/theme.css')`;
-        document.head.appendChild(newThemeElement);
+        if (input?.colorScheme === "dark") {
+            document.documentElement.className = "dark";
+            document.documentElement.style.backgroundColor = "#111827";
+        }
+
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `./theme/ioc-${input?.colorScheme ?? "light"}/theme.css`;
+        document.head.appendChild(link);
     </script>
+    <link href="/ioc-styles.css" rel="stylesheet"/>
     <meta charset="UTF-8"/>
     <link href="/vite.svg" rel="icon" type="image/svg+xml"/>
     <link href="/fonts/inter.css" rel="stylesheet">
@@ -51,6 +57,9 @@
             animation-delay: 500ms;
         }
 
+        .dark .skeleton-container {
+            background-color: #111827;
+        }
         .skeleton-container {
             z-index: 9999;
             min-height: 100vh;
@@ -144,6 +153,9 @@
             animation-iteration-count: infinite;
         }
 
+        .dark .skeleton-title  {
+            background-color: #374151;
+        }
         .skeleton-title {
             line-height: 1.5714285714285714;
             list-style: none;
@@ -162,15 +174,6 @@
             width: 50%;
         }
 
-        .skeleton.skeleton-active .skeleton-image {
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.15) 37%, rgba(0, 0, 0, 0.06) 63%);
-            background-size: 400% 100%;
-            animation-name: animation-skeleton-loading;
-            animation-duration: 1.4s;
-            animation-timing-function: ease;
-            animation-iteration-count: infinite;
-        }
-
         .skeleton-paragraph {
             line-height: 1.5714285714285714;
             list-style: none;
@@ -182,6 +185,9 @@
             margin-block-start: 28px;
         }
 
+        .dark .skeleton-paragraph > li {
+            background-color: #374151;
+        }
         .skeleton-paragraph > li {
             line-height: 1.5714285714285714;
             color: rgba(0, 0, 0, 0.88);
@@ -200,6 +206,9 @@
             margin-block-start: 16px;
         }
 
+        .dark .skeleton .skeleton-header .skeleton-avatar-lg {
+            background-color: #374151;
+        }
         .skeleton .skeleton-header .skeleton-avatar-lg {
             list-style: none;
             color: rgba(0, 0, 0, 0.88);
