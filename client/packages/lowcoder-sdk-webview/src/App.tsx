@@ -68,11 +68,7 @@ function App() {
       appDsl={appDsl}
       moduleDslMap={moduleDslMap}
     />
-  ) : (
-    <div>
-      <h2>Loading ...</h2>
-    </div>
-  );
+  ) : null;
 }
 
 export default App;
