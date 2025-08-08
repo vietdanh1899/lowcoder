@@ -124,8 +124,8 @@ class ModuleTmpComp extends ModuleCompBase {
           {showDataLoadingIndicatorsPropertyView(this.children)}
         </Section>
         <Section name={sectionNames.layout}>
-          {!this.autoScaleCompHeight() && this.children.autoHeight.getPropertyView()}
-          {!this.autoScaleCompHeight() && this.children.scrollbars.propertyView({
+          {this.children.autoHeight.getPropertyView()}
+          {this.children.scrollbars.propertyView({
             label: trans("prop.scrollbar"),
           })}
           {hiddenPropertyView(this.children)}
@@ -149,21 +149,11 @@ class ModuleTmpComp extends ModuleCompBase {
     };
   }
 
-  autoScaleCompHeight() {
-    if (!this.moduleRootComp) {
-      return false;
-    }
-    const moduleLayoutComp = this.moduleRootComp.children.ui.getModuleLayoutComp();
-    return moduleLayoutComp?.children.autoScaleCompHeight.getView();
-  }
-
   autoHeight() {
     if (!this.moduleRootComp) {
       return false;
     }
-    if (this.autoScaleCompHeight()) {
-      return false;
-    }
+
     return this.children.autoHeight.getView();
   }
 

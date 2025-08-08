@@ -40,7 +40,6 @@ const childrenMap = {
   io: IOComp,
   methods: ModuleMethodListComp,
   events: ModuleEventComp,
-  autoScaleCompHeight: BoolControl,
   container: ModuleContainerComp,
   containerSize: valueComp({
     height: defaultHeight,
@@ -113,7 +112,7 @@ export const ModuleLayoutCompBase = new UICompBuilder(childrenMap, () => null).b
 
 export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer {
   getView(): JSX.Element {
-    const isRowCountLocked = this.children.autoScaleCompHeight.getView();
+    const isRowCountLocked = false;
     const rowCount = this.children.containerRowCount.getView();
     return (
       <ModuleLayoutView
@@ -143,11 +142,6 @@ export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer
       <>
         <Section name={sectionNames.codeLayout}>
           {getCodeLayoutPropertyView(this.children.container.children)}
-        </Section>
-        <Section name={sectionNames.basic}>
-          {this.children.autoScaleCompHeight.propertyView({
-            label: trans("module.autoScaleCompHeight"),
-          })}
         </Section>
         {this.children.io.getInputTestView()}
         {this.children.methods.getTestView()}
